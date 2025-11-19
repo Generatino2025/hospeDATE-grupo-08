@@ -24,10 +24,6 @@
   --success-rgb: 30, 116, 36;
 }
 
-body {
-  font-family: var(--font-primary);
-}
-
 /* ===== BASE BUTTON ===== */
 .btn {
   padding: 0.65rem 1.4rem;
@@ -127,5 +123,29 @@ body {
   background: rgba(198, 40, 40, 0.15);
   color: var(--color-alert);
   border-left: 4px solid var(--color-alert);
+}
+body {
+  background-color: #CAF0F8;
+  font-family: var(--font-primary);
+}
+
+/* ===== Recuadro gris al frente ===== */
+.recuadro {
+  background: #CAF0F8;
+  padding: 400px;
+  border-radius: 12px;
+  width: 1200px;
+  margin: 40px auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+
+  position: relative;
+  z-index: 10;
+}
+.titulo {
+  position: absolute;
+  top: 50px;   
+  left: 80px;   
+  color: rgb(0, 0, 0);
+  z-index: 20;  
 }
 
