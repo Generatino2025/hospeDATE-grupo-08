@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* === Paleta de  Colores === */
+  --color-primary-dark: #03045E;
+  --color-primary: #1012D7;
+  --color-accent: #0077B6;
+  --color-soft-yellow: #FFE8A3;
+  --color-green: #1E7424;
+
+  /* === Manejo de Alerts === */
+  --color-alert: #C62828;
+  --color-warning: #F6A104;
+  --color-success: #1E7424;
+
+  /* Colores en RGB para transparencias */
+  --primary-rgb: 16, 18, 215;
+  --accent-rgb: 0, 119, 182;
+  --green-rgb: 30, 116, 36;
+  --yellow-rgb: 255, 232, 163;
+
+  --alert-rgb: 198, 40, 40;
+  --warning-rgb: 246, 161, 4;
+  --success-rgb: 30, 116, 36;
+}
+
+.custom-navbar {
+  background-color: var(--color-primary-dark);
+  padding: 0.8rem 0;
+}
+
+.custom-nav-link {
+  color: #ffffff !important;
+  font-weight: 500;
+  margin-left: 1rem;
+  transition: 0.3s ease-in-out;
+}
+
+.custom-nav-link:hover {
+  color: var(--primary-4) !important;
+  opacity: 0.8;
+}
+
+
+/* FOOTER PERSONALIZADO */
+.custom-footer {
+  background-color: var(--color-primary-dark);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+/* BOTÓN HAMBURGUESA */
+.navbar-toggler {
+  border: none;
+}
+
+/* ICONO DE HAMBURGUESA BLANCO */
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
