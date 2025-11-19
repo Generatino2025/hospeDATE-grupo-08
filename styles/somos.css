@@ -1,0 +1,64 @@
+/* Paleta de colores */
+:root {
+    --color-1: #000f5e;  
+    --color-2: #002aff;  
+    --color-3: #a8c8d6;  
+    --color-4: #ffe9a3;  
+    --color-5: #b9cdab;  
+}
+ 
+/* Tarjetas */
+.team-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+}
+ 
+/* Efecto hover */
+.team-card:hover {
+    transform: translateY(-5px);
+}
+ 
+/* Foto de perfil */
+.team-photo {
+    width: 170px;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+ 
+.team-card:hover .team-photo {
+    transform: scale(1.07);
+}
+ 
+/* Nombre */
+.team-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+ 
+/* Colores de borde para cada tarjeta */
+.team-card.p1 {
+    border-top: 8px solid var(--color-1);
+}
+ 
+.team-card.p2 {
+    border-top: 8px solid var(--color-2);
+}
+ 
+.team-card.p3 {
+    border-top: 8px solid var(--color-3);
+}
+ 
+.team-card.p4 {
+    border-top: 8px solid var(--color-4);
+}
+ 
+.team-card.p5 {
+    border-top: 8px solid var(--color-5);
+}
