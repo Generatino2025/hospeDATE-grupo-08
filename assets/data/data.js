@@ -5,7 +5,7 @@ export const habitaciones = [
     tipo: "suite",
     capacidad: 2,
     precio: 150,
-    imagen: "https://image-tc.galaxy.tf/wijpeg-35fzpqr4jlvia9yif0dg953bz/1.jpg?width=1920",
+    imagen: "https://www.cataloniahotels.com/es/blog/wp-content/uploads/2016/05/habitaci%C3%B3n-doble-catalonia-620x412.jpg",
   },
   {
     id: "H2",
@@ -21,7 +21,7 @@ export const habitaciones = [
     tipo: "individual",
     capacidad: 1,
     precio: 80,
-    imagen: "https://images.unsplash.com/photo-1590490360182-c33d57733427",
+    imagen: "https://www.anticcolonial.com/wp-content/uploads/2017/11/hotel-calpe-suitopia.jpg",
   },
   {
     id: "H4",
