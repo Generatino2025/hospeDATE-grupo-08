@@ -1,84 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles/style.css">
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-            crossorigin="anonymous">
-        <link rel="stylesheet" href="./styles/main.css">
-        <link rel="stylesheet" href="./styles/navFooter.css">
-        <title>HospeDATE</title>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio | hospeDATE</title>
 
-        <body>
-            <!-- NAVBAR -->
-            <nav class="navbar navbar-expand-lg custom-navbar">
-                <div class="container">
-                    <a class="navbar-brand text-light fw-bold"
-                        href="../index.html"><img
-                            src="../assets/images/logoHospedate.png"
-                            alt="Logo de Hospedate" width="80"></a>
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-                    <button class="navbar-toggler bg-light" type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#menu" aria-controls="menu"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+    <!-- Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
 
-                    <div class="collapse navbar-collapse" id="menu">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link custom-nav-link"
-                                    href="./index.html">Inicio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link custom-nav-link"
-                                    href="./pages/reservas.html">Reservas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link custom-nav-link"
-                                    href="./pages/quienes-somos.html">¿Quiénes somos?</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link custom-nav-link"
-                                    href="./pages/contactanos.html">Contacto</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link custom-nav-link"
-                                    href="#">Login</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+    <!-- Estilos -->
+    <link rel="stylesheet" href="./styles/navFooter.css" />
+    <link rel="stylesheet" href="./styles//index.css" />
+  </head>
 
-            <div class="recuadro">
-                <section>
-                    <h2 class="titulo">Bienvenido a hospeDATE un lugar para
-                        reservar tranquilo y seguro </h2>
-                </section>
-            </div>
+  <body class="bg-light">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <div class="container">
+        <a class="navbar-brand text-light fw-bold" href="../index.html"
+          ><img
+            src="../assets/images/logoHospedate.png"
+            alt="Logo de Hospedate"
+            width="80"
+        /></a>
 
-            <!-- FOOTER -->
-            <footer class="custom-footer text-center text-light py-4">
-                <div class="container">
-                    <p class="mb-1">© 2025 —HospeDate</p>
-                    <h2 style="font-style: italic; font-size: 1.1rem;">
-                        Transforma tu recepción, simplifica tu operación
-                    </h2>
-                    <small>Todos los derechos reservados</small>
-                </div>
-            </footer>
-            <script
-                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-                crossorigin="anonymous"></script>
+        <button
+          class="navbar-toggler bg-light"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#menu"
+          aria-controls="menu"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <script type="module" src="./scripts/main.js"></script>
-        </body>
-    </html>
+        <div class="collapse navbar-collapse" id="menu">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" href="./index.html">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" href="./pages/reservas.html">Reservas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" href="./pages/quienes-somos.html"
+                >¿Quiénes somos?</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" href="./pages/contactanos.html"
+                >Contacto</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" href="#">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO + BUSCADOR -->
+    <section class="hero">
+      <div class="hero-content container">
+        <h1 class="text-light fw-bold">Encuentra tu hospedaje ideal</h1>
+
+        <div class="search-box shadow">
+          <div class="search-item">
+            <i class="bi bi-geo-alt"></i>
+            <input type="text" placeholder="¿A dónde vas?" id="buscarDestino" />
+          </div>
+
+          <div class="search-item">
+            <i class="bi bi-calendar-event"></i>
+            <input type="date" id="checkIn" />
+          </div>
+
+          <div class="search-item">
+            <i class="bi bi-calendar-check"></i>
+            <input type="date" id="checkOut" />
+          </div>
+
+          <div class="search-item">
+            <i class="bi bi-people"></i>
+            <select id="personas">
+              <option>1 adulto</option>
+              <option>2 adultos</option>
+              <option>3 adultos</option>
+            </select>
+          </div>
+
+          <button id="btnBuscar" class="btn-search">Buscar</button>
+        </div>
+      </div>
+    </section>
+    <!-- BANNER DE HOTELES -->
+    <section class="banner-hoteles container">
+      <h2 class="titulodeslider">OFERTAS DEL MES</h2>
+
+      <div class="slider">
+        <button class="btn-slider" id="btnPrev">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <div class="slide-track" id="slideTrack">
+          <!-- Slide  -->
+          <div class="slide">
+            <img src="/img/hotel1.webp" alt="hotel con picina y jardin" />
+            <h3>Hotel Prado Bogotá</h3>
+            <p>Habitaciones desde $120.000 COP</p>
+          </div>
+
+          <div class="slide">
+            <img src="/img/teque.webp" alt="hotel iliminado de noche" />
+            <h3>Hotel Tequendama</h3>
+            <p>Habitaciones desde $180.000 COP</p>
+          </div>
+
+          <div class="slide">
+            <img
+              src="/img/hotel2.webp"
+              alt="hotel de varios pisos con paredes de vidrio"
+            />
+            <h3>Hotel Hilton Bogotá</h3>
+            <p>Habitaciones desde $350.000 COP</p>
+          </div>
+
+          <div class="slide">
+            <img
+              src="/img/premium.webp"
+              alt="Habitacion con cama doble y vista exterior "
+            />
+            <h3>Suite Premium</h3>
+            <p>Disponible — Desde $250.000 COP</p>
+          </div>
+
+          <div class="slide">
+            <img
+              src="/img/doble.webp"
+              alt="Habitación de dos camas con vista exterior"
+            />
+            <h3>Habitación Doble</h3>
+            <p>Disponible — Desde $150.000 COP</p>
+          </div>
+        </div>
+
+        <button class="btn-slider" id="btnNext">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </section>
+    <!-- FOOTER -->
+    <footer class="custom-footer text-center text-light py-4">
+      <p class="mb-1">© 2025 — HospeDate</p>
+      <h2 style="font-style: italic; font-size: 1.1rem">
+        Transforma tu recepción, simplifica tu operación
+      </h2>
+      <small>Todos los derechos reservados</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/scripts/main.js"></script>
+  </body>
+</html>
