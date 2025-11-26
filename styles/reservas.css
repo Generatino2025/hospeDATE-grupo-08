@@ -1,0 +1,65 @@
+:root {
+  --color-primary-dark: #03045E;
+  --color-primary: #1012D7;
+  --color-accent: #0077B6;
+  --color-soft-yellow: #FFE8A3;
+  --color-green: #1E7424;
+}
+
+body {
+  background-color: #f8f9fa;
+}
+
+
+.top-bar {
+  background: var(--color-primary);
+}
+
+
+.btn-soft-yellow {
+  background: var(--color-soft-yellow);
+  color: var(--color-primary-dark);
+}
+
+.btn-soft-yellow:hover {
+  background: #ffe080;
+}
+
+
+.room-card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s;
+}
+
+.room-card:hover {
+  transform: translateY(-5px);
+}
+
+.room-img {
+  height: 180px;
+  object-fit: cover;
+}
+
+
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.favorite-btn:hover {
+  background: var(--color-soft-yellow);
+}
+
+.favorite-btn.active {
+  color: red;
+  transform: scale(1.2);
+}

@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* === Paleta de  Colores === */
+  --color-primary-dark: #03045E;
+  --color-primary: #1012D7;
+  --color-accent: #0077B6;
+  --color-soft-yellow: #FFE8A3;
+  --color-green: #1E7424;
+
+  /* === Manejo de Alerts === */
+  --color-alert: #C62828;
+  --color-warning: #F6A104;
+  --color-success: #741e46ff;
+
+  /* Colores en RGB para transparencias */
+  --primary-rgb: 16, 18, 215;
+  --accent-rgb: 0, 119, 182;
+  --green-rgb: 30, 116, 36;
+  --yellow-rgb: 255, 232, 163;
+
+  --alert-rgb: 198, 40, 40;
+  --warning-rgb: 246, 161, 4;
+  --success-rgb: 30, 116, 36;
+}
+
+/* ===== BASE BUTTON ===== */
+.btn {
+  padding: 0.65rem 1.4rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== BOTÓN PRINCIPAL ===== */
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: rgba(var(--primary-rgb), 0.65);
+  transform: translateY(-2px);
+}
+
+/* ===== BOTÓN SECUNDARIO ===== */
+.btn-secondary {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background: rgba(var(--accent-rgb), 0.65);
+  transform: translateY(-2px);
+}
+
+/* ===== BOTÓN AGREGAR ===== */
+.btn-add {
+  background: var(--color-green);
+  color: #fff;
+}
+
+.btn-add:hover {
+  background: rgba(var(--green-rgb), 0.65);
+  transform: translateY(-2px);
+}
+
+/* ===== BOTÓN ELIMINAR ===== */
+.btn-delete {
+  background: var(--color-alert);
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background: rgba(var(--alert-rgb), 0.65);
+  transform: translateY(-2px);
+}
+
+
+/* ===== BOTÓN RESERVAR ===== */
+.btn-reserve {
+  background: var(--color-warning);
+  color: #000;
+}
+
+.btn-reserve:hover {
+  background: rgba(var(--yellow-rgb), 0.65);
+  transform: translateY(-2px);
+}
+
+.alert {
+  padding: 0.9rem 1.2rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+/* ===== ALERT SUCCESS ===== */
+.alert-success {
+  background: rgba(30, 116, 36, 0.15);
+  color: var(--color-success);
+  border-left: 4px solid var(--color-success);
+}
+
+/* ===== ALERT WARNING ===== */
+.alert-warning {
+  background: rgba(246, 161, 4, 0.15);
+  color: var(--color-warning);
+  border-left: 4px solid var(--color-warning);
+}
+
+/* ===== ALERT DANGER ===== */
+.alert-danger {
+  background: rgba(198, 40, 40, 0.15);
+  color: var(--color-alert);
+  border-left: 4px solid var(--color-alert);
+}
+body {
+  background-color: #CAF0F8;
+  font-family: var(--font-primary);
+}
+
+/* ===== Recuadro gris al frente ===== */
+.recuadro {
+  background: #CAF0F8;
+  padding: 400px;
+  border-radius: 12px;
+  width: 1200px;
+  margin: 40px auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+
+  position: relative;
+  z-index: 10;
+}
+.titulo {
+  position: absolute;
+  top: 50px;   
+  left: 80px;   
+  color: rgb(0, 0, 0);
+  z-index: 20;  
+}
+
