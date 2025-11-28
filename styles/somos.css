@@ -1,3 +1,54 @@
+/* ==== CONTENEDORES ELEGANTES DE SECCIONES ==== */
+.section-box {
+    background: #ffffff;
+    padding: 35px 45px;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover suave estilo Airbnb */
+.section-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+/* TITULOS */
+.section-box h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0056b3; /* tono profesional similar a Decameron */
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+/* PÁRRAFOS */
+.section-box p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #4a4a4a;
+    margin: 0;
+}
+
+/* Animación suave al cargar */
+.section-box {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 /* ============================
    CONTENEDOR PRINCIPAL DE LA TARJETA
 ============================ */
@@ -60,31 +111,20 @@
   border: 4px solid #0d6efd;
 }
 
-/* ============================
-   ICONOS COMO BOTONES (más pequeños)
-============================ */
-.icon-btn {
-  width: 16px;
-  height: 16px;
-  margin: 6px;
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.icon-btn:hover {
-  transform: scale(1.2);
-  filter: brightness(1.2);
-}
-
-
 
 /* ============================
-   CENTRADO DE TARJETAS EN FILAS
+  4 CARDS EN LÍNEA
 ============================ */
+
+/* Centra las columnas y corrige tamaños */
+.row .col-md-3,
 .row .col-lg-3,
-.row .col-md-6 {
+.row .col-sm-6 {
   display: flex;
   justify-content: center;
 }
+
+/* Ajuste para que siempre se comporten bien y no cambien de tamaño */
 .card-container {
   perspective: 1000px;
   width: 100%;
@@ -95,8 +135,17 @@
   width: 100%;
   height: 100%;
   min-height: 360px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.8s ease;
-  cursor: pointer;
 }
+
+/* --- COLOCAR ESTO AL FINAL DEL CSS --- */
+.icon-btn {
+  width: 60px !important;
+  height: 60px !important;
+  margin: 5px !important;
+}
+
+.icon-btn:hover {
+  transform: scale(1.15);
+  filter: brightness(1.2);
+}
+
