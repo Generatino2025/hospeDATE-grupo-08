@@ -23,9 +23,11 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
         icon: 'success',
         title: 'Buscando hospedaje',
         text: `Buscando hospedajes en ${destino} del ${entrada} al ${salida}`,
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false,
+        confirmButtonText: 'Ir a Reservas',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = './pages/reservas.html';
+        }
     });
 });
 

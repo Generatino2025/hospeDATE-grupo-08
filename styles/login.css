@@ -1,0 +1,23 @@
+body {
+            height: 100vh;
+            background: #f8f9fa;
+            overflow: hidden;
+        }
+
+        .login-container {
+            height: 100vh;
+        }
+
+        .form-box {
+            max-width: 380px;
+            width: 100%;
+        }
+
+        input {
+            border-radius: 8px;
+        }
+
+        .carousel img {
+            object-fit: cover;
+            height: 100vh;
+        }
