@@ -14,7 +14,7 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
         <!-- ESTILOS DEL PROYECTO -->
-        <link rel="stylesheet" href="../styles/reservas.css">
+        <link rel="stylesheet" href="../styles/login.css">
         <link rel="stylesheet" href="../styles/navFooter.css">
     </head>
 
@@ -61,22 +61,71 @@
                 </div>
             </div>
         </nav>
-        <header class="py-3 mb-4 shadow-sm top-bar">
-            <div class="container d-flex justify-content-between">
-                <h2 class="text-white">Hotel Oasis</h2>
-                <button class="btn btn-soft-yellow fw-bold">
-                    <i class="bi bi-heart-fill me-1"></i> Favoritos
-                </button>
-            </div>
-        </header>
+        <!-- Login -->
+        <div class="container-fluid login-container">
+            <div class="row h-100">
 
-        <main class="container">
-            <h3 class="mb-4 fw-bold text-primary">Habitaciones Disponibles</h3>
+                <!-- Columna izquierda: Carrusel -->
+                <div class="col-md-7 d-none d-md-block p-0">
+                    <div id="carouselExample" class="carousel slide h-100"
+                        data-bs-ride="carousel">
+                        <div class="carousel-inner h-100">
+                            <div class="carousel-item active h-100">
+                                <img src="../img/banner-login1.jpg"
+                                    class="d-block w-100" alt="Imagen 1">
+                            </div>
+                            <div class="carousel-item h-100">
+                                <img src="../img/banner-login2.jpg"
+                                    class="d-block w-100" alt="Imagen 2">
+                            </div>
+                            <div class="carousel-item h-100">
+                                <img src="../img/banner-login-3.jpg"
+                                    class="d-block w-100" alt="Imagen 3">
+                            </div>
+                             <div class="carousel-item h-100">
+                                <img src="../img/banner-login4.jpg"
+                                    class="d-block w-100" alt="Imagen 3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div id="habitacionesGrid" class="row g-4">
-                <!-- JS insertará las cards -->
+                <!-- Columna derecha: Formulario -->
+                <div
+                    class="col-md-5 d-flex justify-content-center align-items-center bg-white">
+                    <div class="form-box">
+
+                        <h3 class="text-center mb-4 fw-bold">Iniciar sesión</h3>
+
+                        <div class="mb-3">
+                            <label class="form-label">Correo electrónico
+                                *</label>
+                            <input type="email" id="email" class="form-control"
+                                placeholder="correo@ejemplo.com">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña *</label>
+                            <input type="password" id="password"
+                                class="form-control" placeholder="••••••••">
+                        </div>
+
+                      <button id="btnLogin" class="btn btn-primary w-100">Ingresar</button>
+
+
+                        <div class="text-center mt-3">
+                            <a href="#" class="small">Olvidé mi contraseña</a>
+                        </div>
+                        <div class="text-center mt-2">
+                            ¿Nuevo usuario?
+                            <a href="register.html"
+                                class="fw-semibold">Regístrate aquí</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </main>
+        </div>
 
         <!-- FOOTER -->
         <footer class="custom-footer text-center text-light py-4">
@@ -88,10 +137,11 @@
                 <small>Todos los derechos reservados</small>
             </div>
         </footer>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"></script>
-         <script type="module" src="../scripts/main.js"></script>
+        <script type="module" src="../scripts/login.js"></script>
     </body>
 </html>
