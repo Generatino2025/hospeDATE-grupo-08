@@ -21,7 +21,7 @@
 }
 
 .hero {
-    background-image: url("/img/bogotanight.jpg");
+    background-image: url("../assets/ImgsBanner/bogotanight.jpg");
     background-size: cover;
     background-position: center;
     padding: 110px 0;

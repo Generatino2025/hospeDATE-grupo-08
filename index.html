@@ -19,19 +19,20 @@
 
     <!-- Estilos -->
     <link rel="stylesheet" href="./styles/navFooter.css" />
-    <link rel="stylesheet" href="./styles//index.css" />
+    <link rel="stylesheet" href="./styles/index.css" />
   </head>
 
   <body class="bg-light">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container">
-        <a class="navbar-brand text-light fw-bold" href="../index.html"
-          ><img
-            src="../assets/images/logoHospedate.png"
+        <a class="navbar-brand text-light fw-bold" href="./index.html">
+          <img
+            src="./assets/ImgsLogos/logoHospedate.png"
             alt="Logo de Hospedate"
             width="80"
-        /></a>
+          />
+        </a>
 
         <button
           class="navbar-toggler bg-light"
@@ -51,23 +52,17 @@
               <a class="nav-link custom-nav-link" href="./index.html">Inicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./pages/reservas.html"
-                >Reservas</a
-              >
+              <a class="nav-link custom-nav-link" href="./pages/reservas.html">Reservas</a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link custom-nav-link"
-                href="./pages/quienes-somos.html"
-                >¿Quiénes somos?</a
-              >
+              <a class="nav-link custom-nav-link" href="./pages/quienes-somos.html">
+                ¿Quiénes somos?
+              </a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link custom-nav-link"
-                href="./pages/contactanos.html"
-                >Contacto</a
-              >
+              <a class="nav-link custom-nav-link" href="./pages/contactanos.html">
+                Contacto
+              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link custom-nav-link" href="./pages/login.html">Login</a>
@@ -77,7 +72,7 @@
       </div>
     </nav>
 
-    <!-- HERO + BUSCADOR -->
+    <!-- HERO -->
     <section class="hero">
       <div class="hero-content container">
         <h1 class="text-light fw-bold">Encuentra tu hospedaje ideal</h1>
@@ -111,6 +106,7 @@
         </div>
       </div>
     </section>
+
     <!-- BANNER DE HOTELES -->
     <section class="banner-hoteles container">
       <h2 class="titulodeslider">OFERTAS DEL MES</h2>
@@ -121,42 +117,32 @@
         </button>
 
         <div class="slide-track" id="slideTrack">
-          <!-- Slide  -->
           <div class="slide">
-            <img src="/img/hotel1.webp" alt="hotel con picina y jardin" />
+            <img src="./assets/ImgsBanner/hotel1.webp" alt="hotel con piscina y jardín" />
             <h3>Hotel Prado Bogotá</h3>
             <p>Habitaciones desde $120.000 COP</p>
           </div>
 
           <div class="slide">
-            <img src="/img/teque.webp" alt="hotel iliminado de noche" />
+            <img src="./assets/ImgsBanner/teque.webp" alt="hotel iluminado de noche" />
             <h3>Hotel Tequendama</h3>
             <p>Habitaciones desde $180.000 COP</p>
           </div>
 
           <div class="slide">
-            <img
-              src="/img/hotel2.webp"
-              alt="hotel de varios pisos con paredes de vidrio"
-            />
+            <img src="./assets/ImgsBanner/hotel2.webp" alt="hotel moderno de cristal" />
             <h3>Hotel Hilton Bogotá</h3>
             <p>Habitaciones desde $350.000 COP</p>
           </div>
 
           <div class="slide">
-            <img
-              src="/img/premium.webp"
-              alt="Habitacion con cama doble y vista exterior "
-            />
+            <img src="./assets/ImgsBanner/premium.webp" alt="suite premium moderna" />
             <h3>Suite Premium</h3>
             <p>Disponible — Desde $250.000 COP</p>
           </div>
 
           <div class="slide">
-            <img
-              src="/img/doble.webp"
-              alt="Habitación de dos camas con vista exterior"
-            />
+            <img src="./assets/ImgsBanner/doble.webp" alt="habitación doble cómoda" />
             <h3>Habitación Doble</h3>
             <p>Disponible — Desde $150.000 COP</p>
           </div>
@@ -167,6 +153,7 @@
         </button>
       </div>
     </section>
+
     <!-- FOOTER -->
     <footer class="custom-footer text-center text-light py-4">
       <p class="mb-1">© 2025 — HospeDate</p>
@@ -175,9 +162,10 @@
       </h2>
       <small>Todos los derechos reservados</small>
     </footer>
-    <!-- SweetAlert -->
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="/scripts/main.js"></script>
+    <script type="module" src="./scripts/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
