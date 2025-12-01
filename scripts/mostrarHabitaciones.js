@@ -35,7 +35,7 @@ export function pintarHabitacionesDisponibles() {
             <h5 class="fw-bold text-accent">$${habitacion.precio} / noche</h5>
 
             <button class="btn btn-soft-yellow mt-2 w-100 fw-bold"
-              onclick="reservar('${habitacion.id}')">
+              onclick="reservar('${habitacion.id}')" data-bs-toggle="modal" data-bs-target="#modalReserva" >
               Reservar
             </button>
           </div>
@@ -47,6 +47,7 @@ export function pintarHabitacionesDisponibles() {
     contenedor.innerHTML += card;
   });
 }
+
 
 
 // No esta llegando la información pendiente para revisar
