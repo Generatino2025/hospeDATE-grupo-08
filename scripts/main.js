@@ -1,10 +1,9 @@
 import { pintarHabitacionesDisponibles } from "./mostrarHabitaciones.js";
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log("entre a maibn")
+    console.log("entre a main")
     pintarHabitacionesDisponibles();
 })
-
 
 document.getElementById("btnBuscar").addEventListener("click", () => {
     const destino = document.getElementById("buscarDestino").value;
@@ -12,13 +11,25 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
     const salida = document.getElementById("checkOut").value;
 
     if (!destino || !entrada || !salida) {
-        alert("Por favor completa todos los campos.");
+        Swal.fire({
+            icon: 'warning',
+            title: '¡Campos incompletos!',
+            text: 'Por favor completa todos los campos.',
+        });
         return;
     }
 
-    alert(`Buscando hospedajes en ${destino} del ${entrada} al ${salida}`);
+    Swal.fire({
+        icon: 'success',
+        title: 'Buscando hospedaje',
+        text: `Buscando hospedajes en ${destino} del ${entrada} al ${salida}`,
+        confirmButtonText: 'Ir a Reservas',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = './pages/reservas.html';
+        }
+    });
 });
-
 
 const track = document.getElementById("slideTrack");
 const prev = document.getElementById("btnPrev");
@@ -46,3 +57,4 @@ prev.addEventListener("click", () => {
 
     track.style.transform = `translateX(${position}px)`;
 });
+
