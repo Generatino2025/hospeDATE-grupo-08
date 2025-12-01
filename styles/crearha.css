@@ -1,0 +1,16 @@
+    body {
+        background: #f2f4f8;
+    }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .preview-img {
+        width: 180px;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-top: 10px;
+        display: none;
+    }
