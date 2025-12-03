@@ -1,6 +1,7 @@
 import { pintarHabitacionesDisponibles } from "./mostrarHabitaciones.js";
 import "../scripts/reservar.js"
 
+
 document.addEventListener('DOMContentLoaded', function () {
     console.log("entre a main")
     pintarHabitacionesDisponibles();

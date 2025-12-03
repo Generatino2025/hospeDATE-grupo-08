@@ -60,10 +60,15 @@
             </div>
 
             <!-- Imagen -->
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label class="form-label">Imagen *</label>
                 <input type="file" id="imagen" class="form-control" accept="image/*">
                 <img id="preview" class="preview-img">
+            </div> -->
+            <div class="mb-3">
+                <label class="form-label">URL de la imagen (PNG o JPG) *</label>
+                <input type="text" id="imagen" class="form-control" placeholder="https://.../imagen.jpg">
+                <img id="preview" class="preview-img" style="display:none; max-width:100%; margin-top:10px;">
             </div>
 
             <!-- Botón -->
@@ -77,5 +82,7 @@
 <!-- SweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="../static/js/crearhabitacion.js"></script>
-   
+<script type="module" src="../scripts/crearhabitacion.js"></script>
+
+   </body>
+</html>
