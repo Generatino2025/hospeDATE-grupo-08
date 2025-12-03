@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador</title>
+
+    <!-- Conexión al CSS -->
+    <link rel="stylesheet" href="../styles/adminvisual.css">
+
+    <!-- Bootstrap (solo si lo usas en el proyecto) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- NAVBAR ADMIN -->
+    <nav class="admin-nav">
+        <h2>Administración</h2>
+        <div class="admin-links">
+            <a href="crearhabitacion.html">Crear Habitación</a>
+            <a href="reservas.html">Reservas</a>
+            <a href="adminvisual.html" class="active">Panel</a>
+            <a href="login.html" class="logout">Cerrar Sesión</a>
+        </div>
+    </nav>
+
+
+    <!-- HERO PRINCIPAL -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Panel de Control del Administrador</h1>
+            <p>Gestiona habitaciones, reservas y usuarios</p>
+        </div>
+    </section>
+
+
+    <!-- SECCIÓN ESTADÍSTICAS -->
+    <div class="stats-container">
+        <div class="stat-card azul">
+            <h3>Habitaciones</h3>
+            <p id="totalHabitaciones">0</p>
+        </div>
+
+        <div class="stat-card verde">
+            <h3>Reservas Activas</h3>
+            <p id="reservasActivas">0</p>
+        </div>
+
+        <div class="stat-card rojo">
+            <h3>Usuarios Registrados</h3>
+            <p id="totalUsuarios">0</p>
+        </div>
+    </div>
+
+
+    <!-- SLIDER DE HOTELES (REUTILIZA LO QUE YA TIENES) -->
+    <section class="banner-hoteles">
+        <h2 class="titulodeslider">Hoteles Registrados</h2>
+
+        <div class="slider">
+            <button class="btn-slider" id="btnPrev">&#10094;</button>
+
+            <div class="slide-track" id="slideTrack">
+                <div class="slide">
+                    <img src="../assets/ImgsBanner/hotel1.jpg" alt="">
+                    <h3>Hotel Central</h3>
+                    <p>45 Habitaciones</p>
+                </div>
+
+                <div class="slide">
+                    <img src="../assets/ImgsBanner/hotel2.jpg" alt="">
+                    <h3>Hotel Plaza</h3>
+                    <p>30 Habitaciones</p>
+                </div>
+
+                <div class="slide">
+                    <img src="../assets/ImgsBanner/hotel3.jpg" alt="">
+                    <h3>Hotel Premium</h3>
+                    <p>60 Habitaciones</p>
+                </div>
+            </div>
+
+            <button class="btn-slider" id="btnNext">&#10095;</button>
+        </div>
+    </section>
+
+
+    <!-- Conexión al JS -->
+    <script src="../scripts/adminvisual.js"></script>
+
+</body>
+</html>

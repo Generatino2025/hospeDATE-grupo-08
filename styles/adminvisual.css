@@ -1,0 +1,146 @@
+/* --- COLORES PRINCIPALES --- */
+:root {
+    --azul-oscuro: #03045E;
+    --azul-medio: #0077B6;
+    --azul-cyan: #00B4D8;
+    --azul-claro: #90E0EF;
+
+    --verde: #2E7D32;
+    --rojo: #C62828;
+}
+
+/* ---- NAVBAR ---- */
+.admin-nav {
+    background: var(--azul-oscuro);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+}
+
+.admin-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.admin-links a.active {
+    border-bottom: 2px solid var(--azul-cyan);
+}
+
+.logout {
+    color: #ffdddd !important;
+}
+
+/* ---- HERO ---- */
+.hero {
+    background-image: url("../assets/ImgsBanner/bogotanight.jpg");
+    background-position: center;
+    background-size: cover;
+    padding: 110px 0;
+    position: relative;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+}
+
+/* ---- STATS ---- */
+.stats-container {
+    margin: 40px auto;
+    width: 90%;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+}
+
+.stat-card {
+    padding: 25px;
+    border-radius: 12px;
+    flex: 1;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.azul { background: var(--azul-medio); }
+.verde { background: var(--verde); }
+.rojo { background: var(--rojo); }
+
+.stat-card p {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* ---- SLIDER ---- */
+.banner-hoteles {
+    margin-top: 40px;
+    padding: 25px 0;
+}
+
+.titulodeslider {
+    display: flex;
+    justify-content: center;
+    color: var(--azul-oscuro);
+    margin-bottom: 40px;
+}
+
+.slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.slide-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 280px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+.slide img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+}
+
+.btn-slider {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--azul-cyan);
+    border: none;
+    padding: 10px 13px;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.3rem;
+    z-index: 2;
+}
+
+#btnPrev { left: 10px; }
+#btnNext { right: 10px; }
+
+.btn-slider:hover {
+    background: var(--azul-medio);
+}
