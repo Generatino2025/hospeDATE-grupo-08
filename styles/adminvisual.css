@@ -144,3 +144,20 @@
 .btn-slider:hover {
     background: var(--azul-medio);
 }
+
+.ingresar-btn {
+    margin-top: 10px;
+    padding: 10px 18px;
+    font-size: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #007bff;
+    color: white;
+    transition: 0.3s;
+}
+
+.ingresar-btn:hover {
+    background: #0056b3;
+}
+
