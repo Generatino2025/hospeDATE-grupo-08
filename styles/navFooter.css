@@ -60,3 +60,15 @@
   filter: invert(1);
 }
 
+.custom-nav-link {
+  color: #ffffff !important;
+  font-weight: 500;
+  margin-left: 1rem;
+  transition: 0.3s ease-in-out;
+  text-decoration: none !important;   /* <-- QUITA LAS LÍNEAS */
+}
+
+.custom-nav-link:hover {
+  text-decoration: none !important;    /* <-- evita que aparezca al pasar el mouse */
+  opacity: 0.8;
+}
