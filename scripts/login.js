@@ -27,7 +27,7 @@ document.getElementById("btnLogin").addEventListener("click", function () {
             text: 'Acceso concedido como administrador.'
         }).then(() => {
             // Aqui puedes redirigir al panel admin cuando exista
-            window.location.href = "../pages/crearhabitacion.html";  
+            window.location.href = "../pages/adminvisual.html";  
         });
     }
 
