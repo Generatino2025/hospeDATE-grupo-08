@@ -1,22 +1,29 @@
-import { habitaciones } from "../assets/data/data.js";
+import { inicializarLocalStorage, obtenerHabitaciones } from "./crearhabitacion.js";
 import { estaDisponible } from "./disponible.js";
+
+inicializarLocalStorage();
 
 let favoritos = [];
 export function pintarHabitacionesDisponibles() {    
   const contenedor = document.getElementById("habitacionesGrid");
   contenedor.innerHTML = "";
-
+console.log("ingrese")
   const checkIn = "2025-03-12";
   const checkOut = "2025-03-14";
+
+   const habitaciones = obtenerHabitaciones();
+   console.log(habitaciones)
 
   const disponibles = habitaciones.filter(h =>
     estaDisponible(h, checkIn, checkOut)
   );
 
   disponibles.forEach(habitacion => {
+
+
     const card = `
       <div class="col-md-4">
-        <div class="card room-card position-relative">
+        <div class="card room-card position-relative ">
 
           <img src="${habitacion.imagen}" class="room-img w-100" />
 
@@ -43,20 +50,8 @@ export function pintarHabitacionesDisponibles() {
         </div>
       </div>
     `;
-
     contenedor.innerHTML += card;
   });
 }
 
 
-
-// No esta llegando la información pendiente para revisar
-// export function toggleFavorito(id, btn) {
-//   if (favoritos.includes(id)) {
-//     favoritos = favoritos.filter(f => f !== id);
-//     btn.classList.remove("active");
-//   } else {
-//     favoritos.push(id);
-//     btn.classList.add("active");
-//   }
-// }
