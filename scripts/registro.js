@@ -1,3 +1,38 @@
+let usuarios = JSON.parse(localStorage.getItem("usuarios"));
+
+if (!usuarios) {
+    usuarios = [
+        {
+            nombre: "Admin",
+            apellido: "Hotel",
+            tipoDoc: "CC",
+            numeroDoc: "0000",
+            correo: "AdminHotel@gmail.com",
+            telefono: "000000",
+            password: "admin123",
+            rol: "admin"
+        }
+    ];
+
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+}
+
+if (!localStorage.getItem("usuarios")) {
+    const usuariosIniciales = [
+        {
+            nombre: "Admin",
+            apellido: "Hotel",
+            tipoDoc: "CC",
+            numeroDoc: "0000",
+            correo: "AdminHotel@gmail.com",
+            telefono: "000000",
+            password: "admin123",
+            rol: "admin"
+        }
+    ];
+
+  usuarios=  localStorage.setItem("usuarios", JSON.stringify(usuariosIniciales));
+}
 document.getElementById("btnRegistro").addEventListener("click", function () {
 
     const nombre = document.getElementById("nombre").value.trim();
@@ -67,7 +102,8 @@ document.getElementById("btnRegistro").addEventListener("click", function () {
         password
     };
 
-    localStorage.setItem("usuario", JSON.stringify(usuario));
+       usuarios.push(usuario);
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
     // ALERTA ÉXITO
     Swal.fire({

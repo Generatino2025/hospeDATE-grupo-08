@@ -12,6 +12,6 @@ export function estaDisponible(habitacion, checkIn, checkOut) {
   });
 }
 
-export function reservar(idHab) {
-  alert(`Reservaste la habitación ${idHab}`);
-}
+// export function reservar(idHab) {
+//   alert(`Reservaste la habitación ${idHab}`);
+// }

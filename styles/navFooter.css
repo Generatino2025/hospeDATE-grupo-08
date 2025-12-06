@@ -72,3 +72,19 @@
   text-decoration: none !important;    /* <-- evita que aparezca al pasar el mouse */
   opacity: 0.8;
 }
+
+
+.btn-nav-logout {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+    font-size: inherit;
+}
+
+.btn-nav-logout:hover {
+    color: white;
+    background-color: #0077B6;
+    border-radius: 5px;
+}

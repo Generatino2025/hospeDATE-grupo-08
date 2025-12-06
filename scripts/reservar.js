@@ -15,7 +15,7 @@ export const user = {
 export let reservas = JSON.parse(localStorage.getItem('reservas')) || []
 
 const modalReservaElement = document.getElementById('modalReserva')
-const modalReserva = new bootstrap.Modal(modalReservaElement)
+
 window.reservar = reservar
 
   const habitaciones = obtenerHabitaciones();

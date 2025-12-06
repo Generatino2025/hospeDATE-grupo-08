@@ -1,3 +1,22 @@
+let usuarios = JSON.parse(localStorage.getItem("usuarios"));
+
+if (!usuarios) {
+    usuarios = [
+        {
+            nombre: "Admin",
+            apellido: "Hotel",
+            tipoDoc: "CC",
+            numeroDoc: "0000",
+            correo: "AdminHotel@gmail.com",
+            telefono: "000000",
+            password: "admin123",
+            rol: "admin"
+        }
+    ];
+
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+}
+
 document.getElementById("btnLogin").addEventListener("click", function () {
 
     const email = document.getElementById("email").value.trim();
@@ -12,33 +31,11 @@ document.getElementById("btnLogin").addEventListener("click", function () {
         });
     }
 
-    // USUARIO ADMIN (FIJO)
-    const adminUser = {
-        correo: "AdminHotel@gmail.com",
-        password: "admin123",
-        rol: "admin"
-    };
+    // USUARIO Buscarlo Admin o Cliente
+     const usuarioEncontrado = usuarios.find(u => u.correo === email && u.password === password);
 
-    // Verificar si es admin
-    if (email === adminUser.correo && password === adminUser.password) {
-        return Swal.fire({
-            icon: 'success',
-            title: 'Bienvenido Administrador',
-            text: 'Acceso concedido como administrador.'
-        }).then(() => {
-            // Aqui puedes redirigir al panel admin cuando exista
-            window.location.href = "../pages/adminvisual.html";  
-        });
-    }
-
-    // ================================
-    // USUARIO REGISTRADO (NORMAL)
-    // ================================
-
-    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-
-    // Si no existe usuario guardado
-    if (!usuarioGuardado) {
+      // Si no existe usuario guardado
+    if (!usuarioEncontrado) {
         return Swal.fire({
             icon: 'error',
             title: 'Usuario no encontrado',
@@ -46,21 +43,30 @@ document.getElementById("btnLogin").addEventListener("click", function () {
         });
     }
 
-    // Validar usuario normal
-    if (email === usuarioGuardado.correo && password === usuarioGuardado.password) {
-        Swal.fire({
+    // Guardar sesión del usuario
+
+    sessionStorage.setItem("usuarioActual", JSON.stringify(usuarioEncontrado));
+    // ================================
+    // USUARIO REGISTRADO (NORMAL)
+    // ================================
+// Si es admin, redirigir al panel
+    if (usuarioEncontrado.rol === "admin") {
+        return Swal.fire({
             icon: 'success',
-            title: 'Bienvenido',
-            text: 'Has iniciado sesión correctamente'
+            title: 'Bienvenido Administrador'
         }).then(() => {
-            window.location.href = "../index.html"; 
-        });
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Credenciales incorrectas',
-            text: 'El correo o la contraseña no coinciden.'
+            window.location.href = "../pages/adminvisual.html";
         });
     }
+
+    // Si es cliente, redirigir al home
+    Swal.fire({
+        icon: 'success',
+        title: 'Bienvenido',
+        text: 'Has iniciado sesión correctamente'
+    }).then(() => {
+        window.location.href = "../index.html";
+    });
 });
+
 
