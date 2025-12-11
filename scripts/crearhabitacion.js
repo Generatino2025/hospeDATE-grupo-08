@@ -21,19 +21,14 @@ function generarId() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Inicializar localStorage si es necesario
   inicializarLocalStorage();
 
-  // Referencias a elementos (ya existen en DOM)
   const form = document.getElementById("formHabitacion");
   const inputImagen = document.getElementById("imagen");
   const preview = document.getElementById("preview");
 
-  if (!form) {
-    return;
-  }
+  if (!form) return;
 
-  // Vista previa de imagen por URL (se ejecuta al tipear la URL)
   if (inputImagen && preview) {
     inputImagen.addEventListener("input", function () {
       const url = this.value.trim();
@@ -58,8 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const precioRaw = document.getElementById("precio")?.value.trim() || "";
     const urlImagen = document.getElementById("imagen")?.value.trim() || "";
 
-    const regex = /\.(jpg|jpeg|png)$/i;
-
     if (!nombre || !tipo || !descripcion || !precioRaw || !urlImagen) {
       Swal.fire({
         icon: "warning",
@@ -79,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const regex = /\.(jpg|jpeg|png)$/i;
     if (!regex.test(urlImagen)) {
       Swal.fire({
         icon: "error",
