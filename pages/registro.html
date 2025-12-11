@@ -137,14 +137,25 @@
         </div>
 
         <!-- Contraseña -->
-        <div class="mb-3">
-            <label class="form-label">Contraseña *</label>
-            <input id="password" type="password" class="form-control" placeholder="••••••••">
+        <div class="mb-3 position-relative">
+             <label class="form-label">Contraseña *</label>
+        <div class="input-group">
+             <input id="password" type="password" class="form-control" placeholder="••••••••">
+        <span class="input-group-text" id="togglePass1" style="cursor: pointer;">
+             <i class="bi bi-eye-slash"></i>
+             </span>
+            </div>
         </div>
 
-        <div class="mb-3">
+        <!-- Confirmar contraseña -->
+        <div class="mb-3 position-relative">
             <label class="form-label">Confirmar contraseña *</label>
-            <input id="password2" type="password" class="form-control" placeholder="••••••••">
+            <div class="input-group">
+                 <input id="password2" type="password" class="form-control" placeholder="••••••••">
+                 <span class="input-group-text" id="togglePass2" style="cursor: pointer;">
+                 <i class="bi bi-eye-slash"></i>
+             </span>
+            </div>
         </div>
 
         <!-- Terminos -->

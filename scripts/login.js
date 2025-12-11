@@ -69,4 +69,22 @@ document.getElementById("btnLogin").addEventListener("click", function () {
     });
 });
 
+// === Mostrar / ocultar contraseña en Login ===
+const loginPassInput = document.getElementById("password");
+const toggleLoginPass = document.getElementById("toggleLoginPass");
+
+toggleLoginPass.addEventListener("click", () => {
+    const icon = toggleLoginPass.querySelector("i");
+
+    if (loginPassInput.type === "password") {
+        loginPassInput.type = "text";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+    } else {
+        loginPassInput.type = "password";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+    }
+});
+
 

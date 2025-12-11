@@ -104,11 +104,15 @@
                                 placeholder="correo@ejemplo.com">
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Contraseña *</label>
-                            <input type="password" id="password"
-                                class="form-control" placeholder="••••••••">
-                        </div>
+                <div class="mb-3">
+                     <label class="form-label">Contraseña *</label>
+                     <div class="input-group">
+                          <input type="password" id="password" class="form-control" placeholder="••••••••">
+                           <span class="input-group-text" id="toggleLoginPass" style="cursor: pointer;">
+                                 <i class="bi bi-eye-slash"></i>
+                                  </span>
+                          </div>
+                 </div>
 
                       <button id="btnLogin" class="btn btn-primary w-100">Ingresar</button>
 
