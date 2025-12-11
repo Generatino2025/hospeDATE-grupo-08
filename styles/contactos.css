@@ -1,0 +1,58 @@
+/* Fondo para la sección de contacto */
+.fondo-contacto {
+    background-image: url('../assets/ImgsBanner/bogotanight.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.btn-custom-send {
+    background-color: #003366;  
+    color: white;
+    border: none;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+/* Fondo del bloque completo */
+.fondo-contacto {
+    background-image: url('../assets/ImgsBanner/bogotanight.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 40px;
+    border-radius: 20px;
+}
+
+/* Estilos para los cuadros blancos */
+.card-contacto {
+    background: rgba(255, 255, 255, 0.88); /* Blanco con transparencia elegante */
+    backdrop-filter: blur(4px); /* efecto cristal suave */
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Efecto hover para hacerlo más profesional */
+.card-contacto:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+}
+
+/* Botón personalizado */
+.btn-custom-send {
+    background-color: #003366; 
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 25px;
+    transition: 0.3s ease;
+}
+
+.btn-custom-send:hover {
+    background-color: #002244;
+    color: #fff;
+}

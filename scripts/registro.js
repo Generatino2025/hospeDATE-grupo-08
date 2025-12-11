@@ -1,3 +1,7 @@
+// -------------------------------------------
+// CARGAR / CREAR USUARIOS EN LOCAL STORAGE
+// -------------------------------------------
+
 let usuarios = JSON.parse(localStorage.getItem("usuarios"));
 
 if (!usuarios) {
@@ -13,26 +17,13 @@ if (!usuarios) {
             rol: "admin"
         }
     ];
-
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
 }
 
-if (!localStorage.getItem("usuarios")) {
-    const usuariosIniciales = [
-        {
-            nombre: "Admin",
-            apellido: "Hotel",
-            tipoDoc: "CC",
-            numeroDoc: "0000",
-            correo: "AdminHotel@gmail.com",
-            telefono: "000000",
-            password: "admin123",
-            rol: "admin"
-        }
-    ];
+// -------------------------------------------
+// EVENTO BOTÓN REGISTRO
+// -------------------------------------------
 
-  usuarios=  localStorage.setItem("usuarios", JSON.stringify(usuariosIniciales));
-}
 document.getElementById("btnRegistro").addEventListener("click", function () {
 
     const nombre = document.getElementById("nombre").value.trim();
@@ -86,12 +77,12 @@ document.getElementById("btnRegistro").addEventListener("click", function () {
     if (!terminos) {
         return Swal.fire({
             icon: "info",
-            title: "Aceptar terminos",
-            text: "Debes aceptar los terminos y condiciones."
+            title: "Aceptar términos",
+            text: "Debes aceptar los términos y condiciones."
         });
     }
 
-    //SI TODO ESTÁ BIEN → GUARDAR USUARIO
+    // GUARDAR USUARIO
     const usuario = {
         nombre,
         apellido,
@@ -99,13 +90,13 @@ document.getElementById("btnRegistro").addEventListener("click", function () {
         numeroDoc,
         correo,
         telefono,
-        password
+        password,
+        rol: "cliente"
     };
 
-       usuarios.push(usuario);
+    usuarios.push(usuario);
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
-    // ALERTA ÉXITO
     Swal.fire({
         icon: "success",
         title: "Registro exitoso",
@@ -115,3 +106,32 @@ document.getElementById("btnRegistro").addEventListener("click", function () {
     });
 });
 
+
+// -------------------------------------------
+// MOSTRAR / OCULTAR CONTRASEÑA
+// -------------------------------------------
+
+// Función general
+function togglePassword(idInput, idIcon) {
+    const input = document.getElementById(idInput);
+    const icon = document.querySelector(`#${idIcon} i`);
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+    } else {
+        input.type = "password";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+    }
+}
+
+// Eventos para ambos campos
+document.getElementById("togglePass1").addEventListener("click", function () {
+    togglePassword("password", "togglePass1");
+});
+
+document.getElementById("togglePass2").addEventListener("click", function () {
+    togglePassword("password2", "togglePass2");
+});
