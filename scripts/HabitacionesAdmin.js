@@ -1,13 +1,21 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
+import { reservas as reservasBase } from "../assets/data/data.js";
+
+// ----------------------------------------------------
+// INICIALIZAR RESERVAS
+// ----------------------------------------------------
+if (!localStorage.getItem("reservas")) {
+  localStorage.setItem("reservas", JSON.stringify(reservasBase));
+}
 
 let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
 
 const dashboard = document.getElementById("dashboardReservas");
 const inputBuscar = document.getElementById("buscar");
 
-// ------------------------------
-// CREAR TARJETA DE RESERVA
-// ------------------------------
+// ----------------------------------------------------
+// FUNCIÓN PARA CREAR TARJETA
+// ----------------------------------------------------
 function crearTarjeta(reserva, index) {
   const card = document.createElement("div");
   card.className = "col-md-4";
@@ -20,7 +28,7 @@ function crearTarjeta(reserva, index) {
         <p><strong>Habitación:</strong> ${reserva.habitacion.numero} (${reserva.habitacion.tipo})</p>
         <p><strong>Fechas:</strong> ${reserva.fechas.checkIn} - ${reserva.fechas.checkOut} (${reserva.fechas.noches} noches)</p>
         <p><strong>Pago:</strong> Total USD ${reserva.pago.montoTotal} | Pagado USD ${reserva.pago.montoPagado} | Saldo USD ${reserva.pago.saldoPendiente}</p>
-        <p><strong>Estado:</strong> 
+        <p><strong>Estado:</strong>
           <span class="badge ${reserva.estado === "confirmada" ? "bg-success" : "bg-danger"}">
             ${reserva.estado}
           </span>
@@ -36,9 +44,9 @@ function crearTarjeta(reserva, index) {
   dashboard.appendChild(card);
 }
 
-// ------------------------------
-// RENDERIZAR TARJETAS
-// ------------------------------
+// ----------------------------------------------------
+// RENDERIZAR RESERVAS
+// ----------------------------------------------------
 function renderReservas(filtro = "") {
   dashboard.innerHTML = "";
 
@@ -56,16 +64,16 @@ function renderReservas(filtro = "") {
   lista.forEach((reserva, index) => crearTarjeta(reserva, index));
 }
 
-// ------------------------------
+// ----------------------------------------------------
 // BUSCADOR
-// ------------------------------
+// ----------------------------------------------------
 inputBuscar.addEventListener("input", () => {
   renderReservas(inputBuscar.value);
 });
 
-// ------------------------------
-// EDITAR ESTADO RESERVA
-// ------------------------------
+// ----------------------------------------------------
+// EDITAR ESTADO
+// ----------------------------------------------------
 window.editarReserva = function (index) {
   const reserva = reservas[index];
 
@@ -89,9 +97,9 @@ window.editarReserva = function (index) {
   });
 };
 
-// ------------------------------
+// ----------------------------------------------------
 // ELIMINAR RESERVA
-// ------------------------------
+// ----------------------------------------------------
 window.eliminarReserva = function (index) {
   const reserva = reservas[index];
 
@@ -111,6 +119,42 @@ window.eliminarReserva = function (index) {
     }
   });
 };
+
+// ----------------------------------------------------
+// NAVBAR: CONTROL DE LOGIN / LOGOUT
+// ----------------------------------------------------
+document.addEventListener("DOMContentLoaded", function () {
+  const usuarioActual = sessionStorage.getItem("usuarioActual");
+
+  const navLogin = document.getElementById("navLogin");
+  const navLogout = document.getElementById("navLogout");
+  const btnLogout = document.getElementById("btnLogout");
+
+  // Mostrar u ocultar botones
+  if (usuarioActual) {
+    navLogin.style.display = "none";
+    navLogout.style.display = "block";
+
+    btnLogout.textContent = "Logout"; // Corrige el texto "Salir"
+  } else {
+    navLogin.style.display = "block";
+    navLogout.style.display = "none";
+  }
+
+  // Evento logout
+  if (btnLogout) {
+    btnLogout.addEventListener("click", function () {
+      sessionStorage.removeItem("usuarioActual");
+
+      Swal.fire({
+        icon: "success",
+        title: "Sesión cerrada"
+      }).then(() => {
+        window.location.href = "./login.html";
+      });
+    });
+  }
+});
 
 // Inicial
 renderReservas();

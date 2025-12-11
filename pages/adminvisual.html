@@ -1,146 +1,183 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Panel Administrador</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Administrador</title>
 
-        <!-- Conexión al CSS -->
-        <link rel="stylesheet" href="../styles/adminvisual.css">
-        <link rel="stylesheet" href="../styles/navFooter.css">
-        <!-- Bootstrap -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-            rel="stylesheet">
-    </head>
+    <!-- Conexión al CSS -->
+    <link rel="stylesheet" href="../styles/adminvisual.css" />
+    <link rel="stylesheet" href="../styles/navFooter.css" />
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
 
-    <body>
+  <body>
+    <!-- NAVBAR ADMIN -->
 
-        <!-- NAVBAR ADMIN -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <div class="container">
+        <a class="navbar-brand text-light fw-bold" href="../index.html"
+          ><img
+            src="../assets/ImgsLogos/logoHospedate.png"
+            alt="Logo de Hospedate"
+            width="80"
+        /></a>
+        <h2 style="color: white">Administrador</h2>
+        <button
+          class="navbar-toggler bg-light"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#menu"
+          aria-controls="menu"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <nav class="navbar navbar-expand-lg custom-navbar">
-            <div class="container">
-                <a class="navbar-brand text-light fw-bold"
-                    href="../index.html"><img
-                        src="../assets/ImgsLogos/logoHospedate.png"
-                        alt="Logo de Hospedate" width="80"></a>
-                <h2 style="color: white;">Administrador</h2>
-                <button
-                    class="navbar-toggler bg-light"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#menu"
-                    aria-controls="menu"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <div class="collapse navbar-collapse" id="menu">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" href="./adminvisual.html"
+                >Inicio</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" href="./crearhabitacion.html">
+                Crear Habitación
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" href="./rommsAdminAll.html">
+                Habitaciones
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link custom-nav-link"
+                href="./HabitacionesAdmin.html"
+                >Reservas</a
+              >
+            </li>
+            <!-- LOGIN / LOGOUT DINÁMICO -->
 
-                <div class="collapse navbar-collapse" id="menu">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link"
-                                href="./adminvisual.html">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link"
-                                href="./crearhabitacion.html">
-                                Crear Habitación
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link custom-nav-link"
-                                    href="./rommsAdminAll.html">
-                                    Habitaciones
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link custom-nav-link"
-                                    href="./HabitacionesAdmin.html">Reservas</a>
-                            </li>
-                            <li class="nav-item">
-                                <button id="btnLogout"
-                                    class="nav-link custom-nav-link btn-nav-logout">
-                                    Salir
-                                </button>
-                            </li>
+            <li class="nav-item" id="navLogin">
+              <a class="nav-link custom-nav-link" href="./login.html">Login</a>
+            </li>
 
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <li class="nav-item" id="navLogout" style="display: none">
+              <a class="nav-link custom-nav-link" href="#" id="btnLogout"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-            <!-- HERO PRINCIPAL -->
-            <section class="hero">
-                <div class="hero-content">
-                    <h1>Panel de Control del Administrador</h1>
-                    <p>Gestiona habitaciones, reservas y usuarios</p>
-                </div>
-            </section>
+    <!-- HERO PRINCIPAL -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Panel de Control del Administrador</h1>
+        <p>Gestiona habitaciones, reservas y usuarios</p>
+      </div>
+    </section>
 
-            <!-- SECCIÓN ESTADÍSTICAS -->
-            <div class="stats-container">
-                <div class="stat-card azul">
-                    <h3>Habitaciones</h3>
-                    <p id="totalHabitaciones">0</p>
-                </div>
+    <!-- SECCIÓN ESTADÍSTICAS -->
+    <div class="stats-container">
+      <div class="stat-card azul">
+        <h3>Habitaciones</h3>
+        <p id="totalHabitaciones">0</p>
+      </div>
 
-                <div class="stat-card verde">
-                    <h3>Reservas Activas</h3>
-                    <p id="reservasActivas">0</p>
-                </div>
+      <div class="stat-card verde">
+        <h3>Reservas Activas</h3>
+        <p id="reservasActivas">0</p>
+      </div>
 
-                <div class="stat-card rojo">
-                    <h3>Usuarios Registrados</h3>
-                    <p id="totalUsuarios">0</p>
-                </div>
-            </div>
+      <div class="stat-card rojo">
+        <h3>Usuarios Registrados</h3>
+        <p id="totalUsuarios">0</p>
+      </div>
+    </div>
 
-            <!-- SLIDER DE SEDES -->
-            <section class="banner-hoteles">
-                <h2 class="titulodeslider">Sedes Registradas</h2>
+    <!-- SLIDER DE SEDES -->
+    <section class="banner-hoteles">
+      <h2 class="titulodeslider">Sedes Registradas</h2>
 
-                <div class="slider">
-                    <button class="btn-slider" id="btnPrev">&#10094;</button>
+      <div class="slider">
+        <button class="btn-slider" id="btnPrev">&#10094;</button>
 
-                    <div class="slide-track" id="slideTrack">
+        <div class="slide-track" id="slideTrack">
+          <!-- SEDE 1 -->
+          <div class="slide">
+            <img src="../assets/ImgsBanner/hotel1.jpg" alt />
+            <h3>Hotel Central</h3>
+            <p>45 Habitaciones</p>
+            <button class="ingresar-btn" data-sede="central">Ingresar</button>
+          </div>
 
-                        <!-- SEDE 1 -->
-                        <div class="slide">
-                            <img src="../assets/ImgsBanner/hotel1.jpg" alt>
-                            <h3>Hotel Central</h3>
-                            <p>45 Habitaciones</p>
-                            <button class="ingresar-btn"
-                                data-sede="central">Ingresar</button>
-                        </div>
+          <!-- SEDE 2 -->
+          <div class="slide">
+            <img src="../assets/ImgsBanner/hotel2.jpg" alt />
+            <h3>Hotel Plaza</h3>
+            <p>30 Habitaciones</p>
+            <button class="ingresar-btn" data-sede="plaza">Ingresar</button>
+          </div>
 
-                        <!-- SEDE 2 -->
-                        <div class="slide">
-                            <img src="../assets/ImgsBanner/hotel2.jpg" alt>
-                            <h3>Hotel Plaza</h3>
-                            <p>30 Habitaciones</p>
-                            <button class="ingresar-btn"
-                                data-sede="plaza">Ingresar</button>
-                        </div>
+          <!-- SEDE 3 -->
+          <div class="slide">
+            <img src="../assets/ImgsBanner/hotel3.jpg" alt />
+            <h3>Hotel Premium</h3>
+            <p>60 Habitaciones</p>
+            <button class="ingresar-btn" data-sede="premium">Ingresar</button>
+          </div>
+        </div>
 
-                        <!-- SEDE 3 -->
-                        <div class="slide">
-                            <img src="../assets/ImgsBanner/hotel3.jpg" alt>
-                            <h3>Hotel Premium</h3>
-                            <p>60 Habitaciones</p>
-                            <button class="ingresar-btn"
-                                data-sede="premium">Ingresar</button>
-                        </div>
+        <button class="btn-slider" id="btnNext">&#10095;</button>
+      </div>
+    </section>
 
-                    </div>
+    <!-- Conexión al JS -->
 
-                    <button class="btn-slider" id="btnNext">&#10095;</button>
-                </div>
-            </section>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../scripts/adminvisual.js"></script>
+    <script type="module" src="../scripts/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const usuarioActual = sessionStorage.getItem("usuarioActual");
 
-            <!-- Conexión al JS -->
-             
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script src="../scripts/adminvisual.js"></script>
-            <script type="module" src="../scripts/main.js"></script>
-        </body>
-    </html>
+        const navLogin = document.getElementById("navLogin");
+        const navLogout = document.getElementById("navLogout");
+        const btnLogout = document.getElementById("btnLogout");
+
+        // Cambiar navbar dependiendo del login
+        if (usuarioActual) {
+          navLogin.style.display = "none";
+          navLogout.style.display = "block";
+        } else {
+          navLogin.style.display = "block";
+          navLogout.style.display = "none";
+        }
+
+        // Evento de logout
+        if (btnLogout) {
+          btnLogout.addEventListener("click", function () {
+            sessionStorage.removeItem("usuarioActual");
+
+            Swal.fire({
+              icon: "success",
+              title: "Sesión cerrada",
+            }).then(() => {
+              window.location.href = "./login.html";
+            });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
