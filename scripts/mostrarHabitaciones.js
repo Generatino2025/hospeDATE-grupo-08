@@ -8,6 +8,7 @@ import './reservar.js'
 inicializarLocalStorage();
 
 let favoritos = [];
+let habitacionesDisponiblesCache = [];
 
 export function pintarHabitacionesDisponibles() {
   const contenedor = document.getElementById("habitacionesGrid");
@@ -23,7 +24,23 @@ export function pintarHabitacionesDisponibles() {
     estaDisponible(h, checkIn, checkOut)
   );
 
-  disponibles.forEach((habitacion) => {
+  // Guardar disponibles en caché para la búsqueda
+  habitacionesDisponiblesCache = disponibles;
+
+  // Renderizar habitaciones
+  renderHabitaciones(disponibles);
+
+  // Inicializar buscador
+  inicializarBuscador();
+}
+
+function renderHabitaciones(habitacionesAMostrar) {
+  const contenedor = document.getElementById("habitacionesGrid");
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "";
+
+  habitacionesAMostrar.forEach((habitacion) => {
     const card = `
       <div class="col-md-4">
         <div class="card room-card position-relative">
@@ -119,3 +136,35 @@ function toggleFavorito(id, btnEl) {
     btnEl.classList.remove("favorito");
   }
 }
+
+function inicializarBuscador() {
+  const buscador = document.getElementById("buscadorReservas");
+  if (!buscador) return;
+
+  buscador.addEventListener("input", () => {
+    const textoBusqueda = buscador.value.toLowerCase().trim();
+
+    if (textoBusqueda === "") {
+      renderHabitaciones(habitacionesDisponiblesCache);
+    } else {
+      const habitacionesFiltradas = habitacionesDisponiblesCache.filter(
+        (habitacion) => {
+          const numero = String(habitacion.numero).toLowerCase();
+          const tipo = habitacion.tipo.toLowerCase();
+          const id = String(habitacion.id).toLowerCase();
+          const nombre = `habitacion ${numero}`.toLowerCase();
+
+          return (
+            numero.includes(textoBusqueda) ||
+            tipo.includes(textoBusqueda) ||
+            id.includes(textoBusqueda) ||
+            nombre.includes(textoBusqueda)
+          );
+        }
+      );
+
+      renderHabitaciones(habitacionesFiltradas);
+    }
+  });
+}
+
