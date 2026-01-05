@@ -1,28 +1,29 @@
-import { inicializarLocalStorage, obtenerHabitaciones } from "./crearhabitacion.js";
+import {
+  inicializarLocalStorage,
+  obtenerHabitaciones
+} from './crearhabitacion.js'
 
-inicializarLocalStorage();
-
-export const user = {
-  nombre: 'María',
-  apellido: 'Pérez',
-  tipoDocumento: 'CC',
-  numeroDocumento: '12345678',
-  telefono: '3001234567',
-  email: 'maria@example.com',
-  direccion: 'Bogotá'
-}
-
+inicializarLocalStorage()
+let montoTotal
+let servicios = []
+// Me traigo lo del local y session storage
+export const user = JSON.parse(sessionStorage.getItem('usuarioActual'))
 export let reservas = JSON.parse(localStorage.getItem('reservas')) || []
+let habitacionesGuardadas = JSON.parse(localStorage.getItem('habitaciones'))
 
+// me traigo lo del modal que voy a pintar en reserva es decir el htmlreserva
 const modalReservaElement = document.getElementById('modalReserva')
+const modalReserva = new bootstrap.Modal(modalReservaElement)
 
 window.reservar = reservar
 
-  const habitaciones = obtenerHabitaciones();
+//traigo las habitaciones a pintar
+const habitaciones = obtenerHabitaciones()
 
+//-------------Funcion para reservar----------------------//
 function reservar (idHabitacion) {
   const habitacion = habitaciones.find(h => h.id === idHabitacion)
-console.log("ingrese")
+  console.log('ingrese')
   // Pintar habitación
   document.getElementById('habNumero').value = habitacion.numero
   document.getElementById('habTipo').value = habitacion.tipo
@@ -39,8 +40,8 @@ console.log("ingrese")
   // Pintar usuario
   document.getElementById('userNombre').value = user.nombre
   document.getElementById('userApellido').value = user.apellido
-  document.getElementById('userTipoDoc').value = user.tipoDocumento
-  document.getElementById('userNumDoc').value = user.numeroDocumento
+  document.getElementById('userTipoDoc').value = user.tipoDoc
+  document.getElementById('userNumDoc').value = user.numeroDoc
   document.getElementById('userTel').value = user.telefono
 
   // Eventos de recálculo
@@ -56,9 +57,14 @@ console.log("ingrese")
 
   // Asignar el evento confirmar (se reemplaza cada vez)
   const confirmarBtn = document.getElementById('btnConfirmarReserva')
+  confirmarBtn.disabled = true
+  confirmarBtn.title =
+    'Faltan datos por llenar y debes ingresar un abono mínimo del 30% del valor total para continuar.'
+
   confirmarBtn.onclick = () => crearReserva(habitacion)
 }
 
+//-------------Funcion para  CREAR la reservar----------------------//
 function crearReserva (habitacion) {
   const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
@@ -77,13 +83,14 @@ function crearReserva (habitacion) {
   const fecha2 = new Date(checkOut)
   const noches = (fecha2 - fecha1) / (1000 * 60 * 60 * 24)
 
-  const montoTotal = noches * habitacion.precio
+  montoTotal =
+    noches * montoTotal + noches * servicios[0]?.precio + servicios[1]?.precio
   const saldoPendiente = montoTotal - abono
 
   if (noches <= 0) {
     Swal.fire(
       'Error',
-      'La fecha de Check-Out debe ser mayor a la de Check-In.',
+      'La fecha de Salida debe ser mayor a la de Ingreso.',
       'error'
     )
     return
@@ -140,49 +147,87 @@ function crearReserva (habitacion) {
     icon: 'success',
     confirmButtonText: 'Aceptar'
   }).then(() => {
+    // Actualizar la disponibilidad a false
+    habitacionesGuardadas = habitacionesGuardadas.map(h => {
+      if (h.id === habitacion.id) {
+        return { ...h, disponible: false }
+      }
+      return h
+    })
+
+    localStorage.setItem('habitaciones', JSON.stringify(habitacionesGuardadas))
+
     modalReserva.hide()
+    window.location.reload()
   })
 }
 
-function actualizarCalculos(habitacion) {
-  const checkIn = document.getElementById('checkIn').value;
-  const checkOut = document.getElementById('checkOut').value;
-  const abono = Number(document.getElementById('abono').value);
+//-------------Funcion para Actualizar los MOntos a PAGAR---------------------//
+function actualizarCalculos (habitacion) {
+  const checkIn = document.getElementById('checkIn').value
+  const checkOut = document.getElementById('checkOut').value
+  const abono = Number(document.getElementById('abono').value)
 
   // Precio base
-  const precioBase = habitacion.precio;
-  document.getElementById('precioPorNoche').value = `USD ${precioBase}`;
+  const precioBase = habitacion.precio
+  document.getElementById('precioPorNoche').value = `USD ${precioBase}`
 
-  if (!checkIn || !checkOut) return;
+  if (!checkIn || !checkOut) return
 
-  const noches = (new Date(checkOut) - new Date(checkIn)) / 86400000;
-  if (noches <= 0) return;
+  const noches = (new Date(checkOut) - new Date(checkIn)) / 86400000
+  if (noches <= 0) return
 
   // Total base
-  let montoTotal = noches * precioBase;
+  montoTotal = noches * precioBase
 
   // Servicios adicionales
-  const serviciosSeleccionados = document.querySelectorAll('.serv-adicional:checked');
-  let servicios = [];
+  const serviciosSeleccionados = document.querySelectorAll(
+    '.serv-adicional:checked'
+  )
 
   serviciosSeleccionados.forEach(serv => {
-    const precio = Number(serv.dataset.precio);
-    montoTotal += precio;
+    const precio = Number(serv.dataset.precio)
+    montoTotal += precio
 
     servicios.push({
       idServicio: serv.dataset.id,
       nombre: serv.dataset.nombre,
       precio
-    });
-  });
+    })
+  })
 
   // Saldo
-  const saldo = montoTotal - abono;
-
+  const saldo = montoTotal - abono
+  console.log('Lo adicional es: ', servicios, montoTotal)
   // Pintar
-  document.getElementById('cantidadNoches').value = noches;
-  document.getElementById('montoTotal').value = `USD ${montoTotal}`;
-  document.getElementById('saldoPendiente').value = `USD ${saldo}`;
+  document.getElementById('cantidadNoches').value = noches
+  document.getElementById('montoTotal').value = `USD ${montoTotal}`
+  document.getElementById('saldoPendiente').value = `USD ${saldo}`
 
-  return { noches, montoTotal, saldo, servicios };
+  validarAbonoMinimo(montoTotal)
+  return { noches, montoTotal, saldo, servicios }
+}
+
+function validarAbonoMinimo (montoTotal) {
+  const abono = Number(document.getElementById('abono').value)
+  const confirmarBtn = document.getElementById('btnConfirmarReserva')
+
+  if (!montoTotal || abono <= 0) {
+    confirmarBtn.disabled = true
+    confirmarBtn.title =
+      'Faltan datos por llenar y debes ingresar un abono mínimo del 30% del valor total para continuar.'
+    return
+  }
+
+  const minimo = montoTotal * 0.3
+
+  if (abono >= minimo) {
+    confirmarBtn.disabled = false
+    confirmarBtn.title = 'Confirmar reserva'
+  } else {
+    confirmarBtn.disabled = true
+    confirmarBtn.title = `El abono debe ser mínimo del 30% (USD ${minimo.toFixed(
+      2
+    )}) para continuar.`
+  }
 }
