@@ -57,8 +57,8 @@
 }
 .card-footer {
   display: flex;
-  justify-content: center; /* 👈 centra horizontal */
-  gap: 10px;               /* espacio entre botones */
+  justify-content: center; 
+  gap: 10px;               
   background: transparent;
   border-top: none;
   padding: 12px 0;
