@@ -164,11 +164,11 @@ function toggleFavorito(id, btnEl) {
     btnEl.classList.remove("favorito");
 
     Swal.fire({
-      icon: "info",
-      title: "Eliminado de favoritos 💔",
-      timer: 1200,
-      showConfirmButton: false
-    });
+    icon: "info",
+    title: "Eliminado de favoritos 💔",
+    timer: 1000,
+    showConfirmButton: false
+  });
   }
 
   guardarFavoritos(favoritos);
