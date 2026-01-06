@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+/* =====================================================
+   VARIABLES GLOBALES
+===================================================== */
 :root {
   /* === Paleta de  Colores === */
   --color-primary-dark: #03045E;
@@ -13,6 +16,9 @@
   --color-warning: #F6A104;
   --color-success: #1E7424;
 
+  /* === Tipografía global === */
+  --font-main: 'Poppins', sans-serif;
+
   /* Colores en RGB para transparencias */
   --primary-rgb: 16, 18, 215;
   --accent-rgb: 0, 119, 182;
@@ -24,10 +30,90 @@
   --success-rgb: 30, 116, 36;
 }
 
+/* =====================================================
+   TIPOGRAFÍA GLOBAL (PISA BOOTSTRAP)
+===================================================== */
+html,
+body {
+  font-family: var(--font-main);
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+/* =====================================================
+   NAVBAR
+===================================================== */
 .custom-navbar {
   background-color: var(--color-primary-dark);
   padding: 0.8rem 0;
+  font-family: var(--font-main); /* 🔒 fuerza la misma fuente */
 }
+
+/* LOGO / BRAND */
+.custom-navbar .navbar-brand {
+  font-family: var(--font-main);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* LINKS */
+.custom-nav-link {
+  color: #ffffff !important;
+  font-family: var(--font-main);
+  font-weight: 500;
+  margin-left: 1rem;
+  transition: all 0.3s ease-in-out;
+  text-decoration: none !important;
+}
+
+/* HOVER */
+.custom-nav-link:hover {
+  opacity: 0.85;
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+/* =====================================================
+   BOTÓN LOGOUT (parece link)
+===================================================== */
+.btn-nav-logout {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font-family: var(--font-main);
+  font-size: inherit;
+}
+
+.btn-nav-logout:hover {
+  color: white;
+  background-color: var(--color-accent);
+  border-radius: 5px;
+}
+
+/* =====================================================
+   BOTÓN HAMBURGUESA
+===================================================== */
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+.custom-footer {
+  background-color: var(--color-primary-dark);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-family: var(--font-main);
+}
+
 
 .custom-nav-link {
   color: #ffffff !important;

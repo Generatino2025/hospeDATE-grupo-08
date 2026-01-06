@@ -148,7 +148,7 @@ document.getElementById("formRegistro").addEventListener("submit", function (e) 
         title: "Registro exitoso",
         text: "Tu cuenta ha sido creada.",
     }).then(() => {
-        window.location.href = "./login.html";
+        window.location.href = "/pages/login.html";
     });
 });
 

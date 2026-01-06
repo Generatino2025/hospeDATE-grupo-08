@@ -113,37 +113,6 @@
     <script type="module" src="../scripts/main.js"></script>
     <script type="module" src="../scripts/favorito.js"></script>
     <script type="module" src="../scripts/reservar.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const usuarioActual = sessionStorage.getItem("usuarioActual");
-
-        const navLogin = document.getElementById("navLogin");
-        const navLogout = document.getElementById("navLogout");
-        const btnLogout = document.getElementById("btnLogout");
-
-        // Cambiar navbar dependiendo del login
-        if (usuarioActual) {
-          navLogin.style.display = "none";
-          navLogout.style.display = "block";
-        } else {
-          navLogin.style.display = "block";
-          navLogout.style.display = "none";
-        }
-
-        // Evento de logout
-        if (btnLogout) {
-          btnLogout.addEventListener("click", function () {
-            sessionStorage.removeItem("usuarioActual");
-
-            Swal.fire({
-              icon: "success",
-              title: "Sesión cerrada",
-            }).then(() => {
-              window.location.href = "./login.html";
-            });
-          });
-        }
-      });
-    </script>
+    <script type="module" src="../scripts/authNavbar.js"></script>
   </body>
 </html>
