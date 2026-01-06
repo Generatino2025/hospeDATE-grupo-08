@@ -1,25 +1,38 @@
 import {
   inicializarLocalStorage,
-  obtenerHabitaciones,
+  obtenerHabitaciones
 } from "./crearhabitacion.js";
-import { estaDisponible } from "./disponible.js";
-import './reservar.js'
 
-// Para favoritos
+import { estaDisponible } from "./disponible.js";
+import "./reservar.js";
+
 const FAVORITOS_KEY = "favoritos";
+
+function usuarioLogueado() {
+  return sessionStorage.getItem("usuarioActual") !== null;
+}
+
+function pedirLogin() {
+  Swal.fire({
+    icon: "warning",
+    title: "Debes iniciar sesión",
+    text: "Para continuar necesitas iniciar sesión",
+    confirmButtonText: "Ir a Login"
+  }).then(() => {
+    window.location.href = "./login.html";
+  });
+}
 
 function obtenerFavoritos() {
   return JSON.parse(localStorage.getItem(FAVORITOS_KEY)) || [];
 }
 
-function guardarFavoritos(favoritos) {
-  localStorage.setItem(FAVORITOS_KEY, JSON.stringify(favoritos));
+function guardarFavoritos(favs) {
+  localStorage.setItem(FAVORITOS_KEY, JSON.stringify(favs));
 }
-
 
 inicializarLocalStorage();
 
-let favoritos = [];
 let habitacionesDisponiblesCache = [];
 
 export function pintarHabitacionesDisponibles() {
@@ -28,183 +41,116 @@ export function pintarHabitacionesDisponibles() {
 
   contenedor.innerHTML = "";
 
-  const checkIn = "2025-03-12";
-  const checkOut = "2025-03-14";
-
   const habitaciones = obtenerHabitaciones();
-  const disponibles = habitaciones.filter((h) =>
-    estaDisponible(h, checkIn, checkOut)
-  );
 
-  // Guardar disponibles en caché para la búsqueda
-  habitacionesDisponiblesCache = disponibles;
+  // 👉 SIEMPRE mostrar habitaciones
+  habitacionesDisponiblesCache = habitaciones;
 
-  // Renderizar habitaciones
-  renderHabitaciones(disponibles);
-
-  // Inicializar buscador
-  inicializarBuscador();
+  renderHabitaciones(habitaciones);
 }
 
-function renderHabitaciones(habitacionesAMostrar) {
+function renderHabitaciones(habitaciones) {
   const contenedor = document.getElementById("habitacionesGrid");
   if (!contenedor) return;
+
   contenedor.innerHTML = "";
 
-  const favoritosLS = obtenerFavoritos();
+  const favoritos = obtenerFavoritos();
 
-  habitacionesAMostrar.forEach((habitacion) => {
-  const esFavorito = favoritosLS?.some(f => f.id === habitacion.id);
+  habitaciones.forEach(h => {
+    const esFavorito = favoritos.some(f => f.id === h.id);
 
     const card = `
       <div class="col-md-4">
         <div class="card room-card position-relative">
-          <img src="${habitacion.imagen}" class="room-img w-100" />
+          <img src="${h.imagen}" class="room-img w-100" />
 
           <div class="favorite-btn ${esFavorito ? "favorito" : ""}"
-           data-fav-id="${habitacion.id}">
-        <i class="bi bi-heart-fill"></i>
-      </div>
+               data-fav-id="${h.id}">
+            <i class="bi bi-heart-fill"></i>
+          </div>
+
           <div class="card-body">
-            <h5 class="fw-bold text-primary-dark">Habitación ${habitacion.numero}</h5>
+            <h5 class="fw-bold text-primary-dark">
+              Habitación ${h.numero}
+            </h5>
             <p class="text-muted">
-              Tipo: ${habitacion.tipo} <br>
-              Capacidad: ${habitacion.capacidad} personas
+              Tipo: ${h.tipo} <br>
+              Capacidad: ${h.capacidad} personas
             </p>
-            <h5 class="fw-bold text-accent">$${habitacion.precio} / noche</h5>
+            <h5 class="fw-bold text-accent">
+              $${h.precio} / noche
+            </h5>
 
             <button
               class="btn btn-soft-yellow mt-2 w-100 fw-bold reservar-btn"
-              data-id="${habitacion.id}"
-              ${habitacion.disponible ? "" : "disabled"}
-            >
-              ${habitacion.disponible ? "Reservar" : "Ocupada"}
+              data-id="${h.id}">
+              Reservar
             </button>
           </div>
         </div>
       </div>
     `;
-    
+
     contenedor.insertAdjacentHTML("beforeend", card);
   });
 
-  attachDelegatedHandlers(contenedor);
+  delegarEventos(contenedor);
 }
 
-function attachDelegatedHandlers(contenedor) {
-  contenedor.removeEventListener("click", delegator); // idempotencia si se llama varias veces
-  contenedor.addEventListener("click", delegator);
-}
+function delegarEventos(contenedor) {
+  contenedor.onclick = (e) => {
 
-function delegator(e) {
-  const btn = e.target.closest(".reservar-btn");
-  if (btn) {
-    const idHabitacion = btn.dataset.id;
-    const usuarioActual = sessionStorage.getItem("usuarioActual");
-
-    if (!usuarioActual) {
-      Swal.fire({
-        icon: "warning",
-        title: "Debes iniciar sesión",
-        text: "Inicia sesión para poder hacer una reserva",
-        confirmButtonText: "Ir a Login",
-      }).then(() => {
-        window.location.href = "/pages/login.html";
-      });
-      return;
+    // 🟡 Reservar
+    const reservarBtn = e.target.closest(".reservar-btn");
+    if (reservarBtn) {
+      if (!usuarioLogueado()) {
+        pedirLogin();
+        return;
+      }
+      reservar(reservarBtn.dataset.id);
     }
 
+    // ❤️ Favoritos
+    const favBtn = e.target.closest(".favorite-btn");
+    if (favBtn) {
+      if (!usuarioLogueado()) {
+        pedirLogin();
+        return;
+      }
 
-      reservar(idHabitacion);
-  }
+      const id = favBtn.dataset.favId;
+      let favs = obtenerFavoritos();
 
-  const favBtn = e.target.closest(".favorite-btn");
-   
-  if (favBtn) {    
-    const idFav = favBtn.dataset.favId;
-    toggleFavorito(idFav, favBtn);
-  
-  }
-}
+      const index = favs.findIndex(f => f.id === id);
 
+      if (index === -1) {
+        const h = obtenerHabitaciones().find(x => x.id === id);
+        favs.push({
+          id: h.id,
+          numero: h.numero,
+          tipo: h.tipo,
+          precio: h.precio,
+          imagen: h.imagen
+        });
 
-function toggleFavorito(id, btnEl) {
-  
-  let favoritos = obtenerFavoritos();
-  const habitaciones = obtenerHabitaciones();
+        favBtn.classList.add("favorito");
 
-  // ❌ ELIMINAR Number(id)
-  const index = favoritos.findIndex(f => f.id === id);
+        Swal.fire({
+          icon: "success",
+          title: "Agregado a favoritos ❤️",
+          timer: 1000,
+          showConfirmButton: false
+        });
 
-  if (index === -1) {
-    const habitacion = habitaciones.find(h => h.id === id);
-    if (!habitacion) {
-      return;
+      } else {
+        favs.splice(index, 1);
+        favBtn.classList.remove("favorito");
+      }
+
+      guardarFavoritos(favs);
     }
-
-    favoritos.push({
-      id: habitacion.id, // string "H2"
-      numero: habitacion.numero,
-      tipo: habitacion.tipo,
-      precio: habitacion.precio,
-      imagen: habitacion.imagen
-    });
-
-    btnEl.classList.add("favorito");
-
-    Swal.fire({
-      icon: "success",
-      title: "Agregado a favoritos ❤️",
-      timer: 1200,
-      showConfirmButton: false
-    });
-
-  } else {
-    favoritos.splice(index, 1);
-    btnEl.classList.remove("favorito");
-
-    Swal.fire({
-    icon: "info",
-    title: "Eliminado de favoritos 💔",
-    timer: 1000,
-    showConfirmButton: false
-  });
-  }
-
-  guardarFavoritos(favoritos);
+  };
 }
 
-
-function inicializarBuscador() {
-  const buscador = document.getElementById("buscadorReservas");
-  if (!buscador) return;
-
-  buscador.addEventListener("input", () => {
-    const textoBusqueda = buscador.value.toLowerCase().trim();
-
-    if (textoBusqueda === "") {
-      renderHabitaciones(habitacionesDisponiblesCache);
-    } else {
-      const habitacionesFiltradas = habitacionesDisponiblesCache.filter(
-        (habitacion) => {
-          const numero = String(habitacion.numero).toLowerCase();
-          const tipo = habitacion.tipo.toLowerCase();
-          const id = String(habitacion.id).toLowerCase();
-          const nombre = `habitacion ${numero}`.toLowerCase();
-
-          return (
-            numero.includes(textoBusqueda) ||
-            tipo.includes(textoBusqueda) ||
-            id.includes(textoBusqueda) ||
-            nombre.includes(textoBusqueda)
-          );
-        }
-      );
-
-      renderHabitaciones(habitacionesFiltradas);
-    }
-  });
-}
-
-
-
+pintarHabitacionesDisponibles();

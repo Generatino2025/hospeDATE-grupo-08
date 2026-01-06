@@ -1,3 +1,6 @@
+// ===============================
+// USUARIOS BASE (ADMIN)
+// ===============================
 let usuarios = JSON.parse(localStorage.getItem("usuarios"));
 
 if (!usuarios) {
@@ -17,12 +20,15 @@ if (!usuarios) {
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
 }
 
+// ===============================
+// LOGIN
+// ===============================
 document.getElementById("btnLogin").addEventListener("click", function () {
 
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    // Validación de campos vacíos 
+    // Validar campos vacíos
     if (!email || !password) {
         return Swal.fire({
             icon: 'warning',
@@ -31,25 +37,35 @@ document.getElementById("btnLogin").addEventListener("click", function () {
         });
     }
 
-    // USUARIO Buscarlo Admin o Cliente
-     const usuarioEncontrado = usuarios.find(u => u.correo === email && u.password === password);
+    // Buscar usuario
+    const usuarioEncontrado = usuarios.find(
+        u => u.correo === email && u.password === password
+    );
 
-      // Si no existe usuario guardado
     if (!usuarioEncontrado) {
         return Swal.fire({
             icon: 'error',
             title: 'Usuario no encontrado',
-            text: 'No existe un usuario registrado. Crea una cuenta primero.'
+            text: 'Correo o contraseña incorrectos.'
         });
     }
 
-    // Guardar sesión del usuario
-
+    // ===============================
+    // GUARDAR SESIÓN
+    // ===============================
     sessionStorage.setItem("usuarioActual", JSON.stringify(usuarioEncontrado));
-    // ================================
-    // USUARIO REGISTRADO (NORMAL)
-    // ================================
-// Si es admin, redirigir al panel
+
+    // Nombre que se mostrará en el navbar
+    localStorage.setItem(
+        "usuarioLogueado",
+        usuarioEncontrado.rol === "admin"
+            ? "Administrador"
+            : `${usuarioEncontrado.nombre}`
+    );
+
+    // ===============================
+    // REDIRECCIÓN POR ROL
+    // ===============================
     if (usuarioEncontrado.rol === "admin") {
         return Swal.fire({
             icon: 'success',
@@ -59,7 +75,6 @@ document.getElementById("btnLogin").addEventListener("click", function () {
         });
     }
 
-    // Si es cliente, redirigir al home
     Swal.fire({
         icon: 'success',
         title: 'Bienvenido',
@@ -69,7 +84,9 @@ document.getElementById("btnLogin").addEventListener("click", function () {
     });
 });
 
-// === Mostrar / ocultar contraseña en Login ===
+// ===============================
+// MOSTRAR / OCULTAR CONTRASEÑA
+// ===============================
 const loginPassInput = document.getElementById("password");
 const toggleLoginPass = document.getElementById("toggleLoginPass");
 
@@ -86,5 +103,3 @@ toggleLoginPass.addEventListener("click", () => {
         icon.classList.add("bi-eye-slash");
     }
 });
-
-

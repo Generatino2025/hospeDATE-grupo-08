@@ -27,7 +27,7 @@
           href="/pages/adminvisual.html"><img
             src="../assets/ImgsLogos/logoHospedate.png"
             alt="Logo de Hospedate" width="80"></a>
-
+        <h2 id="nombreUsuario" style="color: white"></h2>
         <button
           class="navbar-toggler bg-light"
           type="button"
@@ -67,13 +67,7 @@
           </div>
         </div>
       </nav>
-      <main class="container">
-        <h3 class="mb-4 fw-bold text-primary">Habitaciones Disponibles</h3>
-
-        <div id="habitacionesGrid" class="row g-4">
-          <!-- JS insertará las cards -->
-        </div>
-      </main>
+     
       <div class="container mt-4">
         <h2 class="text-center fw-bold mb-4">Crear Nueva Habitación</h2>
 
@@ -135,14 +129,55 @@
             </form>
           </div>
         </div>
-
+ <!-- FOOTER -->
+        <footer class="custom-footer text-center text-light py-4">
+            <div class="container">
+                <p class="mb-1">© 2025 —HospeDate</p>
+                <h2 style="font-style: italic; font-size: 1.1rem;">
+                    Transforma tu recepción, simplifica tu operación
+                </h2>
+                <small>Todos los derechos reservados</small>
+            </div>
+        </footer>
         <!-- SweetAlert -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script type="module" src="../scripts/crearhabitacion.js"></script>
 
         <script type="module" src="../scripts/main.js"></script>
-        <script type="module" src="../scripts/authNavbar.js"></script>
+        <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const usuarioActual = sessionStorage.getItem("usuarioActual");
+
+    const navLogin = document.getElementById("navLogin");
+    const navLogout = document.getElementById("navLogout");
+    const btnLogout = document.getElementById("btnLogout");
+
+    // Cambiar navbar dependiendo del login
+    if (usuarioActual) {
+        navLogin.style.display = "none";
+        navLogout.style.display = "block";
+    } else {
+        navLogin.style.display = "block";
+        navLogout.style.display = "none";
+    }
+
+    // Evento de logout
+    if (btnLogout) {
+        btnLogout.addEventListener("click", function () {
+            sessionStorage.removeItem("usuarioActual");
+
+            Swal.fire({
+                icon: "success",
+                title: "Sesión cerrada"
+            }).then(() => {
+                window.location.href = "./login.html";
+            });
+        });
+    }
+});
+</script>
+<script src="../scripts/session.js"></script>
 
       </body>
     </html>

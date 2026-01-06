@@ -33,6 +33,7 @@
             width="80"
           />
         </a>
+        <h2 id="nombreUsuario" style="color: white"></h2>
 
         <button
           class="navbar-toggler bg-light"
@@ -115,5 +116,39 @@
     <script type="module" src="../scripts/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="../scripts/authNavbar.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const usuarioActual = sessionStorage.getItem("usuarioActual");
+
+        const navLogin = document.getElementById("navLogin");
+        const navLogout = document.getElementById("navLogout");
+        const btnLogout = document.getElementById("btnLogout");
+
+        // Cambiar navbar dependiendo del login
+        if (usuarioActual) {
+          navLogin.style.display = "none";
+          navLogout.style.display = "block";
+        } else {
+          navLogin.style.display = "block";
+          navLogout.style.display = "none";
+        }
+
+        // Evento de logout
+        if (btnLogout) {
+          btnLogout.addEventListener("click", function () {
+            sessionStorage.removeItem("usuarioActual");
+
+            Swal.fire({
+              icon: "success",
+              title: "Sesión cerrada",
+            }).then(() => {
+              window.location.href = "./login.html";
+            });
+          });
+        }
+      });
+    </script>
+    <script src="../scripts/session.js"></script>
+
   </body>
 </html>
