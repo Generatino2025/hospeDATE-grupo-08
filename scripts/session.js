@@ -1,15 +1,21 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const usuario = localStorage.getItem("usuarioLogueado");
-    const h2Usuario = document.getElementById("nombreUsuario");
+// session.js
 
-    // Si no hay sesión → login
-    if (!usuario) {
-        window.location.href = "../pages/login.html";
-        return;
-    }
+export function obtenerUsuarioActual() {
+    const usuario = sessionStorage.getItem("usuarioActual");
+    return usuario ? JSON.parse(usuario) : null;
+}
 
-    // Mostrar usuario en navbar
-    if (h2Usuario) {
-        h2Usuario.textContent = usuario;
-    }
-});
+export function usuarioEstaLogueado() {
+    return sessionStorage.getItem("usuarioActual") !== null;
+}
+
+export function pedirLogin() {
+    Swal.fire({
+        icon: "warning",
+        title: "Debes iniciar sesión",
+        text: "Para continuar necesitas iniciar sesión",
+        confirmButtonText: "Ir a Login"
+    }).then(() => {
+        window.location.href = "./login.html";
+    });
+}

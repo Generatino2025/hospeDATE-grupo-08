@@ -1,5 +1,20 @@
 document.addEventListener("DOMContentLoaded", pintarFavoritos);
 
+import { usuarioEstaLogueado, pedirLogin } from "./session.js";
+
+document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("btn-favorito")) {
+
+        if (!usuarioEstaLogueado()) {
+            e.preventDefault();
+            pedirLogin();
+            return;
+        }
+
+        // ✔️ aquí sigue la lógica normal de favoritos
+    }
+});
+
 const FAVORITOS_KEY = "favoritos";
 
 function obtenerFavoritos() {
