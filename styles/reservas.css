@@ -95,3 +95,22 @@ body {
   backdrop-filter: blur(2px);
   border-radius: 10px;
 }
+
+
+.favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 22px;
+  color: #bbb;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.15);
+}
+
+.favorite-btn.favorito {
+  color: #C62828; /* rojito */
+}

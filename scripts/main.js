@@ -1,9 +1,7 @@
 import { pintarHabitacionesDisponibles } from "./mostrarHabitaciones.js";
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log("entre a main")
-
- const contenedor = document.getElementById("habitacionesGrid");
+   const contenedor = document.getElementById("habitacionesGrid");
     if (contenedor) {
         pintarHabitacionesDisponibles();
     } else {

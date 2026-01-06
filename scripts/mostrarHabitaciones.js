@@ -5,6 +5,18 @@ import {
 import { estaDisponible } from "./disponible.js";
 import './reservar.js'
 
+// Para favoritos
+const FAVORITOS_KEY = "favoritos";
+
+function obtenerFavoritos() {
+  return JSON.parse(localStorage.getItem(FAVORITOS_KEY)) || [];
+}
+
+function guardarFavoritos(favoritos) {
+  localStorage.setItem(FAVORITOS_KEY, JSON.stringify(favoritos));
+}
+
+
 inicializarLocalStorage();
 
 let favoritos = [];
@@ -37,17 +49,22 @@ export function pintarHabitacionesDisponibles() {
 function renderHabitaciones(habitacionesAMostrar) {
   const contenedor = document.getElementById("habitacionesGrid");
   if (!contenedor) return;
-
   contenedor.innerHTML = "";
 
+  const favoritosLS = obtenerFavoritos();
+
   habitacionesAMostrar.forEach((habitacion) => {
+  const esFavorito = favoritosLS?.some(f => f.id === habitacion.id);
+
     const card = `
       <div class="col-md-4">
         <div class="card room-card position-relative">
           <img src="${habitacion.imagen}" class="room-img w-100" />
-          <div class="favorite-btn" data-fav-id="${habitacion.id}">
-            <i class="bi bi-heart-fill"></i>
-          </div>
+
+          <div class="favorite-btn ${esFavorito ? "favorito" : ""}"
+           data-fav-id="${habitacion.id}">
+        <i class="bi bi-heart-fill"></i>
+      </div>
           <div class="card-body">
             <h5 class="fw-bold text-primary-dark">Habitación ${habitacion.numero}</h5>
             <p class="text-muted">
@@ -67,6 +84,7 @@ function renderHabitaciones(habitacionesAMostrar) {
         </div>
       </div>
     `;
+    
     contenedor.insertAdjacentHTML("beforeend", card);
   });
 
@@ -96,46 +114,66 @@ function delegator(e) {
       return;
     }
 
+
       reservar(idHabitacion);
   }
 
   const favBtn = e.target.closest(".favorite-btn");
-  if (favBtn) {
+   
+  if (favBtn) {    
     const idFav = favBtn.dataset.favId;
     toggleFavorito(idFav, favBtn);
+  
   }
 }
 
-function abrirModalReserva(idHabitacion) {
-  const modalEl = document.getElementById("modalReserva");
-  if (!modalEl) return;
-
-  const modal = new bootstrap.Modal(modalEl);
-  // opcional: inyectar datos en el modal para mostrar info
-  const modalBody = modalEl.querySelector(".modal-body");
-  if (modalBody) {
-    const habit = obtenerHabitaciones().find(h => h.id === idHabitacion);
-    modalBody.innerHTML = `
-      <p class="fw-bold">Habitación ${habit.numero} — ${habit.tipo.toUpperCase()}</p>
-      <p>Capacidad: ${habit.capacidad} personas</p>
-      <p>Precio: $${habit.precio} / noche</p>
-      <input type="hidden" id="modalHabitacionId" value="${idHabitacion}">
-    `;
-  }
-
-  modal.show();
-}
 
 function toggleFavorito(id, btnEl) {
-  const index = favoritos.indexOf(id);
+  
+  let favoritos = obtenerFavoritos();
+  const habitaciones = obtenerHabitaciones();
+
+  // ❌ ELIMINAR Number(id)
+  const index = favoritos.findIndex(f => f.id === id);
+
   if (index === -1) {
-    favoritos.push(id);
+    const habitacion = habitaciones.find(h => h.id === id);
+    if (!habitacion) {
+      return;
+    }
+
+    favoritos.push({
+      id: habitacion.id, // string "H2"
+      numero: habitacion.numero,
+      tipo: habitacion.tipo,
+      precio: habitacion.precio,
+      imagen: habitacion.imagen
+    });
+
     btnEl.classList.add("favorito");
+
+    Swal.fire({
+      icon: "success",
+      title: "Agregado a favoritos ❤️",
+      timer: 1200,
+      showConfirmButton: false
+    });
+
   } else {
     favoritos.splice(index, 1);
     btnEl.classList.remove("favorito");
+
+    Swal.fire({
+      icon: "info",
+      title: "Eliminado de favoritos 💔",
+      timer: 1200,
+      showConfirmButton: false
+    });
   }
+
+  guardarFavoritos(favoritos);
 }
+
 
 function inicializarBuscador() {
   const buscador = document.getElementById("buscadorReservas");
@@ -167,4 +205,6 @@ function inicializarBuscador() {
     }
   });
 }
+
+
 
