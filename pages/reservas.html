@@ -8,14 +8,12 @@
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    />
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
 
     <!-- Iconos Bootstrap -->
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
 
     <!-- ESTILOS DEL PROYECTO -->
     <link rel="stylesheet" href="../styles/reservas.css" />
@@ -26,13 +24,16 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container">
-        <a class="navbar-brand text-light fw-bold" href="../index.html"
-          ><img
+        <a class="navbar-brand text-light fw-bold" href="../index.html"><img
             src="../assets/ImgsLogos/logoHospedate.png"
             alt="Logo de Hospedate"
+<<<<<<< HEAD
             width="80"
         /></a>
        <!--<h2 id="nombreUsuario" style="color: white"></h2>-->
+=======
+            width="80" /></a>
+>>>>>>> cb35ff4d65958883af19ce1622c3be73b01b022a
 
         <button
           class="navbar-toggler bg-light"
@@ -41,32 +42,27 @@
           data-bs-target="#menu"
           aria-controls="menu"
           aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="menu">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="../index.html"
-                >Inicio</a
-              >
+              <a class="nav-link custom-nav-link"
+                href="../index.html">Inicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./reservas.html"
-                >Reservas</a
-              >
+              <a class="nav-link custom-nav-link"
+                href="./reservas.html">Reservas</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./quienes-somos.html"
-                >¿Quiénes somos?</a
-              >
+              <a class="nav-link custom-nav-link"
+                href="./quienes-somos.html">¿Quiénes somos?</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./contactanos.html"
-                >Contacto</a
-              >
+              <a class="nav-link custom-nav-link"
+                href="./contactanos.html">Contacto</a>
             </li>
             <li class="nav-item">
               <!-- LOGIN / LOGOUT DINÁMICO -->
@@ -75,27 +71,25 @@
             <li class="nav-item" id="navLogin">
               <a class="nav-link custom-nav-link" href="./login.html">Login</a>
             </li>
-
-            <li class="nav-item" id="navLogout" style="display: none">
-              <a class="nav-link custom-nav-link" href="#" id="btnLogout"
-                >Logout</a
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link"
+                href="./favoritos.html">Favoritos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" href="./perfil"
+                >Mi Perfil</a
               >
+            </li>
+            <li class="nav-item" id="navLogout" style="display: none">
+              <a class="nav-link custom-nav-link" href="#"
+                id="btnLogout">Logout</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
-    <header class="py-3 mb-4 shadow-sm top-bar">
-      <div class="container d-flex justify-content-between">
-        <h2 class="text-white">Hotel Oasis</h2>
-        <button class="btn btn-soft-yellow fw-bold">
-          <i class="bi bi-heart-fill me-1"></i> Favoritos
-        </button>
-      </div>
-    </header>
-
     <main class="container">
-      <h3 class="mb-4 fw-bold text-primary">Habitaciones Disponibles</h3>
+      <h3 class="mb-4 fw-bold text-primary">Habitaciones</h3>
 
       <div id="habitacionesGrid" class="row g-4">
         <!-- JS insertará las cards -->
@@ -109,8 +103,7 @@
       id="modalReserva"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header bg-primary text-white">
@@ -118,8 +111,7 @@
             <button
               type="button"
               class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
+              data-bs-dismiss="modal"></button>
           </div>
 
           <div class="modal-body">
@@ -172,11 +164,11 @@
               <h6 class="fw-bold mt-4">Fechas de la Reserva</h6>
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label class="form-label fw-bold">Check-In</label>
+                  <label class="form-label fw-bold">Ingreso</label>
                   <input type="date" id="checkIn" class="form-control" />
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-bold">Check-Out</label>
+                  <label class="form-label fw-bold">Salida</label>
                   <input type="date" id="checkOut" class="form-control" />
                 </div>
               </div>
@@ -191,11 +183,9 @@
                       type="checkbox"
                       data-precio="20"
                       data-id="D1"
-                      data-nombre="Desayuno buffet"
-                    />
-                    <label class="form-check-label"
-                      >Desayuno buffet (USD 20)</label
-                    >
+                      data-nombre="Desayuno buffet" />
+                    <label class="form-check-label">Desayuno buffet (USD
+                      20)</label>
                   </div>
                 </div>
 
@@ -206,11 +196,9 @@
                       type="checkbox"
                       data-precio="35"
                       data-id="T1"
-                      data-nombre="Transporte aeropuerto"
-                    />
-                    <label class="form-check-label"
-                      >Transporte aeropuerto (USD 35)</label
-                    >
+                      data-nombre="Transporte aeropuerto" />
+                    <label class="form-check-label">Transporte aeropuerto (USD
+                      35)</label>
                   </div>
                 </div>
               </div>
@@ -257,8 +245,7 @@
                     type="number"
                     id="abono"
                     class="form-control"
-                    placeholder="0"
-                  />
+                    placeholder="0" />
                 </div>
               </div>
 
@@ -294,8 +281,7 @@
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous"></script>
     <script type="module" src="../scripts/main.js"></script>
     <script type="module" src="../scripts/mostrarHabitaciones.js"></script>
     <script type="module" src="../scripts/reservar.js"></script>

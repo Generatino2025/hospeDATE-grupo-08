@@ -14,3 +14,22 @@
         margin-top: 10px;
         display: none;
     }
+
+    
+.favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.4rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.15);
+}
+
+.favorite-btn.favorito {
+  color: #C62828; /* rojito */
+}
