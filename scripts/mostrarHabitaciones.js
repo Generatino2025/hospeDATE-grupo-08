@@ -109,7 +109,7 @@ function delegator(e) {
         text: "Inicia sesión para poder hacer una reserva",
         confirmButtonText: "Ir a Login",
       }).then(() => {
-        window.location.href = "../pages/login.html";
+        window.location.href = "/pages/login.html";
       });
       return;
     }

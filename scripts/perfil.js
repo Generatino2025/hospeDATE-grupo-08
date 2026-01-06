@@ -2,7 +2,7 @@ const usuario = JSON.parse(sessionStorage.getItem("usuarioActual"));
 
 if (!usuario) {
   Swal.fire("Error", "No hay usuario activo", "error");
-  window.location.href = "./login.html";
+  window.location.href = "/pages/login.html";
 }
 
 // Cargar datos

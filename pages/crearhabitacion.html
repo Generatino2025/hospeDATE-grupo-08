@@ -24,7 +24,7 @@
     <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container">
         <a class="navbar-brand text-light fw-bold"
-          href="../index.html"><img
+          href="/pages/adminvisual.html"><img
             src="../assets/ImgsLogos/logoHospedate.png"
             alt="Logo de Hospedate" width="80"></a>
 
@@ -142,38 +142,7 @@
         <script type="module" src="../scripts/crearhabitacion.js"></script>
 
         <script type="module" src="../scripts/main.js"></script>
-        <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const usuarioActual = sessionStorage.getItem("usuarioActual");
-
-    const navLogin = document.getElementById("navLogin");
-    const navLogout = document.getElementById("navLogout");
-    const btnLogout = document.getElementById("btnLogout");
-
-    // Cambiar navbar dependiendo del login
-    if (usuarioActual) {
-        navLogin.style.display = "none";
-        navLogout.style.display = "block";
-    } else {
-        navLogin.style.display = "block";
-        navLogout.style.display = "none";
-    }
-
-    // Evento de logout
-    if (btnLogout) {
-        btnLogout.addEventListener("click", function () {
-            sessionStorage.removeItem("usuarioActual");
-
-            Swal.fire({
-                icon: "success",
-                title: "Sesión cerrada"
-            }).then(() => {
-                window.location.href = "./login.html";
-            });
-        });
-    }
-});
-</script>
+        <script type="module" src="../scripts/authNavbar.js"></script>
 
       </body>
     </html>

@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 icon: "success",
                 title: "Sesión cerrada"
             }).then(() => {
-                window.location.href = "../pages/login.html";
+                window.location.href = "/pages/login.html";
             });
         });
     }
