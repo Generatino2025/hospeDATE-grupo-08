@@ -2,6 +2,7 @@ import {
   inicializarLocalStorage,
   obtenerHabitaciones
 } from './crearhabitacion.js'
+import { hoyISO } from './utils/fechas.js'
 
 inicializarLocalStorage()
 let montoTotal
@@ -79,6 +80,15 @@ function crearReserva (habitacion) {
     )
     return
   }
+  if (checkIn < hoyISO()) {
+  Swal.fire('Error', 'No puedes reservar en fechas pasadas', 'error')
+  return
+}
+
+if (checkOut <= checkIn) {
+  Swal.fire('Error', 'La salida debe ser posterior al ingreso', 'error')
+  return
+}
   const fecha1 = new Date(checkIn)
   const fecha2 = new Date(checkOut)
   const noches = (fecha2 - fecha1) / (1000 * 60 * 60 * 24)
@@ -129,8 +139,10 @@ function crearReserva (habitacion) {
       moneda: 'USD'
     },
     serviciosAdicionales: [],
-    estado: 'confirmada',
-    notas: ''
+    estado: 'ACTIVA', // ACTIVA | FINALIZADA | CANCELADA
+    notas: '',
+      creadaEn: '2025-01-06'
+
   }
 
   reservas.push(nuevaReserva)

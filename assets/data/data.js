@@ -7,7 +7,7 @@ export const habitaciones = [
     precio: 150,
     imagen:
       'https://www.cataloniahotels.com/es/blog/wp-content/uploads/2016/05/habitaci%C3%B3n-doble-catalonia-620x412.jpg',
-    disponible: false
+
   },
   {
     id: 'H2',
@@ -17,7 +17,7 @@ export const habitaciones = [
     precio: 120,
     imagen:
       'https://i.pinimg.com/1200x/42/b6/8c/42b68cd2490f7a0467234a71b4d4d6fb.jpg',
-    disponible: true
+  
   },
   {
     id: 'H3',
@@ -27,7 +27,7 @@ export const habitaciones = [
     precio: 80,
     imagen:
       'https://www.anticcolonial.com/wp-content/uploads/2017/11/hotel-calpe-suitopia.jpg',
-    disponible: true
+ 
   },
   {
     id: 'H4',
@@ -36,7 +36,7 @@ export const habitaciones = [
     capacidad: 4,
     precio: 200,
     imagen: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf',
-    disponible: true
+  
   },
   {
     id: 'H5',
@@ -45,7 +45,7 @@ export const habitaciones = [
     capacidad: 2,
     precio: 110,
     imagen: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750',
-    disponible: true
+
   },
   {
     id: 'H6',
@@ -54,7 +54,7 @@ export const habitaciones = [
     capacidad: 3,
     precio: 130,
     imagen: 'https://images.unsplash.com/photo-1445991842772-097fea258e7b',
-    disponible: true
+  
   },
   {
     id: 'H7',
@@ -64,7 +64,7 @@ export const habitaciones = [
     precio: 70,
     imagen:
       'https://i.pinimg.com/736x/48/55/6e/48556e9ad40f1a2c6914d0821a5677c8.jpg',
-    disponible: true
+ 
   },
   {
     id: 'H8',
@@ -74,7 +74,7 @@ export const habitaciones = [
     precio: 180,
     imagen:
       'https://i.pinimg.com/1200x/d4/6f/88/d46f88696e03fb649d98c09e1d1e0e6e.jpg',
-    disponible: true
+  
   },
   {
     id: 'H9',
@@ -84,7 +84,7 @@ export const habitaciones = [
     precio: 115,
     imagen:
       'https://i.pinimg.com/1200x/c4/12/a0/c412a0688f05c0845340b441ca0aab6c.jpg',
-    disponible: true
+  
   },
   {
     id: 'H10',
@@ -94,7 +94,7 @@ export const habitaciones = [
     precio: 250,
     imagen:
       'https://i.pinimg.com/1200x/a7/6d/06/a76d067562b3ed9a97a8b07989138841.jpg',
-    disponible: true
+  
   },
   {
     id: 'H11',
@@ -104,7 +104,7 @@ export const habitaciones = [
     precio: 250,
     imagen:
       'https://i.pinimg.com/1200x/f6/ea/bb/f6eabb2d9cca3247b259f7c18c6ae404.jpg',
-    disponible: true
+   
   },
   {
     id: 'H12',
@@ -114,7 +114,7 @@ export const habitaciones = [
     precio: 250,
     imagen:
       'https://i.pinimg.com/1200x/28/ef/1a/28ef1a488c745c5607ffa7b667292489.jpg',
-    disponible: true
+  
   },
   {
     id: 'H13',
@@ -124,7 +124,7 @@ export const habitaciones = [
     precio: 250,
     imagen:
       'https://i.pinimg.com/736x/f6/fe/9d/f6fe9d30dd9b62a895fcbacfbb3c5d71.jpg',
-    disponible: true
+  
   }
 ]
 
