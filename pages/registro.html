@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="../styles/navFooter.css">
 </head>
 
-<body class="bg-light">
+ <body class="layout-root">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar">
         <div class="container">
@@ -81,11 +81,12 @@
                 </div>
             </div>
 
-            <!-- Columna derecha: Formulario -->
+          
            <!-- Columna derecha: Formulario -->
-<div class="col-md-5 d-flex justify-content-center bg-white pt-2 pb-4" style="margin-top: -2px;">
-    <div class="form-box">
+<div class="col-md-5 d-flex justify-content-center bg-white pt-2 pb-4"
+     style="margin-top: -2px; max-height: calc(100vh - 80px); overflow-y: auto;">
 
+    <form class="form-box" id="formRegistro" novalidate>
         <h3 class="text-center mb-4 fw-bold">Registro de Usuario</h3>
 
         <!-- Nombre y Apellido -->
@@ -114,7 +115,7 @@
             </div>
 
             <div class="col-md-6 mb-3">
-                <label class="form-label">Numero de documento *</label>
+                <label class="form-label">Num de documento *</label>
                 <input id="numeroDoc" type="text" class="form-control" placeholder="1234567890">
             </div>
         </div>
@@ -123,11 +124,13 @@
         <div class="mb-3">
             <label class="form-label">Correo electronico *</label>
             <input id="correo" type="email" class="form-control" placeholder="correo@ejemplo.com">
+            <small id="errorCorreo" class="text-danger"></small>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Confirmar correo *</label>
             <input id="correo2" type="email" class="form-control" placeholder="correo@ejemplo.com">
+            <small id="errorCorreo2" class="text-danger"></small>
         </div>
 
         <!-- Telefono -->
@@ -137,26 +140,30 @@
         </div>
 
         <!-- Contraseña -->
-        <div class="mb-3 position-relative">
-             <label class="form-label">Contraseña *</label>
-        <div class="input-group">
-             <input id="password" type="password" class="form-control" placeholder="••••••••">
+        <div class="mb-3">
+    <label class="form-label">Contraseña *</label>
+    <div class="input-group">
+        <input id="password" type="password" class="form-control" placeholder="••••••••">
         <span class="input-group-text" id="togglePass1" style="cursor: pointer;">
-             <i class="bi bi-eye-slash"></i>
-             </span>
-            </div>
-        </div>
+            <i class="bi bi-eye-slash"></i>
+        </span>
+    </div>
+    <small id="errorPassword" class="text-danger d-block mt-1"></small>
+    </div>
 
         <!-- Confirmar contraseña -->
-        <div class="mb-3 position-relative">
-            <label class="form-label">Confirmar contraseña *</label>
-            <div class="input-group">
-                 <input id="password2" type="password" class="form-control" placeholder="••••••••">
-                 <span class="input-group-text" id="togglePass2" style="cursor: pointer;">
-                 <i class="bi bi-eye-slash"></i>
-             </span>
-            </div>
-        </div>
+         <div class="mb-3">
+    <label class="form-label">Confirmar contraseña *</label>
+
+    <div class="input-group">
+        <input id="password2" type="password" class="form-control" placeholder="••••••••">
+        <span class="input-group-text" id="togglePass2" style="cursor: pointer;">
+            <i class="bi bi-eye-slash"></i>
+        </span>
+    </div>
+
+    <small id="errorPassword2" class="text-danger d-block mt-1"></small>
+</div>
 
         <!-- Terminos -->
         <div class="form-check mb-3">
@@ -166,13 +173,16 @@
             </label>
         </div>
 
-        <button id="btnRegistro" class="btn btn-primary w-100">Registrarme</button>
+        <button id="btnRegistro" type="submit" class="btn btn-primary w-100">
+            Registrarme
+        </button>
+
 
         <div class="text-center mt-2">
             ¿Ya tienes cuenta?
             <a href="./login.html" class="fw-semibold">Inicia sesion</a>
         </div>
-
+</form>
     </div>
 </div>
 
@@ -187,13 +197,14 @@
             <small>Todos los derechos reservados</small>
         </div>
     </footer>
-
+    <script type="module" src="../scripts/authNavbar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../scripts/registro.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"></script>
-    
+    <script src="../scripts/session.js"></script>
+
 </body>
 </html>

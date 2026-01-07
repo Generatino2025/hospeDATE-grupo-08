@@ -22,16 +22,17 @@
     <link rel="stylesheet" href="../styles/navFooter.css" />
   </head>
 
-  <body class="bg-light">
-    <!-- NAVBAR -->
+   <body class="layout-root">
+      <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container">
-        <a class="navbar-brand text-light fw-bold" href="../index.html"
-          ><img
+        <a class="navbar-brand text-light fw-bold" href="./indexUsuario.html">
+          <img
             src="../assets/ImgsLogos/logoHospedate.png"
             alt="Logo de Hospedate"
             width="80"
-        /></a>
+          />
+        </a>
 
         <button
           class="navbar-toggler bg-light"
@@ -48,31 +49,42 @@
         <div class="collapse navbar-collapse" id="menu">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="../index.html"
-                >Inicio</a
-              >
+              <a class="nav-link custom-nav-link" href="./indexUsuario.html">Inicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./reservasUser.html"
+              <a class="nav-link custom-nav-link" href="./reservarParaUsuario.html"
                 >Reservas</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./quienes-somos.html"
-                >¿Quiénes somos?</a
+              <a
+                class="nav-link custom-nav-link"
+                href="./historialReservas.html"
               >
+                Historial
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./contactanos.html"
-                >Contacto</a
+              <a
+                class="nav-link custom-nav-link"
+                href="./favoritos.html"
               >
+                Favoritos
+              </a>
             </li>
-            <li class="nav-item">
-              <!-- LOGIN / LOGOUT DINÁMICO -->
+              <li class="nav-item">
+              <a
+                class="nav-link custom-nav-link"
+                href="./perfil.html"
+              >
+                Perfil
+              </a>
             </li>
+            <!-- LOGIN / LOGOUT DINÁMICO -->
 
             <li class="nav-item" id="navLogin">
-              <a class="nav-link custom-nav-link" href="./login.html">Login</a>
+              <a class="nav-link custom-nav-link" href="./pages/login.html">Login</a>
+              
             </li>
 
             <li class="nav-item" id="navLogout" style="display: none">
@@ -84,17 +96,9 @@
         </div>
       </div>
     </nav>
-    <header class="py-3 mb-4 shadow-sm top-bar">
-      <div class="container d-flex justify-content-between">
-        <h2 class="text-white">Hotel Oasis</h2>
-        <button class="btn btn-soft-yellow fw-bold">
-          <i class="bi bi-heart-fill me-1"></i> Favoritos
-        </button>
-      </div>
-    </header>
 
     <main class="container">
-      <h3 class="mb-4 fw-bold text-primary">Habitaciones Disponibles</h3>
+      <h3 class="mb-4 fw-bold text-primary mt-4">Habitaciones Disponibles</h3>
 
       <div id="habitacionesGrid" class="row g-4">
         <!-- JS insertará las cards -->
@@ -173,10 +177,15 @@
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Ingreso</label>
                   <input type="date" id="checkIn" class="form-control" />
+                  
+<small id="error-checkIn" class="text-danger"></small>
+
                 </div>
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Salida</label>
                   <input type="date" id="checkOut" class="form-control" />
+                  <small id="error-checkOut" class="text-danger"></small>
+
                 </div>
               </div>
 
@@ -258,6 +267,8 @@
                     class="form-control"
                     placeholder="0"
                   />
+                  <small id="error-abono" class="text-danger"></small>
+
                 </div>
               </div>
 
@@ -268,9 +279,6 @@
           </div>
 
           <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
-              Cancelar
-            </button>
             <button class="btn btn-primary fw-bold" id="btnConfirmarReserva">
               Confirmar Reserva
             </button>
@@ -296,39 +304,7 @@
       crossorigin="anonymous"
     ></script>
     <script type="module" src="../scripts/main.js"></script>
-    <script type="module" src="../scripts/mostrarHabitaciones.js"></script>
-    <script type="module" src="../scripts/reservarUser.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const usuarioActual = sessionStorage.getItem("usuarioActual");
-
-        const navLogin = document.getElementById("navLogin");
-        const navLogout = document.getElementById("navLogout");
-        const btnLogout = document.getElementById("btnLogout");
-
-        // Cambiar navbar dependiendo del login
-        if (usuarioActual) {
-          navLogin.style.display = "none";
-          navLogout.style.display = "block";
-        } else {
-          navLogin.style.display = "block";
-          navLogout.style.display = "none";
-        }
-
-        // Evento de logout
-        if (btnLogout) {
-          btnLogout.addEventListener("click", function () {
-            sessionStorage.removeItem("usuarioActual");
-
-            Swal.fire({
-              icon: "success",
-              title: "Sesión cerrada",
-            }).then(() => {
-              window.location.href = "./login.html";
-            });
-          });
-        }
-      });
-    </script>
+    <script type="module" src="../scripts/reservarParaUsuario.js"></script>
+    <script type="module" src="../scripts/authNavbar.js"></script>    
   </body>
 </html>

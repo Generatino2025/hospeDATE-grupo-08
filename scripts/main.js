@@ -1,9 +1,7 @@
 import { pintarHabitacionesDisponibles } from "./mostrarHabitaciones.js";
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log("entre a main")
-
- const contenedor = document.getElementById("habitacionesGrid");
+   const contenedor = document.getElementById("habitacionesGrid");
     if (contenedor) {
         pintarHabitacionesDisponibles();
     } else {
@@ -83,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 icon: "success",
                 title: "Sesión cerrada"
             }).then(() => {
-                window.location.href = "../pages/login.html";
+                window.location.href = "/pages/login.html";
             });
         });
     }

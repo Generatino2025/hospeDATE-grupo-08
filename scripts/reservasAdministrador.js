@@ -34,9 +34,9 @@ function crearTarjeta(reserva, index) {
           </span>
         </p>
       </div>
-      <div class="card-footer">
-        <button class="btn btn-warning btn-sm" onclick="editarReserva(${index})">Editar</button>
-        <button class="btn btn-danger btn-sm" onclick="eliminarReserva(${index})">Eliminar</button>
+      <div class="card-footer acciones-footer">
+        <button class="btn  btn-edit btn-sm" onclick="editarReserva(${index})">Editar</button>
+        <button class="btn btn-delete  btn-sm" onclick="eliminarReserva(${index})">Eliminar</button>
       </div>
     </div>
   `;
@@ -120,41 +120,7 @@ window.eliminarReserva = function (index) {
   });
 };
 
-// ----------------------------------------------------
-// NAVBAR: CONTROL DE LOGIN / LOGOUT
-// ----------------------------------------------------
-document.addEventListener("DOMContentLoaded", function () {
-  const usuarioActual = sessionStorage.getItem("usuarioActual");
-
-  const navLogin = document.getElementById("navLogin");
-  const navLogout = document.getElementById("navLogout");
-  const btnLogout = document.getElementById("btnLogout");
-
-  // Mostrar u ocultar botones
-  if (usuarioActual) {
-    navLogin.style.display = "none";
-    navLogout.style.display = "block";
-
-    btnLogout.textContent = "Logout"; // Corrige el texto "Salir"
-  } else {
-    navLogin.style.display = "block";
-    navLogout.style.display = "none";
-  }
-
-  // Evento logout
-  if (btnLogout) {
-    btnLogout.addEventListener("click", function () {
-      sessionStorage.removeItem("usuarioActual");
-
-      Swal.fire({
-        icon: "success",
-        title: "Sesión cerrada"
-      }).then(() => {
-        window.location.href = "./login.html";
-      });
-    });
-  }
-});
+// Navbar auth is handled centrally in scripts/authNavbar.js
 
 // Inicial
 renderReservas();

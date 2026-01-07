@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+/* =====================================================
+   VARIABLES GLOBALES
+===================================================== */
 :root {
   /* === Paleta de  Colores === */
   --color-primary-dark: #03045E;
@@ -13,6 +16,9 @@
   --color-warning: #F6A104;
   --color-success: #1E7424;
 
+  /* === Tipografía global === */
+  --font-main: 'Poppins', sans-serif;
+
   /* Colores en RGB para transparencias */
   --primary-rgb: 16, 18, 215;
   --accent-rgb: 0, 119, 182;
@@ -24,10 +30,86 @@
   --success-rgb: 30, 116, 36;
 }
 
+/* =====================================================
+   TIPOGRAFÍA GLOBAL (PISA BOOTSTRAP)
+===================================================== */
+html,
+body {
+  font-family: var(--font-main);
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+.layout-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1; /* 👈 empuja el footer hacia abajo */
+  overflow-y: auto;
+  padding: 24px 16px;
+  background-color: #f8f9fa; /* opcional */
+}
+
+/* =====================================================
+   NAVBAR
+===================================================== */
 .custom-navbar {
   background-color: var(--color-primary-dark);
   padding: 0.8rem 0;
+  font-family: var(--font-main); /* 🔒 fuerza la misma fuente */
 }
+
+/* LOGO / BRAND */
+.custom-navbar .navbar-brand {
+  font-family: var(--font-main);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* =====================================================
+   BOTÓN LOGOUT (parece link)
+===================================================== */
+.btn-nav-logout {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font-family: var(--font-main);
+  font-size: inherit;
+}
+
+.btn-nav-logout:hover {
+  color: white;
+  background-color: var(--color-accent);
+  border-radius: 5px;
+}
+
+/* =====================================================
+   BOTÓN HAMBURGUESA
+===================================================== */
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+.custom-footer {
+  background-color: var(--color-primary-dark);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-family: var(--font-main);
+}
+
 
 .custom-nav-link {
   color: #ffffff !important;
@@ -37,7 +119,7 @@
 }
 
 .custom-nav-link:hover {
-  color: var(--primary-4) !important;
+  color: var(--color-accent) !important;
   opacity: 0.8;
 }
 
@@ -61,16 +143,35 @@
 }
 
 .custom-nav-link {
-  color: #ffffff !important;
-  font-weight: 500;
-  margin-left: 1rem;
-  transition: 0.3s ease-in-out;
-  text-decoration: none !important;   /* <-- QUITA LAS LÍNEAS */
+  position: relative;
 }
 
-.custom-nav-link:hover {
-  text-decoration: none !important;    /* <-- evita que aparezca al pasar el mouse */
-  opacity: 0.8;
+.custom-nav-link.active {
+  color: var(--color-accent) !important;
+  font-weight: 600;
+}
+
+/* Línea inferior animada */
+.custom-nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent),
+    var(--color-primary)
+  );
+  border-radius: 2px;
+}
+
+.custom-nav-link.active {
+  background: rgba(var(--accent-rgb), 0.15);
+  border-radius: 8px;
+  padding: 6px 12px;
+  color: white !important;
 }
 
 
@@ -87,4 +188,12 @@
     color: white;
     background-color: #0077B6;
     border-radius: 5px;
+}
+
+.custom-footer {
+  background-color: var(--color-primary-dark);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-family: var(--font-main);
 }

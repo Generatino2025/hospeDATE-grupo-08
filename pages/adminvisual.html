@@ -15,18 +15,22 @@
     />
   </head>
 
-  <body>
-    <!-- NAVBAR ADMIN -->
-
+ <body class="layout-root">
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container">
-        <a class="navbar-brand text-light fw-bold" href="../index.html"
-          ><img
+        <a
+          class="navbar-brand text-light fw-bold"
+          href="/pages/adminvisual.html"
+        >
+          <img
             src="../assets/ImgsLogos/logoHospedate.png"
             alt="Logo de Hospedate"
             width="80"
-        /></a>
-        <h2 style="color: white">Administrador</h2>
+          />
+        </a>
+
+         <h2 id="nombreUsuario" style="color: white"></h2>
         <button
           class="navbar-toggler bg-light"
           type="button"
@@ -48,8 +52,8 @@
             </li>
             <li class="nav-item">
               <a class="nav-link custom-nav-link" href="./crearhabitacion.html">
-                Crear Habitación
-              </a>
+                Crear Habitación</a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link custom-nav-link" href="./rommsAdminAll.html">
@@ -59,12 +63,12 @@
             <li class="nav-item">
               <a
                 class="nav-link custom-nav-link"
-                href="./HabitacionesAdmin.html"
+                href="./reservaAdministrador.html"
                 >Reservas</a
               >
             </li>
-            <!-- LOGIN / LOGOUT DINÁMICO -->
 
+            <!-- LOGIN / LOGOUT DINÁMICO -->
             <li class="nav-item" id="navLogin">
               <a class="nav-link custom-nav-link" href="./login.html">Login</a>
             </li>
@@ -105,60 +109,76 @@
       </div>
     </div>
 
-            <!-- CONTENEDOR DEL REPORTE -->
-            <section class="reporte-container">
+    <!-- CONTENEDOR DEL REPORTE -->
+    <section class="reporte-container">
+      <h2 class="reporte-titulo">Reporte General del Sistema</h2>
 
-                <h2 class="reporte-titulo">Reporte General del Sistema</h2>
+      <div class="reporte-card">
+        <h3 class="reporte-subtitulo">Resumen de la Plataforma</h3>
 
-                <div class="reporte-card">
+        <p class="reporte-descripcion">
+          Este informe presenta un resumen general del estado del sistema,
+          incluyendo gráficos visuales.
+        </p>
 
-                    <h3 class="reporte-subtitulo">Resumen de la Plataforma</h3>
+        <ul class="reporte-lista">
+          <li>
+            Total de habitaciones registradas:
+            <strong id="repHabitaciones">0</strong>
+          </li>
+          <li>
+            Cantidad de reservas activas: <strong id="repReservas">0</strong>
+          </li>
+          <li>
+            Número de usuarios registrados: <strong id="repUsuarios">0</strong>
+          </li>
+          <li>
+            Habitaciones disponibles: <strong id="repDisponibles">0</strong>
+          </li>
+          <li>Habitaciones ocupadas: <strong id="repOcupadas">0</strong></li>
+          <li>
+            Habitaciones disponibles: <strong id="repDisponibles">0</strong>
+          </li>
+          <li>Habitaciones ocupadas: <strong id="repOcupadas">0</strong></li>
+        </ul>
 
-                    <p class="reporte-descripcion">
-                        Este informe presenta un resumen general del estado del sistema, incluyendo gráficos visuales.
-                    </p>
+        <!-- GRÁFICO -->
+        <div class="grafico-contenedor">
+          <canvas id="graficoResumen"></canvas>
+        </div>
 
-                    <ul class="reporte-lista">
-                        <li>Total de habitaciones registradas: <strong id="repHabitaciones">0</strong></li>
-                        <li>Cantidad de reservas activas: <strong id="repReservas">0</strong></li>
-                        <li>Número de usuarios registrados: <strong id="repUsuarios">0</strong></li>
-                        <li>Habitaciones disponibles: <strong id="repDisponibles">0</strong></li>
-                        <li>Habitaciones ocupadas: <strong id="repOcupadas">0</strong></li>
-                        <li>Habitaciones disponibles: <strong id="repDisponibles">0</strong></li>
-                        <li>Habitaciones ocupadas: <strong id="repOcupadas">0</strong></li>
-                    </ul>
+        <p class="nota-final">
+          Los datos se actualizan automáticamente desde la plataforma.
+        </p>
 
+        <div class="reporte-botones">
+          <button id="btnPDF" class="btn-descargar azul">Descargar PDF</button>
+          <button id="btnCSV" class="btn-descargar verde">Descargar CSV</button>
+        </div>
 
-                    <!-- GRÁFICO -->
-                    <div class="grafico-contenedor">
-                        <canvas id="graficoResumen"></canvas>
-                    </div>
+        <canvas id="graficoHabitaciones" class="grafico"></canvas>
+      </div>
+    </section>
 
-                    <p class="nota-final">
-                        Los datos se actualizan automáticamente desde la plataforma.
-                    </p>
-
-                    <div class="reporte-botones">
-                        <button id="btnPDF" class="btn-descargar azul">Descargar PDF</button>
-                        <button id="btnCSV" class="btn-descargar verde">Descargar CSV</button>
-                    </div>
-
-                    <canvas id="graficoHabitaciones" class="grafico"></canvas>
-
-
-                </div>
-
-            </section>
-
-
+             <!-- FOOTER -->
+        <footer class="custom-footer text-center text-light py-4">
+            <div class="container">
+                <p class="mb-1">© 2025 —HospeDate</p>
+                <h2 style="font-style: italic; font-size: 1.1rem;">
+                    Transforma tu recepción, simplifica tu operación
+                </h2>
+                <small>Todos los derechos reservados</small>
+            </div>
+        </footer>
             <!-- Librería para PDF -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
         <!-- Librería para gráficas -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+        <script type="module" src="../scripts/authNavbar.js"></script>
         <script src="../scripts/adminvisual.js"></script>
         <script type="module" src="../scripts/main.js"></script>
+        <script src="../scripts/session.js"></script>
 
         </body>
     </html>

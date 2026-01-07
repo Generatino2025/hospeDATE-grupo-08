@@ -3,6 +3,11 @@ import {
   obtenerHabitaciones
 } from './crearhabitacion.js'
 import { hoyISO } from './utils/fechas.js'
+import {
+  limpiarError,
+  limpiarTodosErrores,
+  mostrarError
+} from './utils/validacionesErrores.js'
 
 inicializarLocalStorage()
 let montoTotal
@@ -20,11 +25,22 @@ window.reservar = reservar
 
 //traigo las habitaciones a pintar
 const habitaciones = obtenerHabitaciones()
+document.getElementById('checkIn').addEventListener('change', () => {
+  const checkIn = document.getElementById('checkIn').value
+  const checkOut = document.getElementById('checkOut').value
+  validarFechas(checkIn, checkOut)
+})
+
+document.getElementById('checkOut').addEventListener('change', () => {
+  const checkIn = document.getElementById('checkIn').value
+  const checkOut = document.getElementById('checkOut').value
+  validarFechas(checkIn, checkOut)
+})
 
 //-------------Funcion para reservar----------------------//
 function reservar (idHabitacion) {
+  limpiarTodosErrores()
   const habitacion = habitaciones.find(h => h.id === idHabitacion)
-  console.log('ingrese')
   // Pintar habitación
   document.getElementById('habNumero').value = habitacion.numero
   document.getElementById('habTipo').value = habitacion.tipo
@@ -58,45 +74,28 @@ function reservar (idHabitacion) {
 
   // Asignar el evento confirmar (se reemplaza cada vez)
   const confirmarBtn = document.getElementById('btnConfirmarReserva')
-  confirmarBtn.disabled = true
-  confirmarBtn.title =
-    'Faltan datos por llenar y debes ingresar un abono mínimo del 30% del valor total para continuar.'
-
   confirmarBtn.onclick = () => crearReserva(habitacion)
 }
 
 //-------------Funcion para  CREAR la reservar----------------------//
 function crearReserva (habitacion) {
-  const checkIn = document.getElementById('checkIn').value
+ const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
-  const metodo = document.getElementById('metodoPago').value
   const abono = Number(document.getElementById('abono').value)
 
-  if (!checkIn || !checkOut) {
-    Swal.fire(
-      'Error',
-      'Debe seleccionar las fechas de Check-In y Check-Out.',
-      'error'
-    )
-    return
-  }
-  if (checkIn < hoyISO()) {
-  Swal.fire('Error', 'No puedes reservar en fechas pasadas', 'error')
-  return
-}
+  if (!validarFormularioReserva(habitacion)) return
 
-if (checkOut <= checkIn) {
-  Swal.fire('Error', 'La salida debe ser posterior al ingreso', 'error')
-  return
-}
+  const metodo = document.getElementById('metodoPago').value
+
   const fecha1 = new Date(checkIn)
   const fecha2 = new Date(checkOut)
-  const noches = (fecha2 - fecha1) / (1000 * 60 * 60 * 24)
+  const noches = (fecha2 - fecha1) / 86400000
+
 
   montoTotal =
     noches * montoTotal + noches * servicios[0]?.precio + servicios[1]?.precio
   const saldoPendiente = montoTotal - abono
-
+console.log(montoTotal, saldoPendiente)
   if (noches <= 0) {
     Swal.fire(
       'Error',
@@ -119,6 +118,7 @@ if (checkOut <= checkIn) {
   const nuevaReserva = {
     idReserva: `R-${String(reservas.length + 1).padStart(4, '0')}`,
     huesped: { ...user },
+
     habitacion: {
       idHabitacion: habitacion.id,
       numero: habitacion.numero,
@@ -126,32 +126,31 @@ if (checkOut <= checkIn) {
       capacidad: habitacion.capacidad,
       precioPorNoche: habitacion.precio
     },
+
     fechas: {
       checkIn,
       checkOut,
       noches
     },
+
     pago: {
       metodo,
-      montoTotal,
+      montoTotal: montoTotal,
       montoPagado: abono,
       saldoPendiente,
       moneda: 'USD'
     },
-    serviciosAdicionales: [],
+
+    serviciosAdicionales: [...servicios],
     estado: 'ACTIVA', // ACTIVA | FINALIZADA | CANCELADA
     notas: '',
-      creadaEn: '2025-01-06'
-
+    creadaEn: new Date().toISOString()
   }
 
   reservas.push(nuevaReserva)
 
   // Guardar en localStorage
   localStorage.setItem('reservas', JSON.stringify(reservas))
-
-  console.log('Reserva creada:', nuevaReserva)
-  console.log('Reservas actuales:', reservas)
 
   Swal.fire({
     title: 'Reserva Confirmada',
@@ -176,6 +175,7 @@ if (checkOut <= checkIn) {
 
 //-------------Funcion para Actualizar los MOntos a PAGAR---------------------//
 function actualizarCalculos (habitacion) {
+  servicios=[];
   const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
   const abono = Number(document.getElementById('abono').value)
@@ -210,36 +210,84 @@ function actualizarCalculos (habitacion) {
 
   // Saldo
   const saldo = montoTotal - abono
-  console.log('Lo adicional es: ', servicios, montoTotal)
   // Pintar
   document.getElementById('cantidadNoches').value = noches
   document.getElementById('montoTotal').value = `USD ${montoTotal}`
   document.getElementById('saldoPendiente').value = `USD ${saldo}`
 
-  validarAbonoMinimo(montoTotal)
+  validarAbono(abono)
   return { noches, montoTotal, saldo, servicios }
 }
 
-function validarAbonoMinimo (montoTotal) {
-  const abono = Number(document.getElementById('abono').value)
-  const confirmarBtn = document.getElementById('btnConfirmarReserva')
+function validarAbono (abono) {
+  limpiarError('abono')
 
-  if (!montoTotal || abono <= 0) {
-    confirmarBtn.disabled = true
-    confirmarBtn.title =
-      'Faltan datos por llenar y debes ingresar un abono mínimo del 30% del valor total para continuar.'
-    return
+  if (abono <= 0) {
+    mostrarError('abono', 'El abono debe ser mayor a 0.')
+    return false
+  }
+
+  if (abono > montoTotal) {
+    mostrarError('abono', 'El abono no puede ser mayor al monto total.')
+    return false
   }
 
   const minimo = montoTotal * 0.3
 
-  if (abono >= minimo) {
-    confirmarBtn.disabled = false
-    confirmarBtn.title = 'Confirmar reserva'
-  } else {
-    confirmarBtn.disabled = true
-    confirmarBtn.title = `El abono debe ser mínimo del 30% (USD ${minimo.toFixed(
-      2
-    )}) para continuar.`
+  if (abono < minimo) {
+    mostrarError(
+      'abono',
+      `Debe abonar mínimo el 30% (USD ${minimo.toFixed(2)}) para reservar.`
+    )
+    return false
   }
+
+  return true
+}
+
+function validarFechas (checkIn, checkOut) {
+  let valido = true
+  const hoy = new Date().toISOString().split('T')[0]
+
+  limpiarError('checkIn')
+  limpiarError('checkOut')
+
+  if (!checkIn) {
+    mostrarError('checkIn', 'Debe seleccionar la fecha de ingreso.')
+    valido = false
+  } else if (checkIn < hoy) {
+    mostrarError('checkIn', 'No se permiten reservas en fechas pasadas.')
+    valido = false
+  }
+
+  if (!checkOut) {
+    mostrarError('checkOut', 'Debe seleccionar la fecha de salida.')
+    valido = false
+  } else if (checkOut <= checkIn) {
+    mostrarError(
+      'checkOut',
+      'La fecha de salida debe ser mayor a la fecha de ingreso.'
+    )
+    valido = false
+  }
+
+  return valido
+}
+
+function validarFormularioReserva (habitacion) {
+  const checkIn = document.getElementById('checkIn').value
+  const checkOut = document.getElementById('checkOut').value
+  const abono = Number(document.getElementById('abono').value)
+
+  if (!validarFechas(checkIn, checkOut)) return false
+
+  const noches = (new Date(checkOut) - new Date(checkIn)) / 86400000
+
+  if (noches <= 0) return false
+
+ montoTotal= noches * habitacion.precio
+
+  if (!validarAbono(abono)) return false
+
+  return true
 }

@@ -20,11 +20,57 @@ if (!usuarios) {
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
 }
 
+
+// -------------------------------------------
+// VALIDACIONES EN TIEMPO REAL
+// -------------------------------------------
+
+const correoInput = document.getElementById("correo");
+const correo2Input = document.getElementById("correo2");
+const passwordInput = document.getElementById("password");
+const password2Input = document.getElementById("password2");
+
+const errorCorreo2 = document.getElementById("errorCorreo2");
+const errorPassword = document.getElementById("errorPassword");
+const errorPassword2 = document.getElementById("errorPassword2");
+
+// Correo vs confirmar correo
+correo2Input.addEventListener("input", () => {
+    if (correo2Input.value !== correoInput.value) {
+        errorCorreo2.textContent = "El correo no coincide";
+    } else {
+        errorCorreo2.textContent = "";
+    }
+});
+
+// Validar contraseña segura
+passwordInput.addEventListener("input", () => {
+    const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    if (!regex.test(passwordInput.value)) {
+        errorPassword.textContent =
+            "Mínimo 8 caracteres, una mayúscula y un número.";
+    } else {
+        errorPassword.textContent = "";
+    }
+});
+
+// Confirmar contraseña
+password2Input.addEventListener("input", () => {
+    if (password2Input.value !== passwordInput.value) {
+        errorPassword2.textContent = "La contraseña no coincide";
+    } else {
+        errorPassword2.textContent = "";
+    }
+});
+
 // -------------------------------------------
 // EVENTO BOTÓN REGISTRO
 // -------------------------------------------
 
-document.getElementById("btnRegistro").addEventListener("click", function () {
+document.getElementById("formRegistro").addEventListener("submit", function (e) {
+    e.preventDefault();
+
 
     const nombre = document.getElementById("nombre").value.trim();
     const apellido = document.getElementById("apellido").value.trim();
@@ -102,7 +148,7 @@ document.getElementById("btnRegistro").addEventListener("click", function () {
         title: "Registro exitoso",
         text: "Tu cuenta ha sido creada.",
     }).then(() => {
-        window.location.href = "./login.html";
+        window.location.href = "/pages/login.html";
     });
 });
 

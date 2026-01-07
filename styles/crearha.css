@@ -1,7 +1,11 @@
     body {
         background: #f2f4f8;
+     
     }
 
+    .form-hab{
+      margin:20px !important;
+    }
     .card {
         border-radius: 15px;
     }
@@ -14,3 +18,28 @@
         margin-top: 10px;
         display: none;
     }
+
+    
+.btn-primary {
+    background: linear-gradient(
+        135deg,
+        var(--color-primary-dark),
+        var(--color-primary)
+    );
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(
+        135deg,
+        var(--color-primary),
+        var(--color-accent)
+    );
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(16, 18, 215, 0.35);
+}
