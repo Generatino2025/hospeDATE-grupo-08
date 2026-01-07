@@ -116,3 +116,111 @@
 .btn:focus {
   box-shadow: none !important;
 }
+
+/* ===========================
+   RESPONSIVE RESERVAS
+=========================== */
+
+/* -------- TABLET (≤ 992px) -------- */
+@media (max-width: 992px) {
+
+  .container-reservas {
+    padding: 24px;
+    border-radius: 16px;
+  }
+
+  .buscador-reservas {
+    max-width: 100%;
+    font-size: 15px;
+  }
+
+  .card-reserva {
+    padding: 18px;
+  }
+
+  .card-reserva-body {
+    padding: 12px;
+  }
+}
+
+
+/* -------- MOBILE (≤ 768px) -------- */
+@media (max-width: 768px) {
+
+  .container-reservas {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  /* Grid más compacto */
+  #dashboardReservas > div {
+    flex-direction: column;
+  }
+
+  .buscador-reservas {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .card-reserva {
+    padding: 16px;
+  }
+
+  .card-reserva:hover {
+    transform: none;
+  }
+
+  /* Botones full width */
+  .acciones-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    margin: 0;
+    padding: 12px;
+    border-radius: 12px;
+  }
+}
+
+
+/* -------- SMALL MOBILE (≤ 480px) -------- */
+@media (max-width: 480px) {
+
+  .container-reservas {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .card-reserva {
+    padding: 14px;
+  }
+
+  .card-reserva-body {
+    padding: 10px;
+  }
+
+  .buscador-reservas {
+    font-size: 13px;
+  }
+
+  .card-footer {
+    padding: 10px 0;
+  }
+}
+
+
+/* -------- TOUCH DEVICES -------- */
+@media (hover: none) {
+
+  .card-reserva:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-edit:hover,
+  .btn-delete:hover {
+    box-shadow: none;
+  }
+}

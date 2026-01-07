@@ -36,3 +36,71 @@
     font-weight: bold;
     color: #0d6efd;
 }
+
+
+/* =========================
+   RESPONSIVE ROOM CARD
+========================= */
+
+/* TABLET (≤ 992px) */
+@media (max-width: 992px) {
+
+  .room-image {
+    height: 170px;
+  }
+
+  .price-tag {
+    font-size: 16px;
+  }
+
+  .overlay-disabled {
+    font-size: 18px;
+  }
+}
+
+/* MOBILE (≤ 768px) */
+@media (max-width: 768px) {
+
+  .room-card {
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .room-card:hover {
+    transform: none; /* evita saltos en touch */
+  }
+
+  .room-image {
+    height: 140px;
+  }
+
+  .price-tag {
+    font-size: 15px;
+  }
+
+  .overlay-disabled {
+    font-size: 16px;
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+/* SMALL MOBILE (≤ 480px) */
+@media (max-width: 480px) {
+
+  .room-card {
+    border-radius: 10px;
+  }
+
+  .room-image {
+    height: 120px;
+  }
+
+  .price-tag {
+    font-size: 14px;
+  }
+
+  .overlay-disabled {
+    font-size: 14px;
+  }
+}

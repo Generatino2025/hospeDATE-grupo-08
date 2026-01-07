@@ -155,3 +155,92 @@ html, body {
 .btn:focus {
   box-shadow: none !important;
 }
+
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+/* TABLET (≤ 992px) */
+@media (max-width: 992px) {
+  .historial-container {
+    padding: 1.5rem;
+  }
+
+  .cards-container {
+    max-width: 100%;
+  }
+
+  .titulo {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .tabs-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+/* MOBILE (≤ 768px) */
+@media (max-width: 768px) {
+  .historial-container {
+    padding: 1rem;
+  }
+
+  .titulo {
+    font-size: 20px;
+    margin-bottom: 1rem;
+  }
+
+  /* Tabs full width */
+  .tabs-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tabs-container button {
+    width: 100%;
+  }
+
+  /* Cards */
+  .reserva-card {
+    border-left: none;
+    border-top: 6px solid;
+  }
+
+  /* Imagen arriba */
+  .reserva-img {
+    height: 180px;
+  }
+
+  /* Botones acciones */
+  .acciones-footer {
+    flex-direction: column;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    width: 100%;
+    margin: 6px 0;
+    padding: 16px;
+    font-size: 15px;
+  }
+}
+
+/* SMALL MOBILE (≤ 480px) */
+@media (max-width: 480px) {
+  .titulo {
+    font-size: 18px;
+  }
+
+  .reserva-img {
+    height: 150px;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    padding: 18px;
+    font-size: 14px;
+  }
+}
