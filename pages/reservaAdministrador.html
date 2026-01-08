@@ -22,11 +22,14 @@
     <link rel="stylesheet" href="/styles/HabitacionesAdmin.css" />
   </head>
 
-   <body class="layout-root">
+  <body class="layout-root">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container">
-        <a class="navbar-brand text-light fw-bold" href="/pages/adminvisual.html">
+        <a
+          class="navbar-brand text-light fw-bold"
+          href="/pages/adminvisual.html"
+        >
           <img
             src="../assets/ImgsLogos/logoHospedate.png"
             alt="Logo de Hospedate"
@@ -91,13 +94,24 @@
         </h2>
 
         <!-- BUSCADOR -->
-        <div class="d-flex justify-content-center mb-4">
+        <div class="d-flex justify-content-center mb-3">
           <input
             type="text"
             id="buscar"
             class="form-control buscador-reservas"
             placeholder="Buscar por nombre, ID o habitación"
           />
+        </div>
+
+        <!-- BUSCADOR POR FECHAS -->
+        <div class="row g-2 justify-content-center mb-4">
+          <div class="col-md-3 col-sm-6">
+            <input type="date" id="fechaInicio" class="form-control" />
+          </div>
+
+          <div class="col-md-3 col-sm-6">
+            <input type="date" id="fechaFin" class="form-control" />
+          </div>
         </div>
 
         <!-- TARJETAS -->
