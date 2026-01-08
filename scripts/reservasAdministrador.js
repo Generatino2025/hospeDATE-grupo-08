@@ -12,6 +12,8 @@ let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
 
 const dashboard = document.getElementById("dashboardReservas");
 const inputBuscar = document.getElementById("buscar");
+const inputFechaInicio = document.getElementById("fechaInicio");
+const inputFechaFin = document.getElementById("fechaFin");
 
 // ----------------------------------------------------
 // FUNCIÓN PARA CREAR TARJETA
@@ -35,8 +37,8 @@ function crearTarjeta(reserva, index) {
         </p>
       </div>
       <div class="card-footer acciones-footer">
-        <button class="btn  btn-edit btn-sm" onclick="editarReserva(${index})">Editar</button>
-        <button class="btn btn-delete  btn-sm" onclick="eliminarReserva(${index})">Eliminar</button>
+        <button class="btn btn-edit btn-sm" onclick="editarReserva(${index})">Editar</button>
+        <button class="btn btn-delete btn-sm" onclick="eliminarReserva(${index})">Eliminar</button>
       </div>
     </div>
   `;
@@ -45,16 +47,36 @@ function crearTarjeta(reserva, index) {
 }
 
 // ----------------------------------------------------
-// RENDERIZAR RESERVAS
+// RENDERIZAR RESERVAS (TEXTO + FECHAS)
 // ----------------------------------------------------
-function renderReservas(filtro = "") {
+function renderReservas(filtroTexto = "") {
   dashboard.innerHTML = "";
 
-  const lista = reservas.filter(r =>
-    r.idReserva.toLowerCase().includes(filtro.toLowerCase()) ||
-    r.huesped.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-    r.habitacion.numero.toString().includes(filtro)
-  );
+  const fechaInicio = inputFechaInicio?.value;
+  const fechaFin = inputFechaFin?.value;
+
+  const lista = reservas.filter(r => {
+    // Filtro por texto
+    const cumpleTexto =
+      r.idReserva.toLowerCase().includes(filtroTexto.toLowerCase()) ||
+      r.huesped.nombre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
+      r.habitacion.numero.toString().includes(filtroTexto);
+
+    // Fechas de la reserva
+    const checkIn = new Date(r.fechas.checkIn);
+    const checkOut = new Date(r.fechas.checkOut);
+
+    // Filtro por fechas
+    const cumpleFechaInicio = fechaInicio
+      ? checkIn >= new Date(fechaInicio)
+      : true;
+
+    const cumpleFechaFin = fechaFin
+      ? checkOut <= new Date(fechaFin)
+      : true;
+
+    return cumpleTexto && cumpleFechaInicio && cumpleFechaFin;
+  });
 
   if (lista.length === 0) {
     dashboard.innerHTML = `<p class="text-center">No se encontraron reservas.</p>`;
@@ -65,9 +87,17 @@ function renderReservas(filtro = "") {
 }
 
 // ----------------------------------------------------
-// BUSCADOR
+// EVENTOS DE BÚSQUEDA
 // ----------------------------------------------------
 inputBuscar.addEventListener("input", () => {
+  renderReservas(inputBuscar.value);
+});
+
+inputFechaInicio?.addEventListener("change", () => {
+  renderReservas(inputBuscar.value);
+});
+
+inputFechaFin?.addEventListener("change", () => {
   renderReservas(inputBuscar.value);
 });
 
@@ -120,7 +150,7 @@ window.eliminarReserva = function (index) {
   });
 };
 
-// Navbar auth is handled centrally in scripts/authNavbar.js
-
-// Inicial
+// ----------------------------------------------------
+// INICIAL
+// ----------------------------------------------------
 renderReservas();
