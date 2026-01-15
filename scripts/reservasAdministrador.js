@@ -9,7 +9,7 @@ if (!localStorage.getItem("reservas")) {
 }
 
 let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
-
+console.log(reservas)
 const dashboard = document.getElementById("dashboardReservas");
 const inputBuscar = document.getElementById("buscar");
 const inputFechaInicio = document.getElementById("fechaInicio");
