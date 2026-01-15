@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="./styles/index.css" />
   </head>
 
-   <body class="layout-root">
+  <body class="layout-root">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container">
@@ -75,8 +75,9 @@
             <!-- LOGIN / LOGOUT DINÁMICO -->
 
             <li class="nav-item" id="navLogin">
-              <a class="nav-link custom-nav-link" href="./pages/login.html">Login</a>
-              
+              <a class="nav-link custom-nav-link" href="./pages/login.html"
+                >Login</a
+              >
             </li>
 
             <li class="nav-item" id="navLogout" style="display: none">
@@ -126,7 +127,7 @@
 
     <!-- BANNER DE HOTELES -->
     <section class="banner-hoteles container">
-      <h2 class="titulodeslider">OFERTAS DEL MES</h2>
+      <h2 class="titulodeslider">OFERTAS DE HABITACIONES</h2>
 
       <div class="slider">
         <button class="btn-slider" id="btnPrev">
@@ -136,47 +137,47 @@
         <div class="slide-track" id="slideTrack">
           <div class="slide">
             <img
-              src="./assets/ImgsBanner/hotel1.webp"
-              alt="hotel con piscina y jardín"
+              src="https://www.cataloniahotels.com/es/blog/wp-content/uploads/2016/05/habitaci%C3%B3n-doble-catalonia-620x412.jpg"
+              alt="suite moderna"
             />
-            <h3>Hotel Prado Bogotá</h3>
-            <p>Habitaciones desde $120.000 COP</p>
+            <h3>Suite Moderna</h3>
+            <p>Desde $150.000 COP</p>
           </div>
 
           <div class="slide">
             <img
-              src="./assets/ImgsBanner/teque.webp"
-              alt="hotel iluminado de noche"
-            />
-            <h3>Hotel Tequendama</h3>
-            <p>Habitaciones desde $180.000 COP</p>
-          </div>
-
-          <div class="slide">
-            <img
-              src="./assets/ImgsBanner/hotel2.webp"
-              alt="hotel moderno de cristal"
-            />
-            <h3>Hotel Hilton Bogotá</h3>
-            <p>Habitaciones desde $350.000 COP</p>
-          </div>
-
-          <div class="slide">
-            <img
-              src="./assets/ImgsBanner/premium.webp"
-              alt="suite premium moderna"
-            />
-            <h3>Suite Premium</h3>
-            <p>Disponible — Desde $250.000 COP</p>
-          </div>
-
-          <div class="slide">
-            <img
-              src="./assets/ImgsBanner/doble.webp"
+              src="https://i.pinimg.com/1200x/42/b6/8c/42b68cd2490f7a0467234a71b4d4d6fb.jpg"
               alt="habitación doble cómoda"
             />
             <h3>Habitación Doble</h3>
-            <p>Disponible — Desde $150.000 COP</p>
+            <p>Desde $120.000 COP</p>
+          </div>
+
+          <div class="slide">
+            <img
+              src="https://i.pinimg.com/1200x/a7/6d/06/a76d067562b3ed9a97a8b07989138841.jpg"
+              alt="suite premium moderna"
+            />
+            <h3>Suite Premium</h3>
+            <p>Desde $150.000 COP</p>
+          </div>
+
+          <div class="slide">
+            <img
+              src="https://i.pinimg.com/1200x/a7/6d/06/a76d067562b3ed9a97a8b07989138841.jpg"
+              alt="suite premium moderna"
+            />
+            <h3>Suite Premium</h3>
+            <p>Desde $250.000 COP</p>
+          </div>
+
+          <div class="slide">
+            <img
+              src="https://i.pinimg.com/1200x/42/b6/8c/42b68cd2490f7a0467234a71b4d4d6fb.jpg"
+              alt="habitación doble cómoda"
+            />
+            <h3>Habitación Doble</h3>
+            <p>Desde $150.000 COP</p>
           </div>
         </div>
 
@@ -196,10 +197,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="./scripts/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="./scripts/authNavbar.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const usuarioActual = sessionStorage.getItem("usuarioActual");
@@ -233,6 +230,9 @@
       });
     </script>
     <script src="./scripts/session.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="./scripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./scripts/authNavbar.js"></script>
   </body>
 </html>
