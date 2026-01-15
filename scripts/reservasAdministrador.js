@@ -9,7 +9,7 @@ if (!localStorage.getItem("reservas")) {
 }
 
 let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
-
+console.log(reservas)
 const dashboard = document.getElementById("dashboardReservas");
 const inputBuscar = document.getElementById("buscar");
 const inputFechaInicio = document.getElementById("fechaInicio");
@@ -56,17 +56,14 @@ function renderReservas(filtroTexto = "") {
   const fechaFin = inputFechaFin?.value;
 
   const lista = reservas.filter(r => {
-    // Filtro por texto
     const cumpleTexto =
       r.idReserva.toLowerCase().includes(filtroTexto.toLowerCase()) ||
       r.huesped.nombre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
       r.habitacion.numero.toString().includes(filtroTexto);
 
-    // Fechas de la reserva
     const checkIn = new Date(r.fechas.checkIn);
     const checkOut = new Date(r.fechas.checkOut);
 
-    // Filtro por fechas
     const cumpleFechaInicio = fechaInicio
       ? checkIn >= new Date(fechaInicio)
       : true;
@@ -83,8 +80,14 @@ function renderReservas(filtroTexto = "") {
     return;
   }
 
-  lista.forEach((reserva, index) => crearTarjeta(reserva, index));
+  lista.forEach(reserva => {
+    const indexReal = reservas.findIndex(
+      r => r.idReserva === reserva.idReserva
+    );
+    crearTarjeta(reserva, indexReal);
+  });
 }
+
 
 // ----------------------------------------------------
 // EVENTOS DE BÚSQUEDA
@@ -104,7 +107,10 @@ inputFechaFin?.addEventListener("change", () => {
 // ----------------------------------------------------
 // EDITAR ESTADO
 // ----------------------------------------------------
-window.editarReserva = function (index) {
+window.editarReserva = function (idReserva) {
+  const index = reservas.findIndex(r => r.idReserva === idReserva);
+  if (index === -1) return;
+
   const reserva = reservas[index];
 
   Swal.fire({
@@ -122,7 +128,6 @@ window.editarReserva = function (index) {
       reservas[index].estado = result.value;
       localStorage.setItem("reservas", JSON.stringify(reservas));
       renderReservas(inputBuscar.value);
-      Swal.fire("Actualizado", "El estado fue modificado.", "success");
     }
   });
 };
@@ -130,22 +135,20 @@ window.editarReserva = function (index) {
 // ----------------------------------------------------
 // ELIMINAR RESERVA
 // ----------------------------------------------------
-window.eliminarReserva = function (index) {
-  const reserva = reservas[index];
+window.eliminarReserva = function (idReserva) {
+  const index = reservas.findIndex(r => r.idReserva === idReserva);
+  if (index === -1) return;
 
   Swal.fire({
     title: "¿Eliminar reserva?",
-    text: `Se eliminará la reserva ${reserva.idReserva}.`,
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Eliminar",
-    cancelButtonText: "Cancelar"
+    confirmButtonText: "Eliminar"
   }).then(result => {
     if (result.isConfirmed) {
       reservas.splice(index, 1);
       localStorage.setItem("reservas", JSON.stringify(reservas));
       renderReservas(inputBuscar.value);
-      Swal.fire("Eliminada", "La reserva fue eliminada.", "success");
     }
   });
 };
