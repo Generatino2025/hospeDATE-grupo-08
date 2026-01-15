@@ -4,24 +4,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLogin = document.getElementById("navLogin");
   const navLogout = document.getElementById("navLogout");
   const btnLogout = document.getElementById("btnLogout");
+  const nombreUsuario = document.getElementById("nombreUsuario");
 
   if (!navLogin || !navLogout) return;
 
-  const usuarioActual = sessionStorage.getItem("usuarioActual");
+  const usuarioJSON = sessionStorage.getItem("usuarioActual");
+  const usuario = usuarioJSON ? JSON.parse(usuarioJSON) : null;
 
-  // Mostrar / ocultar
-  if (usuarioActual) {
+  if (usuario) {
     navLogin.style.display = "none";
     navLogout.style.display = "block";
+
+    if (nombreUsuario) {
+      nombreUsuario.textContent = usuario.nombre;
+    }
   } else {
     navLogin.style.display = "block";
     navLogout.style.display = "none";
+
+    if (nombreUsuario) {
+      nombreUsuario.textContent = "";
+    }
   }
 
-  // Logout
   if (btnLogout) {
     btnLogout.addEventListener("click", (e) => {
-      e.preventDefault(); //evita comportamientos raros
+      e.preventDefault();
 
       sessionStorage.removeItem("usuarioActual");
 
@@ -29,18 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
         icon: "success",
         title: "Sesión cerrada"
       }).then(() => {
-        window.location.href = "/pages/login.html";
+        window.location.href = "./login.html";
       });
     });
   }
 
-  //Activar el item del nav seleccionado
   const links = document.querySelectorAll(".custom-nav-link");
   const currentPage = window.location.pathname.split("/").pop();
 
   links.forEach(link => {
     const linkPage = link.getAttribute("href")?.split("/").pop();
-
     if (linkPage === currentPage) {
       link.classList.add("active");
     }
