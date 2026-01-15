@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="./styles/index.css" />
   </head>
 
-   <body class="layout-root">
+  <body class="layout-root">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container">
@@ -75,8 +75,9 @@
             <!-- LOGIN / LOGOUT DINÁMICO -->
 
             <li class="nav-item" id="navLogin">
-              <a class="nav-link custom-nav-link" href="./pages/login.html">Login</a>
-              
+              <a class="nav-link custom-nav-link" href="./pages/login.html"
+                >Login</a
+              >
             </li>
 
             <li class="nav-item" id="navLogout" style="display: none">
@@ -196,10 +197,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="./scripts/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="./scripts/authNavbar.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const usuarioActual = sessionStorage.getItem("usuarioActual");
@@ -233,6 +230,9 @@
       });
     </script>
     <script src="./scripts/session.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="./scripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./scripts/authNavbar.js"></script>
   </body>
 </html>
