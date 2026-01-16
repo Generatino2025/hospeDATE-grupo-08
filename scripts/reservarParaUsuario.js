@@ -174,7 +174,7 @@ console.log(montoTotal, saldoPendiente)
 }
 
 //-------------Funcion para Actualizar los MOntos a PAGAR---------------------//
-function actualizarCalculos (habitacion) {
+export function actualizarCalculos (habitacion) {
   servicios=[];
   const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
@@ -245,7 +245,7 @@ function validarAbono (abono) {
   return true
 }
 
-function validarFechas (checkIn, checkOut) {
+export function validarFechas (checkIn, checkOut) {
   let valido = true
   const hoy = new Date().toISOString().split('T')[0]
 
@@ -274,7 +274,7 @@ function validarFechas (checkIn, checkOut) {
   return valido
 }
 
-function validarFormularioReserva (habitacion) {
+export function validarFormularioReserva (habitacion) {
   const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
   const abono = Number(document.getElementById('abono').value)

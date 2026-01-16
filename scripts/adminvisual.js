@@ -29,6 +29,11 @@ document.getElementById("repUsuarios").textContent = usuarios.length;
 document.getElementById("repDisponibles").textContent = habitacionesDisponibles;
 document.getElementById("repOcupadas").textContent = habitacionesOcupadas.length;
 
+//=============================  Botones de Descargas
+document.getElementById("btnPDF").addEventListener("click", generarPDF);
+document.getElementById("btnCSV").addEventListener("click", generarCSV);
+
+
 // =========================
 // GRAFICO (Chart.js)
 // =========================
@@ -47,3 +52,48 @@ new Chart(ctx, {
         }]
     }
 });
+
+
+//--------------Función de descargas de Información
+function generarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text("Reporte General - Hospedate", 20, 20);
+
+    doc.setFontSize(12);
+    doc.text(`Total Habitaciones: ${habitaciones.length}`, 20, 40);
+    doc.text(`Reservas Activas: ${reservas.length}`, 20, 50);
+    doc.text(`Usuarios Registrados: ${usuarios.length}`, 20, 60);
+    doc.text(`Habitaciones Disponibles: ${habitacionesDisponibles}`, 20, 70);
+    doc.text(`Habitaciones Ocupadas: ${habitacionesOcupadas.length}`, 20, 80);
+
+    doc.text("Fecha: " + new Date().toLocaleString(), 20, 100);
+
+    doc.save("reporte-hospedate.pdf");
+}
+
+function generarCSV() {
+    const data = [
+        ["Métrica", "Valor"],
+        ["Total Habitaciones", habitaciones.length],
+        ["Reservas Activas", reservas.length],
+        ["Usuarios Registrados", usuarios.length],
+        ["Habitaciones Disponibles", habitacionesDisponibles],
+        ["Habitaciones Ocupadas", habitacionesOcupadas.length],
+    ];
+
+    let csvContent = data.map(e => e.join(",")).join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "reporte-hospedate.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
