@@ -197,3 +197,12 @@ body {
   text-align: center;
   font-family: var(--font-main);
 }
+
+.bienvenido {
+  color: white;
+  font-size: 17px;
+  font-weight: 400;
+  margin-left: 10px;
+  opacity: 0.9;
+}
+
