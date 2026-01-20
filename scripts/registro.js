@@ -188,7 +188,7 @@ document.getElementById("togglePass2").addEventListener("click", function () {
 });
 
 
-//---------------Realizando prueba del backend
+//---------------Realizando prueba del backend---------------------//
 async function registroUser(data) {
     //auth/register   - post
     try {

@@ -15,7 +15,7 @@ export async function httpPost(endpoint, data, isPrivate ) {
         }
     }
 
-    //petición
+    //petición al servicio de backend
 console.log(`${ENV}${endpoint}`)
     const response =  await fetch(`${ENV.API_URL}${endpoint}`, {
         method: "POST",

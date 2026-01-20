@@ -103,4 +103,5 @@ toggleLoginPass.addEventListener('click', () => {
     icon.classList.remove('bi-eye')
     icon.classList.add('bi-eye-slash')
   }
+  
 })
