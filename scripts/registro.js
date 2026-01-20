@@ -2,6 +2,8 @@
 // CARGAR / CREAR USUARIOS EN LOCAL STORAGE
 // -------------------------------------------
 
+import { httpPost } from "./servicios/httpPost.js";
+
 let usuarios = JSON.parse(localStorage.getItem("usuarios"));
 
 if (!usuarios) {
@@ -19,6 +21,8 @@ if (!usuarios) {
     ];
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
 }
+
+
 
 
 // -------------------------------------------
@@ -132,17 +136,18 @@ document.getElementById("formRegistro").addEventListener("submit", function (e) 
     const usuario = {
         nombre,
         apellido,
-        tipoDoc,
-        numeroDoc,
+        tipo_doc: tipoDoc,
+        numero_doc: numeroDoc,
         correo,
         telefono,
-        password,
-        rol: "cliente"
+        contrasena: password,
+        rol: "CLIENTE"
     };
 
     usuarios.push(usuario);
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
+ 
+    registroUser(usuario)
     Swal.fire({
         icon: "success",
         title: "Registro exitoso",
@@ -181,3 +186,18 @@ document.getElementById("togglePass1").addEventListener("click", function () {
 document.getElementById("togglePass2").addEventListener("click", function () {
     togglePassword("password2", "togglePass2");
 });
+
+
+//---------------Realizando prueba del backend
+async function registroUser(data) {
+    //auth/register   - post
+    try {
+        const registro = await httpPost('auth/register', data, false )
+        console.log(registro)
+        localStorage.setItem("RegistroBack", registro)
+    } catch (error) {
+            console.error(error)
+    }
+
+    
+}
