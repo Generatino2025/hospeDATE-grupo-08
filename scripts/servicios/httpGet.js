@@ -10,7 +10,9 @@ export async function httpGet(endpoint, isPrivate) {
   if (isPrivate) {
     const token = getToken();
     if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+     //headers["Authorization"] = `Bearer ${token}`;
+     headers["Authorization"] = `Bearer 
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5dWRpdGhAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlRFIl0sImV4cCI6MTc2OTA1Mjg5MiwiaWF0IjoxNzY5MDE2ODkyfQ.qZfWqtKcKCyUojskjNZDQRqm17JzizFv6LSRup1cNOY`;
     }
   }
 

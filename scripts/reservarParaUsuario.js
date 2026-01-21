@@ -1,26 +1,33 @@
-import {
-  inicializarLocalStorage,
-  obtenerHabitaciones
-} from './crearhabitacion.js'
+import { obtenerHabitaciones } from './crearhabitacion.js'
+import { listarServicios } from './utils/HttpsParaReservas.js'
 import {
   limpiarError,
   limpiarTodosErrores,
   mostrarError
 } from './utils/validacionesErrores.js'
 
-inicializarLocalStorage()
 let montoTotal
 let servicios = []
+
+//-----------------------------------------------------------------//
+
 // Me traigo lo del local y session storage
 export const user = JSON.parse(sessionStorage.getItem('usuarioActual'))
 export let reservas = JSON.parse(localStorage.getItem('reservas')) || []
 let habitacionesGuardadas = JSON.parse(localStorage.getItem('habitaciones'))
 
-// me traigo lo del modal que voy a pintar en reserva es decir el htmlreserva
-const modalReservaElement = document.getElementById('modalReserva')
-const modalReserva = new bootstrap.Modal(modalReservaElement)
+let modalReserva
 
-window.reservar = reservar
+document.addEventListener('DOMContentLoaded', () => {
+  const modalReservaElement = document.getElementById('modalReserva')
+  if (!modalReservaElement) {
+    console.error('No existe #modalReserva en el DOM')
+    return
+  }
+  modalReserva = new bootstrap.Modal(modalReservaElement)
+})
+
+modalReserva.show()
 
 document.getElementById('checkIn').addEventListener('change', () => {
   const checkIn = document.getElementById('checkIn').value
@@ -35,19 +42,27 @@ document.getElementById('checkOut').addEventListener('change', () => {
 })
 
 //-------------Funcion para reservar----------------------//
-async function reservar (idHabitacion) {
-    //traigo las habitaciones a pintar
-const habitaciones =  await obtenerHabitaciones()
-console.log(habitaciones)
+export async function reservar (idHabitacion) {
+  //-------------Lo cargo desde el backe----------//
+  const habitaciones = await obtenerHabitaciones()
+
   limpiarTodosErrores()
-  const habitacion = habitaciones?.find(h => h.id === idHabitacion)
+  const habitacion = habitaciones?.find(
+    h => String(h.idHabitacion) === String(idHabitacion)
+  )
+
+  if (!habitacion) {
+    console.error('Habitación no encontrada', idHabitacion, habitaciones)
+    return
+  }
+
   // Pintar habitación
   document.getElementById('habNumero').value = habitacion.numero
   document.getElementById('habTipo').value = habitacion.tipo
-  document.getElementById('habPrecio').value = habitacion.precio
+  document.getElementById('habPrecio').value = habitacion.precioPorNoche
 
   // Pintar cálculos base
-  document.getElementById('precioPorNoche').value = `USD ${habitacion.precio}`
+  document.getElementById('precioPorNoche').value = `USD ${habitacion.precioPorNoche}`
 
   // Reset campos
   // document.getElementById('cantidadNoches').value = ''
@@ -78,8 +93,12 @@ console.log(habitaciones)
 }
 
 //-------------Funcion para  CREAR la reservar----------------------//
-function crearReserva (habitacion) {
- const checkIn = document.getElementById('checkIn').value
+async function crearReserva (habitacion) {
+  //-----------Obtener servicios  dedl backend-------------------//
+  const servicios = await listarServicios()
+  console.log(servicios)
+
+  const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
   const abono = Number(document.getElementById('abono').value)
 
@@ -91,11 +110,10 @@ function crearReserva (habitacion) {
   const fecha2 = new Date(checkOut)
   const noches = (fecha2 - fecha1) / 86400000
 
-
   montoTotal =
     noches * montoTotal + noches * servicios[0]?.precio + servicios[1]?.precio
   const saldoPendiente = montoTotal - abono
-console.log(montoTotal, saldoPendiente)
+  console.log(montoTotal, saldoPendiente)
   if (noches <= 0) {
     Swal.fire(
       'Error',
@@ -120,11 +138,11 @@ console.log(montoTotal, saldoPendiente)
     huesped: { ...user },
 
     habitacion: {
-      idHabitacion: habitacion.id,
+      idHabitacion: habitacion.idHabitacion,
       numero: habitacion.numero,
       tipo: habitacion.tipo,
       capacidad: habitacion.capacidad,
-      precioPorNoche: habitacion.precio
+      precioPorNoche: habitacion.precioPorNoche
     },
 
     fechas: {
@@ -175,13 +193,13 @@ console.log(montoTotal, saldoPendiente)
 
 //-------------Funcion para Actualizar los MOntos a PAGAR---------------------//
 export function actualizarCalculos (habitacion) {
-  servicios=[];
+  servicios = []
   const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
   const abono = Number(document.getElementById('abono').value)
 
   // Precio base
-  const precioBase = habitacion.precio
+  const precioBase = habitacion.precioPorNoche
   document.getElementById('precioPorNoche').value = `USD ${precioBase}`
 
   if (!checkIn || !checkOut) return
@@ -285,7 +303,7 @@ export function validarFormularioReserva (habitacion) {
 
   if (noches <= 0) return false
 
- montoTotal= noches * habitacion.precio
+  montoTotal = noches * habitacion.precioPorNoche
 
   if (!validarAbono(abono)) return false
 

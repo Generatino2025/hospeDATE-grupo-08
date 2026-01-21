@@ -2,8 +2,8 @@ import {
   inicializarLocalStorage,
   obtenerHabitaciones
 } from "./crearhabitacion.js";
+import { reservar } from "./reservarParaUsuario.js";
 
-import "./reservar.js";
 
 const FAVORITOS_KEY = "favoritos";
 
@@ -109,7 +109,8 @@ function delegarEventos(contenedor) {
         pedirLogin();
         return;
       }
-      reservar(reservarBtn.dataset.idHabitacion);
+      console.log("ir al modal")
+     // reservar(reservarBtn.dataset.id);
     }
 
     // ❤️ Favoritos
