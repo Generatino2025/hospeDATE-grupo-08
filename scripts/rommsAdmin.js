@@ -3,7 +3,6 @@ const buscador = document.getElementById('buscador')
 
 let habitaciones = JSON.parse(localStorage.getItem('habitaciones')) || []
 function render (lista) {
-  
   contenedor.innerHTML = ''
 
   lista.forEach(h => {
