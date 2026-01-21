@@ -1,4 +1,5 @@
 import { habitaciones as habitacionesBase } from "../assets/data/data.js";
+import { httpGet } from "./servicios/httpGet.js";
 
 export function inicializarLocalStorage() {
   const habitacionesLS = localStorage.getItem("habitaciones");
@@ -7,8 +8,15 @@ export function inicializarLocalStorage() {
   }
 }
 
-export function obtenerHabitaciones() {
-  return JSON.parse(localStorage.getItem("habitaciones")) || [];
+export async  function obtenerHabitaciones() {
+  // llamar del backend /habitaciones
+  try {
+    const response = await httpGet("habitaciones", false);
+    console.log(response)
+    return response
+  } catch (error) {
+    console.log("errorcito", error);
+  }
 }
 
 export function guardarHabitaciones(habitaciones) {

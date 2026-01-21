@@ -32,23 +32,25 @@ function guardarFavoritos(favs) {
 
 inicializarLocalStorage();
 
-let habitacionesDisponiblesCache = [];
+//let habitacionesDisponiblesCache = [];
 
-export function pintarHabitacionesDisponibles() {
+export  async function pintarHabitacionesDisponibles() {
   const contenedor = document.getElementById("habitacionesGrid");
   if (!contenedor) return;
 
   contenedor.innerHTML = "";
 
-  const habitaciones = obtenerHabitaciones();
-
+  
   // 👉 SIEMPRE mostrar habitaciones
-  habitacionesDisponiblesCache = habitaciones;
+  //habitacionesDisponiblesCache = habitaciones;
+  const habitaciones = await obtenerHabitaciones();
 
   renderHabitaciones(habitaciones);
+    
 }
 
-function renderHabitaciones(habitaciones) {
+async function renderHabitaciones(habitaciones) {
+
   const contenedor = document.getElementById("habitacionesGrid");
   if (!contenedor) return;
 
@@ -56,16 +58,16 @@ function renderHabitaciones(habitaciones) {
 
   const favoritos = obtenerFavoritos();
 
-  habitaciones.forEach(h => {
-    const esFavorito = favoritos.some(f => f.id === h.id);
+  habitaciones?.forEach(h => {
+    const esFavorito = favoritos.some(f => f.idHabitacion === h.id);
 
     const card = `
       <div class="col-md-4">
         <div class="card room-card position-relative">
-          <img src="${h.imagen}" class="room-img w-100" />
+          <img src="${h.url_foto}" class="room-img w-100" />
 
           <div class="favorite-btn ${esFavorito ? "favorito" : ""}"
-               data-fav-id="${h.id}">
+               data-fav-id="${h.idHabitacion}">
             <i class="bi bi-heart-fill"></i>
           </div>
 
@@ -78,12 +80,12 @@ function renderHabitaciones(habitaciones) {
               Capacidad: ${h.capacidad} personas
             </p>
             <h5 class="fw-bold text-accent">
-              $${h.precio} / noche
+              $${h.precioPorNoche} / noche
             </h5>
 
             <button
               class="btn btn-soft-yellow mt-2 w-100 fw-bold reservar-btn"
-              data-id="${h.id}">
+              data-id="${h.idHabitacion}">
               Reservar
             </button>
           </div>
@@ -107,7 +109,7 @@ function delegarEventos(contenedor) {
         pedirLogin();
         return;
       }
-      reservar(reservarBtn.dataset.id);
+      reservar(reservarBtn.dataset.idHabitacion);
     }
 
     // ❤️ Favoritos
@@ -121,16 +123,16 @@ function delegarEventos(contenedor) {
       const id = favBtn.dataset.favId;
       let favs = obtenerFavoritos();
 
-      const index = favs.findIndex(f => f.id === id);
+      const index = favs.findIndex(f => f.idHabitacion === id);
 
       if (index === -1) {
-        const h = obtenerHabitaciones().find(x => x.id === id);
+        const h = obtenerHabitaciones().find(x => x.idHabitacion === id);
         favs.push({
-          id: h.id,
+          idHabitacion: h.idHabitacion,
           numero: h.numero,
           tipo: h.tipo,
-          precio: h.precio,
-          imagen: h.imagen
+          precioPorNoche: h.precioPorNoche,
+          url_foto: h.url_foto
         });
 
         favBtn.classList.add("favorito");

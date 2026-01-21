@@ -1,31 +1,31 @@
-import { ENV } from "../../env.js"
-import { getToken } from "./tokenServicio.js"
+import { ENV } from "../../env.js";
+import { getToken } from "./tokenServicio.js";
 
-
-export async function httpGet(endpoint, isPrivate ) {
-    const headers ={
-        "Content-Type": "application/json"
+export async function httpGet(endpoint, isPrivate) {
+   
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  //Admin o cliente- token y la headers
+  if (isPrivate) {
+    const token = getToken();
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
-    //Admin o cliente- token y la headers
-    if(isPrivate){
-        const token = getToken()
-        if (token){
-            headers["Authorization"] = `Bearer ${token}`
-        }
-    }
+  }
 
-    //petición
+  //petición
+  const response = await fetch(`${ENV.API_URL}${endpoint}`, {
+    method: "GET",
+    headers,
+  });
 
-    const response = await  fetch(`${ENV.API_URL}${endpoint}`, {
-        method: "GET",
-        headers
-    }) 
+   console.log(response)
+ 
+  //Manejar la alerta de error
+  if (!response) {
+    console.log(response);
+  }
 
-    //Manejar la alerta de error
-    if(!response){
-        console.log(response)
-    }
-
-    return response.json();
-
+  return await response.json();
 }
