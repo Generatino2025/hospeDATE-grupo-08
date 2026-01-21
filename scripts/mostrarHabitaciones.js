@@ -3,12 +3,12 @@ import {
   obtenerHabitaciones
 } from "./crearhabitacion.js";
 
-
+import './reservar.js'
 
 const FAVORITOS_KEY = "favoritos";
 
 function usuarioLogueado() {
-  return sessionStorage.getItem("usuarioActual") !== null;
+  return localStorage.getItem("token") !== null;
 }
 
 function pedirLogin() {
@@ -32,7 +32,6 @@ function guardarFavoritos(favs) {
 
 inicializarLocalStorage();
 
-//let habitacionesDisponiblesCache = [];
 
 export  async function pintarHabitacionesDisponibles() {
   const contenedor = document.getElementById("habitacionesGrid");
@@ -40,10 +39,8 @@ export  async function pintarHabitacionesDisponibles() {
 
   contenedor.innerHTML = "";
 
-  
-  // 👉 SIEMPRE mostrar habitaciones
-  //habitacionesDisponiblesCache = habitaciones;
-  const habitaciones = await obtenerHabitaciones();
+    // 👉 SIEMPRE mostrar habitaciones
+    const habitaciones = await obtenerHabitaciones();
 
   renderHabitaciones(habitaciones);
     
@@ -99,7 +96,8 @@ async function renderHabitaciones(habitaciones) {
   delegarEventos(contenedor);
 }
 
-function delegarEventos(contenedor) {
+async function delegarEventos(contenedor) {
+   const habitaciones = await obtenerHabitaciones();
   contenedor.onclick = (e) => {
 
     // 🟡 Reservar
@@ -110,7 +108,7 @@ function delegarEventos(contenedor) {
         return;
       }
       console.log("ir al modal")
-     // reservar(reservarBtn.dataset.id);
+      reservar(reservarBtn.dataset.id);
     }
 
     // ❤️ Favoritos
@@ -127,7 +125,8 @@ function delegarEventos(contenedor) {
       const index = favs.findIndex(f => f.idHabitacion === id);
 
       if (index === -1) {
-        const h = obtenerHabitaciones().find(x => x.idHabitacion === id);
+
+        const h = habitaciones?.find(x => x.idHabitacion == id);
         favs.push({
           idHabitacion: h.idHabitacion,
           numero: h.numero,
