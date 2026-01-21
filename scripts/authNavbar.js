@@ -8,17 +8,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!navLogin || !navLogout) return;
 
-  const usuarioJSON = sessionStorage.getItem("usuarioActual");
-  const usuario = usuarioJSON ? JSON.parse(usuarioJSON) : null;
+  // NUEVA FUENTE DE VERDAD
+  const token = localStorage.getItem("token");
+  const userJSON = localStorage.getItem("user");
+  const user = userJSON ? JSON.parse(userJSON) : null;
 
-  if (usuario) {
+  if (token && user) {
+    // USUARIO LOGUEADO
     navLogin.style.display = "none";
     navLogout.style.display = "block";
 
     if (nombreUsuario) {
-      nombreUsuario.textContent = usuario.nombre;
+      nombreUsuario.textContent = user.nombre;
     }
   } else {
+    // USUARIO NO LOGUEADO
     navLogin.style.display = "block";
     navLogout.style.display = "none";
 
@@ -27,11 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  //  LOGOUT REAL
   if (btnLogout) {
     btnLogout.addEventListener("click", (e) => {
       e.preventDefault();
 
-      sessionStorage.removeItem("usuarioActual");
+      // Limpiar sesion real
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
       Swal.fire({
         icon: "success",
@@ -42,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // MARCAR LINK ACTIVO
   const links = document.querySelectorAll(".custom-nav-link");
   const currentPage = window.location.pathname.split("/").pop();
 
