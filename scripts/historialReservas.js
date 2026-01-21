@@ -1,78 +1,89 @@
-// ==================
-// MODAL ELEMENTOS
 
 import {
   actualizarCalculos,
   validarFormularioReserva,
 } from "./reservarParaUsuario.js";
+import { listarReservas } from "./utils/HttpsParaReservas.js";
 import { limpiarTodosErrores } from "./utils/validacionesErrores.js";
 
-// ==================
-const modalReservaElement = document.getElementById("modalReserva");
-const modalReserva = new bootstrap.Modal(modalReservaElement);
+let reservas = [];
+let respuesta = []
+document.addEventListener('DOMContentLoaded', function () {
+  cargarReservas();
+  obtenerReservasUsuario();
 
-const habNumero = document.getElementById("habNumero");
-const habTipo = document.getElementById("habTipo");
-const habPrecio = document.getElementById("habPrecio");
+})
 
-const userNombre = document.getElementById("userNombre");
-const userApellido = document.getElementById("userApellido");
-const userTipoDoc = document.getElementById("userTipoDoc");
-const userNumDoc = document.getElementById("userNumDoc");
-const userTel = document.getElementById("userTel");
-
-const checkIn = document.getElementById("checkIn");
-const checkOut = document.getElementById("checkOut");
-
-const precioPorNoche = document.getElementById("precioPorNoche");
-const cantidadNoches = document.getElementById("cantidadNoches");
-const montoTotalInput = document.getElementById("montoTotal");
-const saldoPendiente = document.getElementById("saldoPendiente");
-
-const metodoPago = document.getElementById("metodoPago");
-const abono = document.getElementById("abono");
-
-const notas = document.getElementById("notas");
-
-const btnConfirmarReserva = document.getElementById("btnConfirmarReserva");
-
-function cancelarReserva(idReserva) {
-  reservas = reservas.map((r) =>
-    r.idReserva === idReserva ? { ...r, estado: "CANCELADA" } : r
-  );
-
-  localStorage.setItem("reservas", JSON.stringify(reservas));
+async function cargarReservas() {
+  const user= JSON.parse(localStorage.getItem("user"))
+  reservas = await listarReservas();
+  obtenerReservasUsuario(user.idUsuario)
+  
 }
 
-let reservaEnEdicion = null;
-
-function filtrarReservasPorFecha(desde, hasta) {
-  return reservas.filter((r) =>
-    rangoSeCruza(r.fechas.checkIn, r.fechas.checkOut, desde, hasta)
-  );
+function obtenerReservasUsuario(id) {
+    respuesta = reservas?.filter((r) => r?.usuario?.idUsuario == id);
+   renderReservas(respuesta);
 }
 
-export function obtenerReservasUsuario(usuarioId) {
-  return reservas.filter((r) => r.usuarioId === usuarioId);
-}
+// export function separarReservas(reservasUsuario) {
+//   return {
+//     activas: reservasUsuario.filter(
+//       (r) => r.estado === "ACTIVA" && r.fechas.checkOut >= hoy
+//     ),
+//     pasadas: reservasUsuario.filter(
+//       (r) => r.estado === "ACTIVA" && r.fechas.checkOut < hoy
+//     ),
+//     canceladas: reservasUsuario.filter((r) => r.estado === "CANCELADA"),
+//   };
+// }
 
-export function separarReservas(reservasUsuario) {
-  const hoy = hoyISO();
+ 
+async function actualizarReservaBackend(reserva) {
+  limpiarTodosErrores();
 
-  return {
-    activas: reservasUsuario.filter(
-      (r) => r.estado === "ACTIVA" && r.fechas.checkOut >= hoy
-    ),
-    pasadas: reservasUsuario.filter(
-      (r) => r.estado === "ACTIVA" && r.fechas.checkOut < hoy
-    ),
-    canceladas: reservasUsuario.filter((r) => r.estado === "CANCELADA"),
+  const idsServicios = [...document.querySelectorAll('.serv-adicional:checked')]
+    .map(s => Number(s.dataset.id));
+
+  const payloadReserva = {
+    estado: reserva.estado,
+    notas: notas.value,
+    checkIn: new Date(checkIn.value).toISOString(),
+    checkOut: new Date(checkOut.value).toISOString()
   };
+
+  await putReserva(reserva.idReserva, payloadReserva);
+
+  await putServiciosReserva(reserva.idReserva, { idsServicios });
+
+  if (reserva.pago) {
+    await putPago(reserva.pago.idPago, {
+      montoPagado: Number(abono.value),
+      metodo: metodoPago.value
+    });
+  }
+
+  Swal.fire("Actualizada", "Reserva modificada correctamente", "success");
+
+  modalReserva.hide();
+  await cargarReservas();
 }
 
-const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
-const habitaciones = JSON.parse(localStorage.getItem("habitaciones")) || [];
-const usuarioActual = JSON.parse(sessionStorage.getItem("usuarioActual"));
+
+///--------------------------------------------------------///
+//let reservaEnEdicion = null;
+
+// function filtrarReservasPorFecha(desde, hasta) {
+//   return reservas.filter((r) =>
+//     rangoSeCruza(r.fechas.checkIn, r.fechas.checkOut, desde, hasta)
+//   );
+// }
+
+
+
+
+//const habitaciones = JSON.parse(localStorage.getItem("habitaciones")) || [];
+//const usuarioActual = JSON.parse(sessionStorage.getItem("usuarioActual"));
 
 const listaReservas = document.getElementById("listaReservas");
 const sinReservas = document.getElementById("sinReservas");
@@ -81,39 +92,38 @@ const filtros = document.getElementById("filtrosEstado");
 // ----------------------------
 // SOLO RESERVAS DEL USUARIO
 // ----------------------------
-const reservasUsuario = reservas.filter(
-  (r) => r?.huesped?.numeroDoc === usuarioActual?.numeroDoc
-);
+// const reservasUsuario = reservas.filter(
+//   (r) => r?.huesped?.numeroDoc === usuarioActual?.numeroDoc
+// );
 
 // ----------------------------
 // OBTENER IMAGEN HABITACIÓN
 // ----------------------------
-function obtenerImagenHabitacion(idHabitacion) {
-  const hab = habitaciones.find((h) => h.id === idHabitacion);
-  return hab?.imagen || "https://via.placeholder.com/150";
-}
+// function obtenerImagenHabitacion(idHabitacion) {
+//   const hab = habitaciones.find((h) => h.id === idHabitacion);
+//   return hab?.imagen || "https://via.placeholder.com/150";
+// }
 
 // ----------------------------
 // RENDER
 // ----------------------------
-export function renderReservas(estado = "TODAS") {
+export function renderReservas(reservasUsuario, estado = "TODAS") {
   listaReservas.innerHTML = "";
   sinReservas.classList.add("d-none");
-
+console.log(reservasUsuario)
   const filtradas =
     estado === "TODAS"
       ? reservasUsuario
-      : reservasUsuario.filter((r) => r.estado === estado);
+      : reservasUsuario.filter((r) => r?.estado === estado);
 
   if (filtradas.length === 0) {
     sinReservas.classList.remove("d-none");
     return;
   }
 
-  filtradas.forEach((reserva) => {
-    const img = obtenerImagenHabitacion(reserva.habitacion.idHabitacion);
-    const acciones =
-      reserva.estado === "ACTIVA"
+  filtradas?.forEach((reserva) => {
+      const acciones =
+      (reserva.estado).toUpperCase() === "ACTIVA" ||  (reserva.estado).toUpperCase()  === "CONFIRMADA"
         ? `
           <div class="mt-2 d-flex gap-2">
             <button class="btn btn-sm btn-edit" onclick="editarReserva('${reserva.idReserva}')">
@@ -133,7 +143,7 @@ export function renderReservas(estado = "TODAS") {
       <div class="card reserva-card ${reserva.estado}">
         <div class="row g-0">
           <div class="col-4">
-            <img src="${img}" class="reserva-img" />
+            <img src="${reserva?.habitacion.url_foto}" class="reserva-img" />
           </div>
 
           <div class="col-8">
@@ -152,7 +162,7 @@ export function renderReservas(estado = "TODAS") {
               </p>
 
               <p class="mb-1">
-                ${reserva.fechas.checkIn} → ${reserva.fechas.checkOut}
+                ${reserva.fechaReserva.checkIn} → ${reserva.fechaReserva.checkOut}
               </p>
 
               <p class="mb-1">
@@ -176,8 +186,8 @@ export function renderReservas(estado = "TODAS") {
 
 // ----------------------------
 function badgeClase(estado) {
-  if (estado === "ACTIVA") return "badge-activa";
-  if (estado === "FINALIZADA") return "badge-finalizada";
+  if (estado.toUpperCase() === "ACTIVA" || estado.toUpperCase() === "CONFIRMADA") return "badge-activa";
+  if (estado.toUpperCase() === "FINALIZADA") return "badge-finalizada";
   return "badge-cancelada";
 }
 
@@ -220,10 +230,8 @@ window.cancelarReserva = function (idReserva) {
 };
 
 window.editarReserva = function (idReserva) {
-  const reserva = reservas.find((r) => r.idReserva === idReserva);
+  const reserva = respuesta?.find((r) => r.idReserva == idReserva);
   if (!reserva) return;
-
-  // Aquí luego conectas tu modal real
 
   Swal.fire({
     title: "Modificar Reserva",
@@ -238,92 +246,134 @@ window.editarReserva = function (idReserva) {
   });
 };
 
-// INIT
-renderReservas();
-
 function cargarReservaEnModal(reserva) {
+  console.log(reserva)
   reservaEnEdicion = reserva;
 
-  const habitacion = habitaciones.find(
-    (h) => h.id === reserva.habitacion.idHabitacion
-  );
-
-  // HABITACION
-  habNumero.value = habitacion.numero;
-  habTipo.value = habitacion.tipo;
-  habPrecio.value = habitacion.precio;
+  // HAB
+  habNumero.value = reserva.habitacion.numero;
+  habTipo.value = reserva.habitacion.tipo;
+  habPrecio.value = reserva.habitacion.precioPorNoche;
 
   // USER
-  userNombre.value = reserva.huesped.nombre;
-  userApellido.value = reserva.huesped.apellido;
-  userTipoDoc.value = reserva.huesped.tipoDoc;
-  userNumDoc.value = reserva.huesped.numeroDoc;
-  userTel.value = reserva.huesped.telefono;
+  userNombre.value = reserva.usuario.nombre;
+  userApellido.value = reserva.usuario.apellido;
+  userTipoDoc.value = reserva.usuario.tipo_doc;
+  userNumDoc.value = reserva.usuario.numero_doc;
+  userTel.value = reserva.usuario.telefono;
 
   // FECHAS
-  checkIn.value = reserva.fechas.checkIn;
-  checkOut.value = reserva.fechas.checkOut;
+  checkIn.value = reserva.fechaReserva.checkIn.split("T")[0];
+  checkOut.value = reserva.fechaReserva.checkOut.split("T")[0];
 
   // PAGO
-  metodoPago.value = reserva.pago.metodo;
-  abono.value = reserva.pago.montoPagado;
+  metodoPago.value = reserva.pago?.metodo || "";
+  abono.value = reserva.pago?.montoPagado || 0;
 
   // NOTAS
   notas.value = reserva.notas || "";
 
   // SERVICIOS
-  document.querySelectorAll(".serv-adicional").forEach((cb) => {
-    cb.checked = reserva.serviciosAdicionales?.some(
-      (s) => s.idServicio === cb.dataset.id
-    );
+  document.querySelectorAll(".serv-adicional").forEach(cb => {
+    cb.checked = reserva.servicios.some(s => s.idServicio == cb.dataset.id);
   });
 
-  // CALCULAR
-  actualizarCalculos(habitacion);
+  actualizarCalculos(reserva.habitacion);
 
-  // BOTÓN
-  btnConfirmarReserva.textContent = "Actualizar Reserva";
-  btnConfirmarReserva.onclick = () => actualizarReserva(reserva, habitacion);
+  btnConfirmarReserva.textContent = "Actualizar";
+  btnConfirmarReserva.onclick = () =>
+    actualizarReservaBackend(reserva);
 
   modalReserva.show();
 }
 
-function actualizarReserva(reserva, habitacion) {
-  limpiarTodosErrores();
 
-  const checkInVal = checkIn.value;
-  const checkOutVal = checkOut.value;
+// INIT
+// renderReservas();
 
-  const abonoValor = Number(abono.value);
-  const metodo = metodoPago.value;
+// function cargarReservaEnModal(reserva) {
+//   reservaEnEdicion = reserva;
 
-  if (!validarFormularioReserva(habitacion)) return;
+//   const habitacion = habitaciones.find(
+//     (h) => h.id === reserva.habitacion.idHabitacion
+//   );
 
-  const noches = (new Date(checkOutVal) - new Date(checkInVal)) / 86400000;
+//   // HABITACION
+//   habNumero.value = habitacion.numero;
+//   habTipo.value = habitacion.tipo;
+//   habPrecio.value = habitacion.precio;
 
-  const resultado = actualizarCalculos(habitacion);
+//   // USER
+//   userNombre.value = reserva.huesped.nombre;
+//   userApellido.value = reserva.huesped.apellido;
+//   userTipoDoc.value = reserva.huesped.tipoDoc;
+//   userNumDoc.value = reserva.huesped.numeroDoc;
+//   userTel.value = reserva.huesped.telefono;
 
-  reserva.fechas = {
-    checkIn,
-    checkOut,
-    noches,
-  };
+//   // FECHAS
+//   checkIn.value = reserva.fechas.checkIn;
+//   checkOut.value = reserva.fechas.checkOut;
 
-  reserva.pago = {
-    metodo,
-    montoTotal: resultado.montoTotal,
-    montoPagado: abonoValor,
-    saldoPendiente: resultado.saldo,
-    moneda: "USD",
-  };
+//   // PAGO
+//   metodoPago.value = reserva.pago.metodo;
+//   abono.value = reserva.pago.montoPagado;
 
-  reserva.serviciosAdicionales = resultado.servicios;
-  reserva.notas = notas.value;
+//   // NOTAS
+//   notas.value = reserva.notas || "";
 
-  localStorage.setItem("reservas", JSON.stringify(reservas));
+//   // SERVICIOS
+//   document.querySelectorAll(".serv-adicional").forEach((cb) => {
+//     cb.checked = reserva.serviciosAdicionales?.some(
+//       (s) => s.idServicio === cb.dataset.id
+//     );
+//   });
 
-  Swal.fire("Actualizada", "Reserva modificada correctamente", "success");
+//   // CALCULAR
+//   actualizarCalculos(habitacion);
 
-  modalReserva.hide();
-  renderReservas(document.querySelector(".btn.active").dataset.estado);
-}
+//   // BOTÓN
+//   btnConfirmarReserva.textContent = "Actualizar Reserva";
+//   btnConfirmarReserva.onclick = () => actualizarReserva(reserva, habitacion);
+
+//   modalReserva.show();
+// }
+
+// function actualizarReserva(reserva, habitacion) {
+//   limpiarTodosErrores();
+
+//   const checkInVal = checkIn.value;
+//   const checkOutVal = checkOut.value;
+
+//   const abonoValor = Number(abono.value);
+//   const metodo = metodoPago.value;
+
+//   if (!validarFormularioReserva(habitacion)) return;
+
+//   const noches = (new Date(checkOutVal) - new Date(checkInVal)) / 86400000;
+
+//   const resultado = actualizarCalculos(habitacion);
+
+//   reserva.fechas = {
+//     checkIn,
+//     checkOut,
+//     noches,
+//   };
+
+//   reserva.pago = {
+//     metodo,
+//     montoTotal: resultado.montoTotal,
+//     montoPagado: abonoValor,
+//     saldoPendiente: resultado.saldo,
+//     moneda: "USD",
+//   };
+
+//   reserva.serviciosAdicionales = resultado.servicios;
+//   reserva.notas = notas.value;
+
+//   localStorage.setItem("reservas", JSON.stringify(reservas));
+
+//   Swal.fire("Actualizada", "Reserva modificada correctamente", "success");
+
+//   modalReserva.hide();
+//   renderReservas(document.querySelector(".btn.active").dataset.estado);
+// }

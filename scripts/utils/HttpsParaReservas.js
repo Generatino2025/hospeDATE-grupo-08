@@ -1,17 +1,12 @@
-// Get- /reservas/{idRederva}
-
 import { httpGet } from "../servicios/httpGet.js"
+import { httpPost } from "../servicios/httpPost.js"
+import { httpPut } from "../servicios/httpPut.js"
 
-//Put/reserva/{id}
-
-//Delete/reserva/{id}
-
-//put/reservas/{idreservas}/servicios
-
-//post/reservas
-export async function postReserva(data){
-     try {
-    const response = await httpPost("reserva", data, true )
+//---------------RESERVAS----------------------------//
+// lISTAR LAS RESERVAS
+export async function listarReservas(){
+   try {
+    const response = await httpGet("reservas", true )
     console.log(response)
     return response
    } catch (error) {
@@ -19,6 +14,52 @@ export async function postReserva(data){
    }
 }
 
+//post/reservas
+export async function postReserva(data){
+     try {
+    const response = await httpPost("reservas", data, true )
+    console.log(response)
+    return response
+   } catch (error) {
+    console.log(error)
+   }
+}
+export async function putReserva(data, id){
+     try {
+    const response = await httpPut(`reservas/${id}`, data, true )
+    console.log(response)
+    return response
+   } catch (error) {
+    console.log(error)
+   }
+}
+//---------------sERVICIO----------------------------//
+//---1 Pintar o llamar los servicios Adicionales disponible--/
+export async function listarServicios() {
+   try {
+    const response = await httpGet("servicios", true )
+    console.log(response)
+    return response
+   } catch (error) {
+    console.log(error)
+   }
+}
+
+//put/reservas/{idreservas}/servicios
+export async function putServiciosReservas(data, id){
+     try {
+    const response = await httpPut(`reservas/${id}/servicios`, data, true )
+    console.log(response)
+    return response
+   } catch (error) {
+    console.log(error)
+   }
+}
+
+
+
+
+//---------------PAGOS----------------------------//
 
 //post/pago
 export async function postPago(data){
@@ -30,20 +71,11 @@ export async function postPago(data){
     console.log(error)
    }
 }
-//get/pagos/reserva/{idreserva}
 
-//get/servicios 
 
-//---1 Pintar o llamar los servicios Adicionales disponible--/
-export async function listarServicios() {
-   try {
-    const response = await httpGet("servicios", true )
-    console.log(response)
-    return response
-   } catch (error) {
-    console.log(error)
-   }
-}
+
+
+
 
 
 
