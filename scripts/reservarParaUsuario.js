@@ -91,7 +91,6 @@ function crearReserva (habitacion) {
   const fecha2 = new Date(checkOut)
   const noches = (fecha2 - fecha1) / 86400000
 
-
   montoTotal =
     noches * montoTotal + noches * servicios[0]?.precio + servicios[1]?.precio
   const saldoPendiente = montoTotal - abono

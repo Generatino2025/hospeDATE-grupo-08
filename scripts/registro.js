@@ -1,29 +1,5 @@
-// -------------------------------------------
-// CARGAR / CREAR USUARIOS EN LOCAL STORAGE
-// -------------------------------------------
 
 import { httpPost } from "./servicios/httpPost.js";
-
-let usuarios = JSON.parse(localStorage.getItem("usuarios"));
-
-if (!usuarios) {
-    usuarios = [
-        {
-            nombre: "Admin",
-            apellido: "Hotel",
-            tipoDoc: "CC",
-            numeroDoc: "0000",
-            correo: "AdminHotel@gmail.com",
-            telefono: "000000",
-            password: "admin123",
-            rol: "admin"
-        }
-    ];
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
-}
-
-
-
 
 // -------------------------------------------
 // VALIDACIONES EN TIEMPO REAL
@@ -74,7 +50,6 @@ password2Input.addEventListener("input", () => {
 
 document.getElementById("formRegistro").addEventListener("submit", function (e) {
     e.preventDefault();
-
 
     const nombre = document.getElementById("nombre").value.trim();
     const apellido = document.getElementById("apellido").value.trim();
@@ -144,8 +119,6 @@ document.getElementById("formRegistro").addEventListener("submit", function (e) 
         rol: "CLIENTE"
     };
 
-    usuarios.push(usuario);
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
  
     registroUser(usuario)
     Swal.fire({
@@ -156,7 +129,6 @@ document.getElementById("formRegistro").addEventListener("submit", function (e) 
         window.location.href = "/pages/login.html";
     });
 });
-
 
 // -------------------------------------------
 // MOSTRAR / OCULTAR CONTRASEÑA
@@ -187,14 +159,12 @@ document.getElementById("togglePass2").addEventListener("click", function () {
     togglePassword("password2", "togglePass2");
 });
 
-
 //---------------Realizando prueba del backend---------------------//
 async function registroUser(data) {
     //auth/register   - post
     try {
         const registro = await httpPost('auth/register', data, false )
         console.log(registro)
-        localStorage.setItem("RegistroBack", registro)
     } catch (error) {
             console.error(error)
     }

@@ -22,7 +22,7 @@ console.log(`${ENV}${endpoint}`)
         headers,
         body: JSON.stringify(data)
     }) 
-    console.log(response.json())
+    ///console.log(response.json())///
 
     //Manejar la alerta de error
     if(!response){
