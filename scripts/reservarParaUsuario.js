@@ -10,13 +10,13 @@ let montoTotal
 let servicios = []
 
 //-----------------------------------------------------------------//
+console.log("entre a reserva User")
 
 // Me traigo lo del local y session storage
 export const user = JSON.parse(sessionStorage.getItem('usuarioActual'))
 export let reservas = JSON.parse(localStorage.getItem('reservas')) || []
 let habitacionesGuardadas = JSON.parse(localStorage.getItem('habitaciones'))
 
-let modalReserva
 
 document.addEventListener('DOMContentLoaded', () => {
   const modalReservaElement = document.getElementById('modalReserva')
@@ -25,9 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return
   }
   modalReserva = new bootstrap.Modal(modalReservaElement)
+  modalReserva.show()
+
 })
 
-modalReserva.show()
 
 document.getElementById('checkIn').addEventListener('change', () => {
   const checkIn = document.getElementById('checkIn').value

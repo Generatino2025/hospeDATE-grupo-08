@@ -1,6 +1,6 @@
 // Get- /reservas/{idRederva}
 
-import { httpGet } from "../servicios/httpGet"
+import { httpGet } from "../servicios/httpGet.js"
 
 //Put/reserva/{id}
 
