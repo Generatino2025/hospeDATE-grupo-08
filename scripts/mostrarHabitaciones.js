@@ -2,8 +2,7 @@ import {
   inicializarLocalStorage,
   obtenerHabitaciones
 } from "./crearhabitacion.js";
-
-import './reservar.js'
+import { reservar } from "./reservarParaUsuario.js";
 
 const FAVORITOS_KEY = "favoritos";
 

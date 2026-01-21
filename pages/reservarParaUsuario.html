@@ -191,37 +191,9 @@
 
               <!-- SERVICIOS ADICIONALES -->
               <h6 class="fw-bold mt-4">Servicios Adicionales</h6>
-              <div class="row mb-3 ps-2">
-                <div class="col-md-6">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input serv-adicional"
-                      type="checkbox"
-                      data-precio="20"
-                      data-id="D1"
-                      data-nombre="Desayuno buffet"
-                    />
-                    <label class="form-check-label"
-                      >Desayuno buffet (USD 20)</label
-                    >
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input serv-adicional"
-                      type="checkbox"
-                      data-precio="35"
-                      data-id="T1"
-                      data-nombre="Transporte aeropuerto"
-                    />
-                    <label class="form-check-label"
-                      >Transporte aeropuerto (USD 35)</label
-                    >
-                  </div>
-                </div>
-              </div>
+              <div id="serviciosContainer"  class="row mb-3 ps-2">
+                 <!-- Aquí voy a pintar el servicios -->
+                </div>  
 
               <!-- RESUMEN DE COSTO -->
               <h6 class="fw-bold mt-4">Resumen de costos</h6>
@@ -253,9 +225,9 @@
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Método</label>
                   <select id="metodoPago" class="form-control">
-                    <option value="tarjeta">Tarjeta</option>
-                    <option value="efectivo">Efectivo</option>
-                    <option value="transferencia">Transferencia</option>
+                    <option value="TARJETA">Tarjeta</option>
+                    <option value="EFECTIVO">Efectivo</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
                   </select>
                 </div>
 
@@ -305,6 +277,7 @@
     ></script>
     <!-- <script type="module" src="../scripts/main.js"></script> -->
     <script type="module" src="../scripts/reservarDesdeUsuario.js"></script>
+    <script type="module" src="../scripts/reservarParaUsuario.js"></script>
     <script type="module" src="../scripts/authNavbar.js"></script>    
   </body>
 </html>

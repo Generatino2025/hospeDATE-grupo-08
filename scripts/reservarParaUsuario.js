@@ -8,9 +8,7 @@ import {
 
 let montoTotal
 let servicios = []
-
-//-----------------------------------------------------------------//
-console.log("entre a reserva User")
+let modalReserva = null
 
 // Me traigo lo del local y session storage
 export const user = JSON.parse(sessionStorage.getItem('usuarioActual'))
@@ -20,17 +18,20 @@ let habitacionesGuardadas = JSON.parse(localStorage.getItem('habitaciones'))
 
 document.addEventListener('DOMContentLoaded', () => {
   const modalReservaElement = document.getElementById('modalReserva')
+
   if (!modalReservaElement) {
     console.error('No existe #modalReserva en el DOM')
     return
   }
-  modalReserva = new bootstrap.Modal(modalReservaElement)
-  modalReserva.show()
 
-})
+  modalReserva = new bootstrap.Modal(modalReservaElement, {
+    backdrop: 'static',
+    keyboard: false
+  })
 
+  console.log('Modal inicializado:', modalReserva)
 
-document.getElementById('checkIn').addEventListener('change', () => {
+  document.getElementById('checkIn').addEventListener('change', () => {
   const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
   validarFechas(checkIn, checkOut)
@@ -41,11 +42,14 @@ document.getElementById('checkOut').addEventListener('change', () => {
   const checkOut = document.getElementById('checkOut').value
   validarFechas(checkIn, checkOut)
 })
+})
 
 //-------------Funcion para reservar----------------------//
 export async function reservar (idHabitacion) {
   //-------------Lo cargo desde el backe----------//
   const habitaciones = await obtenerHabitaciones()
+  const serviciosBackend = await listarServicios()
+  pintarServicios(serviciosBackend)
 
   limpiarTodosErrores()
   const habitacion = habitaciones?.find(
@@ -85,6 +89,13 @@ export async function reservar (idHabitacion) {
   document.getElementById('abono').oninput = () =>
     actualizarCalculos(habitacion)
 
+  if (!modalReserva) {
+  console.error('Modal no inicializado aún')
+  return
+}
+
+modalReserva.show()
+
   // Mostrar modal
   modalReserva.show()
 
@@ -95,9 +106,7 @@ export async function reservar (idHabitacion) {
 
 //-------------Funcion para  CREAR la reservar----------------------//
 async function crearReserva (habitacion) {
-  //-----------Obtener servicios  dedl backend-------------------//
-  const servicios = await listarServicios()
-  console.log(servicios)
+
 
   const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
@@ -310,3 +319,31 @@ export function validarFormularioReserva (habitacion) {
 
   return true
 }
+
+function pintarServicios(servicios) {
+  const container = document.getElementById('serviciosContainer')
+  if (!container) return
+
+  container.innerHTML = ''
+
+  servicios.forEach(servicio => {
+    const html = `
+      <div class="col-md-6">
+        <div class="form-check">
+          <input
+            class="form-check-input serv-adicional"
+            type="checkbox"
+            data-id="${servicio.idServicio}"
+            data-precio="${servicio.precio}"
+            data-nombre="${servicio.nombre}"
+          />
+          <label class="form-check-label">
+            ${servicio.nombre} (USD ${servicio.precio})
+          </label>
+        </div>
+      </div>
+    `
+    container.insertAdjacentHTML('beforeend', html)
+  })
+}
+
