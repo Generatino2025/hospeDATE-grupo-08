@@ -1,63 +1,126 @@
-const contenedor = document.getElementById('contenedorHabitaciones')
-const buscador = document.getElementById('buscador')
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
+import { httpGet } from "./servicios/httpGet.js";
+import { httpDelete } from "./servicios/httpDelete.js";
 
-let habitaciones = JSON.parse(localStorage.getItem('habitaciones')) || []
-function render (lista) {
-  contenedor.innerHTML = ''
+const contenedor = document.getElementById("contenedorHabitaciones");
+const buscador = document.getElementById("buscador");
 
-  lista.forEach(h => {
-    const card = document.createElement('div')
-    card.className = 'col-md-4'
+let habitaciones = [];
 
-    card.innerHTML = `
-            <div class="room-card position-relative">
-                <img src="${h.imagen}" class="room-image">
+// ===============================
+// INIT
+// ===============================
+document.addEventListener("DOMContentLoaded", cargarHabitaciones);
 
-                <div class="p-3">
-                    <h5 class="fw-bold mb-1">Habitación ${h.numero}</h5>
-                    <p class="text-muted m-0">${h.tipo.toUpperCase()} · Capacidad: ${
-      h.capacidad
-    }</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="price-tag">$${h.precio}/noche</span>
-
-                        
-                    </div>
-                </div>
-            </div>
-        `
-
-    contenedor.appendChild(card)
-  })
-
-  document.querySelectorAll('.reservar').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const id = e.target.dataset.id
-      const hab = habitaciones.find(x => x.id === id)
-
-      Swal.fire({
-        icon: 'information',
-        title: `Habitación Dispponible ${hab.numero}!`,
-        text: `${hab.tipo.toUpperCase()} por $${hab.precio}/noche`,
-        showCancelButton: true
-      })
-    })
-  })
+// ===============================
+// CARGAR DESDE BD
+// ===============================
+async function cargarHabitaciones() {
+  try {
+    habitaciones = await httpGet("habitaciones", true);
+    render(habitaciones);
+  } catch (error) {
+    console.error(error);
+    Swal.fire("Error", "No se pudieron cargar las habitaciones", "error");
+  }
 }
 
-// Mostrar todas las habitaciones al ingresar
-render(habitaciones)
+// ===============================
+// RENDER (ESTILO ORIGINAL)
+// ===============================
+function render(lista) {
+  contenedor.innerHTML = "";
 
-// Filtro buscador
-buscador.addEventListener('input', () => {
-  const q = buscador.value.toLowerCase().trim()
+  if (!lista.length) {
+    contenedor.innerHTML = `<p>No hay habitaciones registradas</p>`;
+    return;
+  }
 
-  const filtradas = habitaciones.filter(
-    h =>
-      h.numero.includes(q) ||
-      h.tipo.toLowerCase().includes(q) ||
-      String(h.capacidad).includes(q)
-  )
+  lista.forEach(h => {
+    const card = document.createElement("div");
+    card.className = "col-md-4";
 
-  render(filtradas)
-})
+    card.innerHTML = `
+      <div class="room-card position-relative">
+        <img 
+          src="${h.url_foto}"
+          class="room-image"
+          alt="Habitación ${h.numero}"
+          onerror="this.src='https://via.placeholder.com/300x200?text=Sin+Imagen'"
+        >
+
+        <div class="p-3">
+          <h5 class="fw-bold mb-1">Habitación ${h.numero}</h5>
+
+          <p class="text-muted m-0">
+            ${h.tipo.toUpperCase()} · Capacidad: ${h.capacidad}
+          </p>
+
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="price-tag">
+              $${h.precioPorNoche}/noche
+            </span>
+
+            <button 
+              class="btn btn-danger btn-sm eliminar"
+              data-id="${h.id}">
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    contenedor.appendChild(card);
+  });
+
+  activarEliminar();
+}
+
+
+// ===============================
+// ELIMINAR HABITACIÓN (ADMIN)
+// ===============================
+function activarEliminar() {
+  document.querySelectorAll(".eliminar").forEach(btn => {
+    btn.addEventListener("click", async e => {
+      const id = e.target.dataset.id;
+
+      const confirm = await Swal.fire({
+        title: "¿Eliminar habitación?",
+        text: "Esta acción no se puede deshacer",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Eliminar",
+        cancelButtonText: "Cancelar"
+      });
+
+      if (!confirm.isConfirmed) return;
+
+      try {
+        await httpDelete(`habitaciones/${id}`, true);
+        habitaciones = habitaciones.filter(h => h.id != id);
+        render(habitaciones);
+
+        Swal.fire("Eliminada", "Habitación eliminada correctamente", "success");
+      } catch (error) {
+        Swal.fire("Error", "No se pudo eliminar la habitación", "error");
+      }
+    });
+  });
+}
+
+// ===============================
+// BUSCADOR
+// ===============================
+buscador.addEventListener("input", () => {
+  const q = buscador.value.toLowerCase().trim();
+
+  const filtradas = habitaciones.filter(h =>
+    h.numero.toString().includes(q) ||
+    h.tipo.toLowerCase().includes(q) ||
+    String(h.capacidad).includes(q)
+  );
+
+  render(filtradas);
+});

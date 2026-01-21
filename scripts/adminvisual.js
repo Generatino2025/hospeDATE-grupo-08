@@ -1,61 +1,134 @@
-// =========================
-// Cargar datos del localStorage
-// =========================
-let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
-let habitaciones = JSON.parse(localStorage.getItem("habitaciones")) || [];
+import { httpGet } from "./servicios/httpGet.js";
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
 
-// =========================
-// Mostrar estadísticas principales
-// =========================
-document.getElementById("totalHabitaciones").textContent = habitaciones.length;
-document.getElementById("reservasActivas").textContent = reservas.length;
-document.getElementById("totalUsuarios").textContent = usuarios.length;
+// ===============================
+// VARIABLES GLOBALES
+// ===============================
+let usuarios = [];
+let reservas = [];
+let habitaciones = [];
 
-// =========================
-// Cálculo de habitaciones disponibles y ocupadas
-// =========================
+// ===============================
+// INIT
+// ===============================
+document.addEventListener("DOMContentLoaded", initAdminPanel);
 
-// habitaciones ocupadas = habitaciones que aparecen en reservas
-let ocupadas = reservas.map(r => r.idHabitacion);
-let habitacionesOcupadas = habitaciones.filter(h => ocupadas.includes(h.id));
-let habitacionesDisponibles = habitaciones.length - habitacionesOcupadas.length;
+async function initAdminPanel() {
+  try {
+    await cargarDatos();
+    renderEstadisticas();
+    renderGrafico();
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudieron cargar los datos del panel",
+    });
+  }
+}
 
-// Mostrar valores en el reporte
-document.getElementById("repHabitaciones").textContent = habitaciones.length;
-document.getElementById("repReservas").textContent = reservas.length;
-document.getElementById("repUsuarios").textContent = usuarios.length;
+// ===============================
+// CARGAR DATOS DESDE BACKEND
+// ===============================
+async function cargarDatos() {
+  try {
+    [usuarios, reservas, habitaciones] = await Promise.all([
+      httpGet("/auth", true),          //  Usuarios desde /auth
+      httpGet("/reservas", true),      //  Reservas
+      httpGet("/habitaciones", true),  // Habitaciones
+    ]);
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo conectar con el backend",
+    });
+    // Para no romper el resto del código, inicializamos arrays vacíos
+    usuarios = [];
+    reservas = [];
+    habitaciones = [];
+  }
+}
 
-document.getElementById("repDisponibles").textContent = habitacionesDisponibles;
-document.getElementById("repOcupadas").textContent = habitacionesOcupadas.length;
+// ===============================
+// ESTADÍSTICAS
+// ===============================
+function renderEstadisticas() {
+  try {
+    const ocupadasIds = reservas.map(r => r.idHabitacion);
+    const habitacionesOcupadas = habitaciones.filter(h =>
+      ocupadasIds.includes(h.id)
+    );
 
-//=============================  Botones de Descargas
+    const disponibles = habitaciones.length - habitacionesOcupadas.length;
+
+    // Cards superiores
+    document.getElementById("totalHabitaciones").textContent = habitaciones.length;
+    document.getElementById("reservasActivas").textContent = reservas.length;
+    document.getElementById("totalUsuarios").textContent = usuarios.length;
+
+    // Reporte
+    document.getElementById("repHabitaciones").textContent = habitaciones.length;
+    document.getElementById("repReservas").textContent = reservas.length;
+    document.getElementById("repUsuarios").textContent = usuarios.length;
+    document.getElementById("repDisponibles").textContent = disponibles;
+    document.getElementById("repOcupadas").textContent = habitacionesOcupadas.length;
+
+    // Guardar para PDF / CSV
+    window.__reporte = {
+      disponibles,
+      ocupadas: habitacionesOcupadas.length,
+    };
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudieron calcular las estadísticas",
+    });
+  }
+}
+
+// ===============================
+// GRÁFICO
+// ===============================
+function renderGrafico() {
+  try {
+    const ctx = document.getElementById("graficoHabitaciones");
+
+    new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Disponibles", "Ocupadas"],
+        datasets: [
+          {
+            data: [window.__reporte.disponibles, window.__reporte.ocupadas],
+            backgroundColor: ["#28a745", "#dc3545"],
+            borderWidth: 1,
+          },
+        ],
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo renderizar el gráfico",
+    });
+  }
+}
+
+// ===============================
+// DESCARGAS PDF / CSV
+// ===============================
 document.getElementById("btnPDF").addEventListener("click", generarPDF);
 document.getElementById("btnCSV").addEventListener("click", generarCSV);
 
-
-// =========================
-// GRAFICO (Chart.js)
-// =========================
-
-const ctx = document.getElementById("graficoHabitaciones");
-
-new Chart(ctx, {
-    type: "doughnut",
-    data: {
-        labels: ["Disponibles", "Ocupadas"],
-        datasets: [{
-            label: "Estado de Habitaciones",
-            data: [habitacionesDisponibles, habitacionesOcupadas.length],
-            backgroundColor: ["#28a745", "#dc3545"],
-            borderWidth: 1
-        }]
-    }
-});
-
-
-//--------------Función de descargas de Información
 function generarPDF() {
+  try {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
@@ -66,34 +139,64 @@ function generarPDF() {
     doc.text(`Total Habitaciones: ${habitaciones.length}`, 20, 40);
     doc.text(`Reservas Activas: ${reservas.length}`, 20, 50);
     doc.text(`Usuarios Registrados: ${usuarios.length}`, 20, 60);
-    doc.text(`Habitaciones Disponibles: ${habitacionesDisponibles}`, 20, 70);
-    doc.text(`Habitaciones Ocupadas: ${habitacionesOcupadas.length}`, 20, 80);
-
+    doc.text(`Habitaciones Disponibles: ${window.__reporte.disponibles}`, 20, 70);
+    doc.text(`Habitaciones Ocupadas: ${window.__reporte.ocupadas}`, 20, 80);
     doc.text("Fecha: " + new Date().toLocaleString(), 20, 100);
 
     doc.save("reporte-hospedate.pdf");
+
+    Swal.fire({
+      icon: "success",
+      title: "PDF generado",
+      text: "El reporte se descargó correctamente",
+    });
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo generar el PDF",
+    });
+  }
 }
 
 function generarCSV() {
+  try {
     const data = [
-        ["Métrica", "Valor"],
-        ["Total Habitaciones", habitaciones.length],
-        ["Reservas Activas", reservas.length],
-        ["Usuarios Registrados", usuarios.length],
-        ["Habitaciones Disponibles", habitacionesDisponibles],
-        ["Habitaciones Ocupadas", habitacionesOcupadas.length],
+      ["Métrica", "Valor"],
+      ["Total Habitaciones", habitaciones.length],
+      ["Reservas Activas", reservas.length],
+      ["Usuarios Registrados", usuarios.length],
+      ["Habitaciones Disponibles", window.__reporte.disponibles],
+      ["Habitaciones Ocupadas", window.__reporte.ocupadas],
     ];
 
-    let csvContent = data.map(e => e.join(",")).join("\n");
+    const csv = data.map(row => row.join(",")).join("\n");
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
-
     const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", "reporte-hospedate.csv");
+
+    link.href = url;
+    link.download = "reporte-hospedate.csv";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    Swal.fire({
+      icon: "success",
+      title: "CSV generado",
+      text: "El reporte se descargó correctamente",
+    });
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo generar el CSV",
+    });
+  }
 }
+
+
 

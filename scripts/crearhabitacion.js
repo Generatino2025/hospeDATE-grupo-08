@@ -1,117 +1,86 @@
-import { habitaciones as habitacionesBase } from "../assets/data/data.js";
-import { httpGet } from "./servicios/httpGet.js";
-
-export function inicializarLocalStorage() {
-  const habitacionesLS = localStorage.getItem("habitaciones");
-  if (!habitacionesLS) {
-    localStorage.setItem("habitaciones", JSON.stringify(habitacionesBase));
-  }
-}
-
-export async  function obtenerHabitaciones() {
-  // llamar del backend /habitaciones
-  try {
-    const response = await httpGet("habitaciones", false);
-    console.log(response)
-    return response
-  } catch (error) {
-    console.log("errorcito", error);
-  }
-}
-
-export function guardarHabitaciones(habitaciones) {
-  localStorage.setItem("habitaciones", JSON.stringify(habitaciones));
-}
-
-function generarId() {
-  const habitaciones = obtenerHabitaciones();
-  return "H" + (habitaciones.length + 1);
-}
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
+import { httpPost } from "./servicios/httpPost.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  inicializarLocalStorage();
-
   const form = document.getElementById("formHabitacion");
   const inputImagen = document.getElementById("imagen");
   const preview = document.getElementById("preview");
 
   if (!form) return;
 
-  if (inputImagen && preview) {
-    inputImagen.addEventListener("input", function () {
-      const url = this.value.trim();
-      const regex = /\.(jpg|jpeg|png)$/i;
+  // ===============================
+  // PREVIEW IMAGEN
+  // ===============================
+  inputImagen.addEventListener("input", () => {
+    const url = inputImagen.value.trim();
+    const regex = /\.(jpg|jpeg|png)$/i;
 
-      if (regex.test(url)) {
-        preview.src = url;
-        preview.style.display = "block";
-      } else {
-        preview.style.display = "none";
-      }
-    });
-  }
+    if (regex.test(url)) {
+      preview.src = url;
+      preview.style.display = "block";
+    } else {
+      preview.style.display = "none";
+    }
+  });
 
-  form.addEventListener("submit", function (e) {
+  // ===============================
+  // SUBMIT
+  // ===============================
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nombre = document.getElementById("nombre")?.value.trim() || "";
-    const tipo = document.getElementById("tipo")?.value || "";
-    const descripcion =
-      document.getElementById("descripcion")?.value.trim() || "";
-    const precioRaw = document.getElementById("precio")?.value.trim() || "";
-    const urlImagen = document.getElementById("imagen")?.value.trim() || "";
+    const numero = document.getElementById("nombre").value.trim();
+    const tipo = document.getElementById("tipo").value;
+    const descripcion = document.getElementById("descripcion").value.trim();
+    const precioRaw = document.getElementById("precio").value.trim();
+    const url_foto = inputImagen.value.trim();
 
-    if (!nombre || !tipo || !descripcion || !precioRaw || !urlImagen) {
-      Swal.fire({
-        icon: "warning",
-        title: "Campos incompletos",
-        text: "Por favor completa todos los campos.",
-      });
+    // VALIDACIONES
+    if (!numero || !tipo || !descripcion || !precioRaw || !url_foto) {
+      Swal.fire("Campos incompletos", "Completa todos los campos", "warning");
       return;
     }
 
-    const precio = Number(precioRaw);
-    if (!Number.isFinite(precio) || precio <= 0) {
-      Swal.fire({
-        icon: "warning",
-        title: "Precio inválido",
-        text: "Ingresa un precio numérico mayor a 0.",
-      });
+    const precioPorNoche = Number(precioRaw);
+    if (!Number.isFinite(precioPorNoche) || precioPorNoche <= 0) {
+      Swal.fire("Precio inválido", "El precio debe ser mayor a 0", "warning");
       return;
     }
 
-    const regex = /\.(jpg|jpeg|png)$/i;
-    if (!regex.test(urlImagen)) {
-      Swal.fire({
-        icon: "error",
-        title: "Imagen no válida",
-        text: "La URL debe terminar en .jpg, .jpeg o .png.",
-      });
+    if (!/\.(jpg|jpeg|png)$/i.test(url_foto)) {
+      Swal.fire("Imagen inválida", "La URL debe terminar en .jpg o .png", "error");
       return;
     }
 
+    // OBJETO EXACTO PARA EL BACKEND
     const nuevaHabitacion = {
-      id: generarId(),
-      numero: nombre,
+      numero,
       tipo,
-      capacidad: 2,
-      precio,
-      descripcion,
-      imagen: urlImagen,
-      disponible: true,
+      capacidad: 2, // fijo por ahora
+      precioPorNoche,
+      url_foto
     };
 
-    const habitaciones = obtenerHabitaciones();
-    habitaciones.push(nuevaHabitacion);
-    guardarHabitaciones(habitaciones);
+    try {
+      await httpPost("habitaciones", nuevaHabitacion, true);
 
-    Swal.fire({
-      icon: "success",
-      title: "Habitación creada",
-      text: "Se ha agregado correctamente.",
-    });
+      Swal.fire(
+        "Habitación creada",
+        "Se guardó correctamente en la base de datos",
+        "success"
+      ).then(() => {
+        form.reset();
+        preview.style.display = "none";
+      });
 
-    form.reset();
-    if (preview) preview.style.display = "none";
+    } catch (error) {
+      console.error(error);
+      Swal.fire(
+        "Error",
+        "No se pudo crear la habitación",
+        "error"
+      );
+    }
   });
 });
+
