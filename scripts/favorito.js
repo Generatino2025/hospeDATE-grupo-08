@@ -41,26 +41,27 @@ export function pintarFavoritos() {
 
   sinFavoritos.classList.add("d-none");
 
-  favoritos.forEach((habitacion) => {
+  favoritos.forEach((h) => {
     const card = `
       <div class="col-md-4">
         <div class="card room-card position-relative">
-          <img src="${habitacion.imagen}" class="room-img w-100" />
+          <img src="${h.url_foto}" class="room-img w-100" />
 
           <div class="favorite-btn favorito"
-               data-fav-id="${habitacion.id}">
+                         data-fav-id="${h.idHabitacion}">
+
             <i class="bi bi-heart-fill"></i>
           </div>
 
           <div class="card-body">
             <h5 class="fw-bold text-primary-dark">
-              Habitación ${habitacion.numero}
+              Habitación ${h.numero}
             </h5>
             <p class="text-muted">
-              Tipo: ${habitacion.tipo}
+              Tipo: ${h.tipo}
             </p>
             <h5 class="fw-bold text-accent">
-              $${habitacion.precio} / noche
+              $${h.precioPorNoche} / noche
             </h5>
           </div>
         </div>
@@ -81,8 +82,8 @@ function manejarEliminarFavorito(e) {
   const id = favBtn.dataset.favId;
 
   let favoritos = obtenerFavoritos();
-  favoritos = favoritos.filter(f => f.id !== id);
-
+  favoritos = favoritos.filter(f => Number(f.idHabitacion) !== Number(id));
+console.log(favoritos,  id)
   guardarFavoritos(favoritos);
 
   Swal.fire({
