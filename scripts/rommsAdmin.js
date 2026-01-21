@@ -25,9 +25,7 @@ async function cargarHabitaciones() {
   }
 }
 
-// ===============================
-// RENDER (ESTILO ORIGINAL)
-// ===============================
+
 function render(lista) {
   contenedor.innerHTML = "";
 
