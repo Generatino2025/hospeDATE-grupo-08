@@ -26,6 +26,6 @@ export async function httpGet(endpoint, isPrivate ) {
         console.log(response)
     }
 
-    return (await response).json();
+    return response.json();
 
 }
