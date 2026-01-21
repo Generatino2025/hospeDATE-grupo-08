@@ -2,7 +2,6 @@ import {
   inicializarLocalStorage,
   obtenerHabitaciones
 } from './crearhabitacion.js'
-import { hoyISO } from './utils/fechas.js'
 import {
   limpiarError,
   limpiarTodosErrores,
@@ -23,8 +22,6 @@ const modalReserva = new bootstrap.Modal(modalReservaElement)
 
 window.reservar = reservar
 
-//traigo las habitaciones a pintar
-const habitaciones = obtenerHabitaciones()
 document.getElementById('checkIn').addEventListener('change', () => {
   const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
@@ -38,9 +35,12 @@ document.getElementById('checkOut').addEventListener('change', () => {
 })
 
 //-------------Funcion para reservar----------------------//
-function reservar (idHabitacion) {
+async function reservar (idHabitacion) {
+    //traigo las habitaciones a pintar
+const habitaciones =  await obtenerHabitaciones()
+console.log(habitaciones)
   limpiarTodosErrores()
-  const habitacion = habitaciones.find(h => h.id === idHabitacion)
+  const habitacion = habitaciones?.find(h => h.id === idHabitacion)
   // Pintar habitación
   document.getElementById('habNumero').value = habitacion.numero
   document.getElementById('habTipo').value = habitacion.tipo
