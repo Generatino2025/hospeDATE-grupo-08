@@ -3,29 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Administración | hospeDATE</title>
+    <title>Servicios | HospeDATE</title>
 
     <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
 
     <!-- Icons -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
 
     <!-- Estilos -->
     <link rel="stylesheet" href="../styles/navFooter.css" />
-    <link rel="stylesheet" href="../styles/HabitacionesAdmin.css" />
+    <link rel="stylesheet" href="../styles/romms.css" />
   </head>
 
   <body class="layout-root">
-    <!-- NAVBAR -->
+
     <nav class="navbar navbar-expand-lg custom-navbar">
   <div class="container">
+
     <!-- LOGO -->
     <a class="navbar-brand text-light fw-bold" href="./adminvisual.html">
       <img
@@ -46,14 +45,14 @@
       data-bs-target="#menu"
       aria-controls="menu"
       aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <!-- MENU -->
     <div class="collapse navbar-collapse" id="menu">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
         <!-- INICIO -->
         <li class="nav-item">
           <a class="nav-link custom-nav-link" href="./adminvisual.html">
@@ -65,10 +64,9 @@
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle custom-nav-link"
-            href="#"
             role="button"
             data-bs-toggle="dropdown"
-          >
+            aria-expanded="false">
             Habitaciones
           </a>
           <ul class="dropdown-menu">
@@ -109,73 +107,50 @@
         </ul>
         </li>
 
+
         <!-- RESERVAS -->
         <li class="nav-item">
-          <a
-            class="nav-link custom-nav-link"
-            href="./reservaAdministrador.html"
-          >
+          <a class="nav-link custom-nav-link" href="./reservaAdministrador.html">
             Reservas
           </a>
         </li>
 
-        <!-- LOGIN / LOGOUT -->
+        <!-- LOGIN -->
         <li class="nav-item" id="navLogin">
           <a class="nav-link custom-nav-link" href="./login.html">
             Iniciar Sesión
           </a>
         </li>
 
+        <!-- LOGOUT -->
         <li class="nav-item" id="navLogout" style="display: none">
           <a class="nav-link custom-nav-link" href="#" id="btnLogout">
             Cerrar Sesión
           </a>
         </li>
+
       </ul>
     </div>
   </div>
 </nav>
 
-
-    <!-- CONTENIDO -->
-    <div class="container mt-5">
-      <div class="container-reservas">
-        <h2 class="fw-bold text-primary mb-4 text-center">
-          Gestión de Reservas
-        </h2>
-
-        <!-- BUSCADOR -->
-        <div class="d-flex justify-content-center mb-3">
-          <input
-            type="text"
-            id="buscar"
-            class="form-control buscador-reservas"
-            placeholder="Buscar por nombre, ID o habitación"
-          />
-        </div>
-
-        <!-- BUSCADOR POR FECHAS -->
-        <div class="row g-2 justify-content-center mb-4">
-          <div class="col-md-3 col-sm-6">
-            <input type="date" id="fechaInicio" class="form-control" />
-          </div>
-
-          <div class="col-md-3 col-sm-6">
-            <input type="date" id="fechaFin" class="form-control" />
-          </div>
-        </div>
-
-        <!-- TARJETAS -->
-        <div class="row g-4 justify-content-center" id="dashboardReservas">
-          <!-- cards -->
-        </div>
+    <div class="container py-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Servicios del Hotel</h2>
+        <input
+          id="buscador"
+          type="text"
+          class="form-control w-50"
+          placeholder="Buscar servicio..." />
       </div>
+
+      <div id="contenedorServicios" class="row g-4"></div>
     </div>
 
     <!-- FOOTER -->
-    <footer class="custom-footer mt-5">
+    <footer class="custom-footer text-center text-light py-4">
       <p class="mb-1">© 2025 — HospeDate</p>
-      <h2 style="color: white; font-style: italic; font-size: 1.1rem">
+      <h2 style="font-style: italic; font-size: 1.1rem">
         Transforma tu recepción, simplifica tu operación
       </h2>
       <small>Todos los derechos reservados</small>
@@ -183,42 +158,9 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="../scripts/reservasAdministrador.js"></script>
+    <script type="module" src="../scripts/serviciosAdmin.js"></script>
     <script type="module" src="../scripts/authNavbar.js"></script>
-    <!-- <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const usuarioActual = sessionStorage.getItem("usuarioActual");
-
-        const navLogin = document.getElementById("navLogin");
-        const navLogout = document.getElementById("navLogout");
-        const btnLogout = document.getElementById("btnLogout");
-
-        // Cambiar navbar dependiendo del login
-        if (usuarioActual) {
-          navLogin.style.display = "none";
-          navLogout.style.display = "block";
-        } else {
-          navLogin.style.display = "block";
-          navLogout.style.display = "none";
-        }
-
-        // Evento de logout
-        if (btnLogout) {
-          btnLogout.addEventListener("click", function () {
-            sessionStorage.removeItem("usuarioActual");
-
-            Swal.fire({
-              icon: "success",
-              title: "Sesión cerrada",
-            }).then(() => {
-              window.location.href = "./login.html";
-            });
-          });
-        }
-      });
-    </script> -->
-    <script src="../scripts/session.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
