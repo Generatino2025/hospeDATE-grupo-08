@@ -3,7 +3,7 @@ import {
   actualizarCalculos,
   validarFormularioReserva,
 } from "./reservarParaUsuario.js";
-import { listarReservas } from "./utils/HttpsParaReservas.js";
+import { listarReservas, putReserva } from "./utils/HttpsParaReservas.js";
 import { limpiarTodosErrores } from "./utils/validacionesErrores.js";
 
 let reservas = [];
@@ -181,23 +181,29 @@ filtros.addEventListener("click", (e) => {
 });
 
 window.cancelarReserva = function (idReserva) {
-  Swal.fire({
+    const index = reservas.find((r) => r.idReserva == idReserva);
+     Swal.fire({
     title: "¿Cancelar reserva?",
     text: "Esta acción no se puede deshacer",
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Sí, cancelar",
     cancelButtonText: "No",
-  }).then((result) => {
+  }).then(async (result) => {
     if (!result.isConfirmed) return;
-
-    const index = reservas.findIndex((r) => r.idReserva === idReserva);
+  
     if (index === -1) return;
 
-    reservas[index].estado = "CANCELADA";
-    localStorage.setItem("reservas", JSON.stringify(reservas));
+  const payloadReserva = {
+    estado: "CANCELADA",
+    notas: index.value,
+    checkIn: index.fechaReserva.checkIn,
+    checkOut: index.fechaReserva.checkOut
+  };
+  await putReserva(payloadReserva, idReserva, true)
+  await cargarReservas();
+  renderReservas(respuesta, document.querySelector(".btn.active").dataset.estado);
 
-    renderReservas(document.querySelector(".btn.active").dataset.estado);
   });
 };
 
