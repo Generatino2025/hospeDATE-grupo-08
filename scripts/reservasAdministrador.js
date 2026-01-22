@@ -1,24 +1,39 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
-import { reservas as reservasBase } from "../assets/data/data.js";
+import { httpGet, httpPut, httpDelete } from "./servicios/httpServicios.js"; // asegúrate de tener tus servicios
 
-// ----------------------------------------------------
-// INICIALIZAR RESERVAS
-// ----------------------------------------------------
-if (!localStorage.getItem("reservas")) {
-  localStorage.setItem("reservas", JSON.stringify(reservasBase));
-}
-
-let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
-console.log(reservas)
+// Contenedores y filtros
 const dashboard = document.getElementById("dashboardReservas");
 const inputBuscar = document.getElementById("buscar");
 const inputFechaInicio = document.getElementById("fechaInicio");
 const inputFechaFin = document.getElementById("fechaFin");
 
-// ----------------------------------------------------
-// FUNCIÓN PARA CREAR TARJETA
-// ----------------------------------------------------
-function crearTarjeta(reserva, index) {
+// Variables globales
+let reservas = [];
+let habitaciones = [];
+
+// ===========================
+// Cargar datos desde backend
+// ===========================
+async function cargarDatos() {
+  try {
+    // Traer habitaciones
+    habitaciones = await httpGet("habitaciones", true); // true = privado (admin)
+    // Traer reservas
+    reservas = await httpGet("reservas", true);
+
+    renderReservas();
+  } catch (error) {
+    console.error("Error al cargar datos del backend:", error);
+    Swal.fire("Error", "No se pudieron cargar las reservas desde el servidor.", "error");
+  }
+}
+
+// ===========================
+// Crear tarjeta de reserva
+// ===========================
+function crearTarjeta(reserva) {
+  const habitacion = habitaciones.find(h => h.idHabitacion === reserva.idHabitacion);
+
   const card = document.createElement("div");
   card.className = "col-md-4";
 
@@ -27,9 +42,9 @@ function crearTarjeta(reserva, index) {
       <div class="card-header">Reserva #${reserva.idReserva}</div>
       <div class="card-body">
         <p><strong>Huésped:</strong> ${reserva.huesped.nombre} ${reserva.huesped.apellido}</p>
-        <p><strong>Habitación:</strong> ${reserva.habitacion.numero} (${reserva.habitacion.tipo})</p>
+        <p><strong>Habitación:</strong> ${habitacion ? habitacion.numero + " (" + habitacion.tipo + ")" : "N/D"}</p>
         <p><strong>Fechas:</strong> ${reserva.fechas.checkIn} - ${reserva.fechas.checkOut} (${reserva.fechas.noches} noches)</p>
-        <p><strong>Pago:</strong> Total USD ${reserva.pago.montoTotal} | Pagado USD ${reserva.pago.montoPagado} | Saldo USD ${reserva.pago.saldoPendiente}</p>
+        <p><strong>Pago:</strong> Total $${reserva.pago.montoTotal} | Pagado $${reserva.pago.montoPagado} | Saldo $${reserva.pago.saldoPendiente}</p>
         <p><strong>Estado:</strong>
           <span class="badge ${reserva.estado === "confirmada" ? "bg-success" : "bg-danger"}">
             ${reserva.estado}
@@ -37,8 +52,8 @@ function crearTarjeta(reserva, index) {
         </p>
       </div>
       <div class="card-footer acciones-footer">
-        <button class="btn btn-edit btn-sm" onclick="editarReserva(${index})">Editar</button>
-        <button class="btn btn-delete btn-sm" onclick="eliminarReserva(${index})">Eliminar</button>
+        <button class="btn btn-edit btn-sm" onclick="editarReserva(${reserva.idReserva})">Editar</button>
+        <button class="btn btn-delete btn-sm" onclick="eliminarReserva(${reserva.idReserva})">Eliminar</button>
       </div>
     </div>
   `;
@@ -46,75 +61,48 @@ function crearTarjeta(reserva, index) {
   dashboard.appendChild(card);
 }
 
-// ----------------------------------------------------
-// RENDERIZAR RESERVAS (TEXTO + FECHAS)
-// ----------------------------------------------------
-function renderReservas(filtroTexto = "") {
+// ===========================
+// Renderizar reservas con filtro
+// ===========================
+function renderReservas() {
   dashboard.innerHTML = "";
 
-  const fechaInicio = inputFechaInicio?.value;
-  const fechaFin = inputFechaFin?.value;
+  const filtroTexto = inputBuscar.value.toLowerCase();
+  const fechaInicio = inputFechaInicio?.value ? new Date(inputFechaInicio.value) : null;
+  const fechaFin = inputFechaFin?.value ? new Date(inputFechaFin.value) : null;
 
-  const lista = reservas.filter(r => {
+  const listaFiltrada = reservas.filter(r => {
     const cumpleTexto =
-      r.idReserva.toLowerCase().includes(filtroTexto.toLowerCase()) ||
-      r.huesped.nombre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
-      r.habitacion.numero.toString().includes(filtroTexto);
+      r.idReserva.toString().includes(filtroTexto) ||
+      r.huesped.nombre.toLowerCase().includes(filtroTexto) ||
+      (habitaciones.find(h => h.idHabitacion === r.idHabitacion)?.numero || "").toString().includes(filtroTexto);
 
     const checkIn = new Date(r.fechas.checkIn);
     const checkOut = new Date(r.fechas.checkOut);
 
-    const cumpleFechaInicio = fechaInicio
-      ? checkIn >= new Date(fechaInicio)
-      : true;
-
-    const cumpleFechaFin = fechaFin
-      ? checkOut <= new Date(fechaFin)
-      : true;
+    const cumpleFechaInicio = fechaInicio ? checkIn >= fechaInicio : true;
+    const cumpleFechaFin = fechaFin ? checkOut <= fechaFin : true;
 
     return cumpleTexto && cumpleFechaInicio && cumpleFechaFin;
   });
 
-  if (lista.length === 0) {
+  if (listaFiltrada.length === 0) {
     dashboard.innerHTML = `<p class="text-center">No se encontraron reservas.</p>`;
     return;
   }
 
-  lista.forEach(reserva => {
-    const indexReal = reservas.findIndex(
-      r => r.idReserva === reserva.idReserva
-    );
-    crearTarjeta(reserva, indexReal);
-  });
+  listaFiltrada.forEach(reserva => crearTarjeta(reserva));
 }
 
+// ===========================
+// Editar estado de reserva
+// ===========================
+window.editarReserva = async function(idReserva) {
+  const reserva = reservas.find(r => r.idReserva === idReserva);
+  if (!reserva) return;
 
-// ----------------------------------------------------
-// EVENTOS DE BÚSQUEDA
-// ----------------------------------------------------
-inputBuscar.addEventListener("input", () => {
-  renderReservas(inputBuscar.value);
-});
-
-inputFechaInicio?.addEventListener("change", () => {
-  renderReservas(inputBuscar.value);
-});
-
-inputFechaFin?.addEventListener("change", () => {
-  renderReservas(inputBuscar.value);
-});
-
-// ----------------------------------------------------
-// EDITAR ESTADO
-// ----------------------------------------------------
-window.editarReserva = function (idReserva) {
-  const index = reservas.findIndex(r => r.idReserva === idReserva);
-  if (index === -1) return;
-
-  const reserva = reservas[index];
-
-  Swal.fire({
-    title: `Editar ${reserva.idReserva}`,
+  const { value, isConfirmed } = await Swal.fire({
+    title: `Editar estado de reserva #${idReserva}`,
     input: "select",
     inputOptions: {
       confirmada: "Confirmada",
@@ -123,38 +111,56 @@ window.editarReserva = function (idReserva) {
     inputValue: reserva.estado,
     showCancelButton: true,
     confirmButtonText: "Guardar"
-  }).then(result => {
-    if (result.isConfirmed) {
-      reservas[index].estado = result.value;
-      localStorage.setItem("reservas", JSON.stringify(reservas));
-      renderReservas(inputBuscar.value);
-    }
   });
+
+  if (isConfirmed) {
+    try {
+      // Actualizar en backend
+      reserva.estado = value;
+      await httpPut(`reservas/${idReserva}`, reserva, true);
+      await cargarDatos();
+      Swal.fire("Éxito", "El estado de la reserva se actualizó correctamente.", "success");
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error", "No se pudo actualizar la reserva.", "error");
+    }
+  }
 };
 
-// ----------------------------------------------------
-// ELIMINAR RESERVA
-// ----------------------------------------------------
-window.eliminarReserva = function (idReserva) {
-  const index = reservas.findIndex(r => r.idReserva === idReserva);
-  if (index === -1) return;
-
-  Swal.fire({
+// ===========================
+// Eliminar reserva
+// ===========================
+window.eliminarReserva = async function(idReserva) {
+  const confirmar = await Swal.fire({
     title: "¿Eliminar reserva?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Eliminar"
-  }).then(result => {
-    if (result.isConfirmed) {
-      reservas.splice(index, 1);
-      localStorage.setItem("reservas", JSON.stringify(reservas));
-      renderReservas(inputBuscar.value);
-    }
   });
+
+  if (confirmar.isConfirmed) {
+    try {
+      await httpDelete(`reservas/${idReserva}`, true);
+      await cargarDatos();
+      Swal.fire("Éxito", "Reserva eliminada correctamente.", "success");
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error", "No se pudo eliminar la reserva.", "error");
+    }
+  }
 };
 
-// ---------------------------------------------------
-// INICIAL
-// ---------------------------------------------------
-renderReservas();
+// ===========================
+// Eventos de filtros
+// ===========================
+inputBuscar.addEventListener("input", renderReservas);
+inputFechaInicio?.addEventListener("change", renderReservas);
+inputFechaFin?.addEventListener("change", renderReservas);
+
+// ===========================
+// Inicial
+// ===========================
+cargarDatos();
+
+
 

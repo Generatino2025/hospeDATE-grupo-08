@@ -1,117 +1,126 @@
-import { habitaciones as habitacionesBase } from "../assets/data/data.js";
-import { httpGet } from "./servicios/httpGet.js";
-
-export function inicializarLocalStorage() {
-  const habitacionesLS = localStorage.getItem("habitaciones");
-  if (!habitacionesLS) {
-    localStorage.setItem("habitaciones", JSON.stringify(habitacionesBase));
-  }
-}
-
-export async  function obtenerHabitaciones() {
-  // llamar del backend /habitaciones
-  try {
-    const response = await httpGet("habitaciones", false);
-    console.log(response)
-    return response
-  } catch (error) {
-    console.log("errorcito", error);
-  }
-}
-
-export function guardarHabitaciones(habitaciones) {
-  localStorage.setItem("habitaciones", JSON.stringify(habitaciones));
-}
-
-function generarId() {
-  const habitaciones = obtenerHabitaciones();
-  return "H" + (habitaciones.length + 1);
-}
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
+import { httpPost } from "./servicios/httpPost.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  inicializarLocalStorage();
-
   const form = document.getElementById("formHabitacion");
   const inputImagen = document.getElementById("imagen");
   const preview = document.getElementById("preview");
 
   if (!form) return;
 
-  if (inputImagen && preview) {
-    inputImagen.addEventListener("input", function () {
-      const url = this.value.trim();
-      const regex = /\.(jpg|jpeg|png)$/i;
+  // ===============================
+  // PREVIEW IMAGEN
+  // ===============================
+  inputImagen.addEventListener("input", () => {
+    const url = inputImagen.value.trim();
+    const regex = /\.(jpg|jpeg|png)$/i;
 
-      if (regex.test(url)) {
-        preview.src = url;
-        preview.style.display = "block";
-      } else {
-        preview.style.display = "none";
-      }
-    });
+    if (regex.test(url)) {
+      preview.src = url;
+      preview.style.display = "block";
+    } else {
+      preview.style.display = "none";
+    }
+  });
+
+  // ===============================
+  // FUNCIONES UX
+  // ===============================
+  function marcarInvalido(input) {
+    input.classList.add("is-invalid");
   }
 
-  form.addEventListener("submit", function (e) {
+  function limpiarErrores() {
+    document
+      .querySelectorAll(".is-invalid")
+      .forEach(el => el.classList.remove("is-invalid"));
+  }
+
+  // ===============================
+  // SUBMIT
+  // ===============================
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nombre = document.getElementById("nombre")?.value.trim() || "";
-    const tipo = document.getElementById("tipo")?.value || "";
-    const descripcion =
-      document.getElementById("descripcion")?.value.trim() || "";
-    const precioRaw = document.getElementById("precio")?.value.trim() || "";
-    const urlImagen = document.getElementById("imagen")?.value.trim() || "";
+    limpiarErrores();
 
-    if (!nombre || !tipo || !descripcion || !precioRaw || !urlImagen) {
-      Swal.fire({
-        icon: "warning",
-        title: "Campos incompletos",
-        text: "Por favor completa todos los campos.",
-      });
+    const numero = document.getElementById("numero").value.trim();
+    const tipo = document.getElementById("tipo").value;
+    const descripcion = document.getElementById("descripcion").value.trim();
+    const precioRaw = document.getElementById("precio").value.trim();
+    const url_foto = inputImagen.value.trim();
+
+    let hayErrores = false;
+
+    if (!numero) {
+      marcarInvalido(document.getElementById("numero"));
+      hayErrores = true;
+    }
+
+    if (!tipo) {
+      marcarInvalido(document.getElementById("tipo"));
+      hayErrores = true;
+    }
+
+    if (!descripcion) {
+      marcarInvalido(document.getElementById("descripcion"));
+      hayErrores = true;
+    }
+
+    if (!precioRaw || precioRaw <= 0) {
+      marcarInvalido(document.getElementById("precio"));
+      hayErrores = true;
+    }
+
+    if (!url_foto) {
+      marcarInvalido(document.getElementById("imagen"));
+      hayErrores = true;
+    }
+
+    if (hayErrores) {
+      Swal.fire(
+        "Formulario incompleto",
+        "Completa los campos marcados en rojo",
+        "warning"
+      );
+
+      document.querySelector(".is-invalid")?.focus();
       return;
     }
 
-    const precio = Number(precioRaw);
-    if (!Number.isFinite(precio) || precio <= 0) {
-      Swal.fire({
-        icon: "warning",
-        title: "Precio inválido",
-        text: "Ingresa un precio numérico mayor a 0.",
-      });
-      return;
-    }
-
-    const regex = /\.(jpg|jpeg|png)$/i;
-    if (!regex.test(urlImagen)) {
-      Swal.fire({
-        icon: "error",
-        title: "Imagen no válida",
-        text: "La URL debe terminar en .jpg, .jpeg o .png.",
-      });
-      return;
-    }
-
+    // ===============================
+    // OBJETO BACKEND
+    // ===============================
     const nuevaHabitacion = {
-      id: generarId(),
-      numero: nombre,
+      numero,
       tipo,
       capacidad: 2,
-      precio,
-      descripcion,
-      imagen: urlImagen,
-      disponible: true,
+      precioPorNoche: Number(precioRaw),
+      url_foto
     };
 
-    const habitaciones = obtenerHabitaciones();
-    habitaciones.push(nuevaHabitacion);
-    guardarHabitaciones(habitaciones);
+    try {
+      await httpPost("habitaciones", nuevaHabitacion, true);
 
-    Swal.fire({
-      icon: "success",
-      title: "Habitación creada",
-      text: "Se ha agregado correctamente.",
-    });
+      Swal.fire(
+        "Habitación creada",
+        "Se guardó correctamente en la base de datos",
+        "success"
+      ).then(() => {
+        form.reset();
+        preview.style.display = "none";
+      });
 
-    form.reset();
-    if (preview) preview.style.display = "none";
+    } catch (error) {
+      console.error(error);
+      Swal.fire(
+        "Error",
+        "No se pudo crear la habitación",
+        "error"
+      );
+    }
   });
 });
+
+
+
