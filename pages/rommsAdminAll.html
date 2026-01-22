@@ -5,79 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habitaciones | Admin</title>
 
-  <!-- Bootstrap --> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" /> <!-- Icons --> <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" /> <!-- Estilos --> <link rel="stylesheet" href="../styles/navFooter.css" /> <link rel="stylesheet" href="../styles/romms.css" />
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../styles/navFooter.css" />
+  <link rel="stylesheet" href="../styles/romms.css" />
 </head>
 
 <body class="layout-root">
 
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg custom-navbar">
-      <div class="container">
-        <a
-          class="navbar-brand text-light fw-bold"
-          href="/pages/adminvisual.html"
-        >
-          <img
-            src="../assets/ImgsLogos/logoHospedate.png"
-            alt="Logo de Hospedate"
-            width="80"
-          />
-        </a>
+    <div class="container">
+      <a class="navbar-brand text-light fw-bold" href="/pages/adminvisual.html">
+        <img src="../assets/ImgsLogos/logoHospedate.png" alt="Logo de Hospedate" width="80"/>
+      </a>
 
-        <span class="bienvenido">Bienvenido,</span>
-        <span id="nombreUsuario" class="bienvenido"></span>
+      <span class="bienvenido">Bienvenido,</span>
+      <span id="nombreUsuario" class="bienvenido"></span>
 
-        <button
-          class="navbar-toggler bg-light"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#menu"
-          aria-controls="menu"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <div class="collapse navbar-collapse" id="menu">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./adminvisual.html"
-                >Inicio</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./crearhabitacion.html">
-                Crear Habitación</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./rommsAdminAll.html">
-                Habitaciones
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link custom-nav-link"
-                href="./reservaAdministrador.html"
-                >Reservas</a
-              >
-            </li>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link custom-nav-link" href="./adminvisual.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link custom-nav-link" href="./crearhabitacion.html">Crear Habitación</a></li>
+          <li class="nav-item"><a class="nav-link custom-nav-link" href="./rommsAdminAll.html">Habitaciones</a></li>
+          <li class="nav-item"><a class="nav-link custom-nav-link" href="./reservaAdministrador.html">Reservas</a></li>
 
-            <!-- LOGIN / LOGOUT DINÁMICO -->
-            <li class="nav-item" id="navLogin">
-              <a class="nav-link custom-nav-link" href="./login.html">Iniciar Sesión</a>
-            </li>
+          <li class="nav-item" id="navLogin">
+            <a class="nav-link custom-nav-link" href="./login.html">Iniciar Sesión</a>
+          </li>
 
-            <li class="nav-item" id="navLogout" style="display: none">
-              <a class="nav-link custom-nav-link" href="#" id="btnLogout"
-                >Cerrar Sesión</a
-              >
-            </li>
-          </ul>
-        </div>
+          <li class="nav-item" id="navLogout" style="display:none">
+            <a class="nav-link custom-nav-link" href="#" id="btnLogout">Cerrar Sesión</a>
+          </li>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
   <!-- CONTENIDO -->
   <div class="container py-5">
@@ -88,7 +60,7 @@
         id="buscador"
         type="text"
         class="form-control w-50"
-        placeholder="Buscar por número, tipo o capacidad" />
+        placeholder="Buscar por número, tipo o capacidad"/>
     </div>
 
     <!-- CONTENEDOR -->
@@ -101,9 +73,41 @@
     <small>Todos los derechos reservados</small>
   </footer>
 
+<!-- MODAL EDITAR HABITACIÓN -->
+<div class="modal fade" id="modalEditar" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Habitación</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="editId">
+
+        <input id="editNumero" class="form-control mb-2" placeholder="Número">
+        <input id="editTipo" class="form-control mb-2" placeholder="Tipo">
+        <input id="editCapacidad" type="number" class="form-control mb-2" placeholder="Capacidad">
+        <input id="editPrecio" type="number" class="form-control mb-2" placeholder="Precio">
+        <textarea id="editDescripcion" class="form-control mb-2" placeholder="Descripción"></textarea>
+        <input id="editImagen" class="form-control mb-2" placeholder="URL Imagen">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" id="btnGuardarCambios">Guardar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
   <!-- Scripts -->
   <script type="module" src="../scripts/rommsAdmin.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
