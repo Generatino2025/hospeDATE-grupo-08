@@ -1,8 +1,5 @@
-import {
-  inicializarLocalStorage,
-  obtenerHabitaciones
-} from "./crearhabitacion.js";
 import { reservar } from "./reservarParaUsuario.js";
+import { obtenerHabitaciones } from "./utils/HttpsParaReservas.js";
 
 const FAVORITOS_KEY = "favoritos";
 
@@ -28,9 +25,6 @@ function obtenerFavoritos() {
 function guardarFavoritos(favs) {
   localStorage.setItem(FAVORITOS_KEY, JSON.stringify(favs));
 }
-
-inicializarLocalStorage();
-
 
 export  async function pintarHabitacionesDisponibles() {
   const contenedor = document.getElementById("habitacionesGrid");

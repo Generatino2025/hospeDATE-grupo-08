@@ -1,10 +1,13 @@
-export function hoyISO() {
-  return new Date().toISOString().split('T')[0]
+
+
+export function formatFechaUI(fechaISO) {
+  const date = new Date(fechaISO);
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
 }
 
-export function rangoSeCruza(aInicio, aFin, bInicio, bFin) {
-  return (
-    new Date(aInicio) < new Date(bFin) &&
-    new Date(aFin) > new Date(bInicio)
-  )
-}
+
