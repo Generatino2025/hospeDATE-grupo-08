@@ -7,7 +7,9 @@ import { listarReservas } from "./utils/HttpsParaReservas.js";
 import { limpiarTodosErrores } from "./utils/validacionesErrores.js";
 
 let reservas = [];
-let respuesta = []
+let respuesta = [];
+let reservaEnEdicion = null;
+
 document.addEventListener('DOMContentLoaded', function () {
   cargarReservas();
   obtenerReservasUsuario();
@@ -27,6 +29,7 @@ function obtenerReservasUsuario(id) {
 }
 
 // export function separarReservas(reservasUsuario) {
+//   console.log(reservasUsuario)
 //   return {
 //     activas: reservasUsuario.filter(
 //       (r) => r.estado === "ACTIVA" && r.fechas.checkOut >= hoy
@@ -39,39 +42,8 @@ function obtenerReservasUsuario(id) {
 // }
 
  
-async function actualizarReservaBackend(reserva) {
-  limpiarTodosErrores();
-
-  const idsServicios = [...document.querySelectorAll('.serv-adicional:checked')]
-    .map(s => Number(s.dataset.id));
-
-  const payloadReserva = {
-    estado: reserva.estado,
-    notas: notas.value,
-    checkIn: new Date(checkIn.value).toISOString(),
-    checkOut: new Date(checkOut.value).toISOString()
-  };
-
-  await putReserva(reserva.idReserva, payloadReserva);
-
-  await putServiciosReserva(reserva.idReserva, { idsServicios });
-
-  if (reserva.pago) {
-    await putPago(reserva.pago.idPago, {
-      montoPagado: Number(abono.value),
-      metodo: metodoPago.value
-    });
-  }
-
-  Swal.fire("Actualizada", "Reserva modificada correctamente", "success");
-
-  modalReserva.hide();
-  await cargarReservas();
-}
-
-
 ///--------------------------------------------------------///
-//let reservaEnEdicion = null;
+//
 
 // function filtrarReservasPorFecha(desde, hasta) {
 //   return reservas.filter((r) =>
@@ -110,7 +82,7 @@ const filtros = document.getElementById("filtrosEstado");
 export function renderReservas(reservasUsuario, estado = "TODAS") {
   listaReservas.innerHTML = "";
   sinReservas.classList.add("d-none");
-console.log(reservasUsuario)
+
   const filtradas =
     estado === "TODAS"
       ? reservasUsuario
@@ -205,7 +177,7 @@ filtros.addEventListener("click", (e) => {
   e.target.classList.add("btn-primary", "active");
   e.target.classList.remove("btn-outline-primary");
 
-  renderReservas(e.target.dataset.estado);
+  renderReservas(respuesta, e.target.dataset.estado);
 });
 
 window.cancelarReserva = function (idReserva) {
@@ -228,6 +200,37 @@ window.cancelarReserva = function (idReserva) {
     renderReservas(document.querySelector(".btn.active").dataset.estado);
   });
 };
+
+
+// ---- los campos del modal
+// ==================
+const modalReservaElement = document.getElementById("modalReserva");
+const modalReserva = new bootstrap.Modal(modalReservaElement);
+
+const habNumero = document.getElementById("habNumero");
+const habTipo = document.getElementById("habTipo");
+const habPrecio = document.getElementById("habPrecio");
+
+const userNombre = document.getElementById("userNombre");
+const userApellido = document.getElementById("userApellido");
+const userTipoDoc = document.getElementById("userTipoDoc");
+const userNumDoc = document.getElementById("userNumDoc");
+const userTel = document.getElementById("userTel");
+
+const checkIn = document.getElementById("checkIn");
+const checkOut = document.getElementById("checkOut");
+
+const precioPorNoche = document.getElementById("precioPorNoche");
+const cantidadNoches = document.getElementById("cantidadNoches");
+const montoTotalInput = document.getElementById("montoTotal");
+const saldoPendiente = document.getElementById("saldoPendiente");
+
+const metodoPago = document.getElementById("metodoPago");
+const abono = document.getElementById("abono");
+
+const notas = document.getElementById("notas");
+
+const btnConfirmarReserva = document.getElementById("btnConfirmarReserva");
 
 window.editarReserva = function (idReserva) {
   const reserva = respuesta?.find((r) => r.idReserva == idReserva);
@@ -288,92 +291,33 @@ function cargarReservaEnModal(reserva) {
 }
 
 
-// INIT
-// renderReservas();
+async function actualizarReservaBackend(reserva) {
+  limpiarTodosErrores();
 
-// function cargarReservaEnModal(reserva) {
-//   reservaEnEdicion = reserva;
+  const idsServicios = [...document.querySelectorAll('.serv-adicional:checked')]
+    .map(s => Number(s.dataset.id));
 
-//   const habitacion = habitaciones.find(
-//     (h) => h.id === reserva.habitacion.idHabitacion
-//   );
+  const payloadReserva = {
+    estado: reserva.estado,
+    notas: notas.value,
+    checkIn: new Date(checkIn.value).toISOString(),
+    checkOut: new Date(checkOut.value).toISOString()
+  };
 
-//   // HABITACION
-//   habNumero.value = habitacion.numero;
-//   habTipo.value = habitacion.tipo;
-//   habPrecio.value = habitacion.precio;
+  await putReserva(reserva.idReserva, payloadReserva);
 
-//   // USER
-//   userNombre.value = reserva.huesped.nombre;
-//   userApellido.value = reserva.huesped.apellido;
-//   userTipoDoc.value = reserva.huesped.tipoDoc;
-//   userNumDoc.value = reserva.huesped.numeroDoc;
-//   userTel.value = reserva.huesped.telefono;
+  await putServiciosReserva(reserva.idReserva, { idsServicios });
 
-//   // FECHAS
-//   checkIn.value = reserva.fechas.checkIn;
-//   checkOut.value = reserva.fechas.checkOut;
+  if (reserva.pago) {
+    await putPago(reserva.pago.idPago, {
+      montoPagado: Number(abono.value),
+      metodo: metodoPago.value
+    });
+  }
 
-//   // PAGO
-//   metodoPago.value = reserva.pago.metodo;
-//   abono.value = reserva.pago.montoPagado;
+  Swal.fire("Actualizada", "Reserva modificada correctamente", "success");
 
-//   // NOTAS
-//   notas.value = reserva.notas || "";
+  modalReserva.hide();
+  await cargarReservas();
+}
 
-//   // SERVICIOS
-//   document.querySelectorAll(".serv-adicional").forEach((cb) => {
-//     cb.checked = reserva.serviciosAdicionales?.some(
-//       (s) => s.idServicio === cb.dataset.id
-//     );
-//   });
-
-//   // CALCULAR
-//   actualizarCalculos(habitacion);
-
-//   // BOTÓN
-//   btnConfirmarReserva.textContent = "Actualizar Reserva";
-//   btnConfirmarReserva.onclick = () => actualizarReserva(reserva, habitacion);
-
-//   modalReserva.show();
-// }
-
-// function actualizarReserva(reserva, habitacion) {
-//   limpiarTodosErrores();
-
-//   const checkInVal = checkIn.value;
-//   const checkOutVal = checkOut.value;
-
-//   const abonoValor = Number(abono.value);
-//   const metodo = metodoPago.value;
-
-//   if (!validarFormularioReserva(habitacion)) return;
-
-//   const noches = (new Date(checkOutVal) - new Date(checkInVal)) / 86400000;
-
-//   const resultado = actualizarCalculos(habitacion);
-
-//   reserva.fechas = {
-//     checkIn,
-//     checkOut,
-//     noches,
-//   };
-
-//   reserva.pago = {
-//     metodo,
-//     montoTotal: resultado.montoTotal,
-//     montoPagado: abonoValor,
-//     saldoPendiente: resultado.saldo,
-//     moneda: "USD",
-//   };
-
-//   reserva.serviciosAdicionales = resultado.servicios;
-//   reserva.notas = notas.value;
-
-//   localStorage.setItem("reservas", JSON.stringify(reservas));
-
-//   Swal.fire("Actualizada", "Reserva modificada correctamente", "success");
-
-//   modalReserva.hide();
-//   renderReservas(document.querySelector(".btn.active").dataset.estado);
-// }
