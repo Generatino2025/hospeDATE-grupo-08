@@ -117,3 +117,5 @@ buscador.addEventListener("input", () => {
   );
   render(filtradas);
 });
+
+//Conectando el crud
