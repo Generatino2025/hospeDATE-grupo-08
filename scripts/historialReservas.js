@@ -3,7 +3,8 @@ import {
   actualizarCalculos,
   validarFormularioReserva,
 } from "./reservarParaUsuario.js";
-import { listarReservas, putReserva } from "./utils/HttpsParaReservas.js";
+import { formatFechaUI } from "./utils/fechas.js";
+import { listarReservas, putReserva, putServiciosReservas } from "./utils/HttpsParaReservas.js";
 import { limpiarTodosErrores } from "./utils/validacionesErrores.js";
 
 let reservas = [];
@@ -28,53 +29,10 @@ function obtenerReservasUsuario(id) {
    renderReservas(respuesta);
 }
 
-// export function separarReservas(reservasUsuario) {
-//   console.log(reservasUsuario)
-//   return {
-//     activas: reservasUsuario.filter(
-//       (r) => r.estado === "ACTIVA" && r.fechas.checkOut >= hoy
-//     ),
-//     pasadas: reservasUsuario.filter(
-//       (r) => r.estado === "ACTIVA" && r.fechas.checkOut < hoy
-//     ),
-//     canceladas: reservasUsuario.filter((r) => r.estado === "CANCELADA"),
-//   };
-// }
-
- 
-///--------------------------------------------------------///
-//
-
-// function filtrarReservasPorFecha(desde, hasta) {
-//   return reservas.filter((r) =>
-//     rangoSeCruza(r.fechas.checkIn, r.fechas.checkOut, desde, hasta)
-//   );
-// }
-
-
-
-
-//const habitaciones = JSON.parse(localStorage.getItem("habitaciones")) || [];
-//const usuarioActual = JSON.parse(sessionStorage.getItem("usuarioActual"));
 
 const listaReservas = document.getElementById("listaReservas");
 const sinReservas = document.getElementById("sinReservas");
 const filtros = document.getElementById("filtrosEstado");
-
-// ----------------------------
-// SOLO RESERVAS DEL USUARIO
-// ----------------------------
-// const reservasUsuario = reservas.filter(
-//   (r) => r?.huesped?.numeroDoc === usuarioActual?.numeroDoc
-// );
-
-// ----------------------------
-// OBTENER IMAGEN HABITACIÓN
-// ----------------------------
-// function obtenerImagenHabitacion(idHabitacion) {
-//   const hab = habitaciones.find((h) => h.id === idHabitacion);
-//   return hab?.imagen || "https://via.placeholder.com/150";
-// }
 
 // ----------------------------
 // RENDER
@@ -134,7 +92,7 @@ export function renderReservas(reservasUsuario, estado = "TODAS") {
               </p>
 
               <p class="mb-1">
-                ${reserva.fechaReserva.checkIn} → ${reserva.fechaReserva.checkOut}
+                ${formatFechaUI(reserva.fechaReserva.checkIn)} → ${formatFechaUI(reserva.fechaReserva.checkOut)}
               </p>
 
               <p class="mb-1">
@@ -200,7 +158,7 @@ window.cancelarReserva = function (idReserva) {
     checkIn: index.fechaReserva.checkIn,
     checkOut: index.fechaReserva.checkOut
   };
-  await putReserva(payloadReserva, idReserva, true)
+  await putReserva(idReserva, payloadReserva,true)
   await cargarReservas();
   renderReservas(respuesta, document.querySelector(".btn.active").dataset.estado);
 
@@ -276,7 +234,7 @@ function cargarReservaEnModal(reserva) {
   checkOut.value = reserva.fechaReserva.checkOut.split("T")[0];
 
   // PAGO
-  metodoPago.value = reserva.pago?.metodo || "";
+  metodoPago.value = reserva?.pago?.metodo || "";
   abono.value = reserva.pago?.montoPagado || 0;
 
   // NOTAS
@@ -291,7 +249,7 @@ function cargarReservaEnModal(reserva) {
 
   btnConfirmarReserva.textContent = "Actualizar";
   btnConfirmarReserva.onclick = () =>
-    actualizarReservaBackend(reserva);
+  actualizarReservaBackend(reserva);
 
   modalReserva.show();
 }
@@ -310,16 +268,20 @@ async function actualizarReservaBackend(reserva) {
     checkOut: new Date(checkOut.value).toISOString()
   };
 
+  console.log(payloadReserva)
   await putReserva(reserva.idReserva, payloadReserva);
 
-  await putServiciosReserva(reserva.idReserva, { idsServicios });
-
-  if (reserva.pago) {
-    await putPago(reserva.pago.idPago, {
-      montoPagado: Number(abono.value),
-      metodo: metodoPago.value
-    });
+  if(idsServicios){
+  await putServiciosReservas(reserva.idReserva, { idsServicios });
   }
+
+
+  // if (reserva.pago) {
+  //   await putPago(reserva.pago.idPago, {
+  //     montoPagado: Number(abono.value),
+  //     metodo: metodoPago.value
+  //   });
+  // }
 
   Swal.fire("Actualizada", "Reserva modificada correctamente", "success");
 

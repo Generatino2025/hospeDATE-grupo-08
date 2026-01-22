@@ -24,7 +24,9 @@ export async function postReserva(data){
     console.log(error)
    }
 }
-export async function putReserva(data, id){
+export async function putReserva(id, data){
+   console.log(data,id)
+   await httpPut(`reservas/${id}`, data, true )
      try {
     const response = await httpPut(`reservas/${id}`, data, true )
     console.log(response)
@@ -46,7 +48,7 @@ export async function listarServicios() {
 }
 
 //put/reservas/{idreservas}/servicios
-export async function putServiciosReservas(data, id){
+export async function putServiciosReservas(id, data){
      try {
     const response = await httpPut(`reservas/${id}/servicios`, data, true )
     console.log(response)

@@ -12,8 +12,6 @@ let modalReserva = null
 
 // Me traigo lo del local y session storage
 export const user = JSON.parse(localStorage.getItem('user'))
-export let reservas = JSON.parse(localStorage.getItem('reservas')) || []
-let habitacionesGuardadas = JSON.parse(localStorage.getItem('habitaciones'))
 
 
 document.addEventListener('DOMContentLoaded', () => {
