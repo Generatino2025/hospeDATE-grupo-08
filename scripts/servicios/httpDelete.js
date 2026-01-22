@@ -25,4 +25,6 @@ export async function httpDelete(endpoint, isPrivate ) {
         console.log(response)
     }
 
-    }
+    //return await response.json();
+
+}

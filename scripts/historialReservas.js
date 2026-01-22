@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
 async function cargarReservas() {
   reservas = await listarReservas();
   if(user?.rol == "ADMIN"){
+    console.log(reservas)
     respuesta= reservas
     renderReservas(reservas);
   }else{

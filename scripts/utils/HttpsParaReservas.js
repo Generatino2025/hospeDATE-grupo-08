@@ -87,6 +87,18 @@ export async function putPago(idPago, data) {
 }
 
 
+//habitaciones
+// GetAll habitaciones
+export async function  obtenerHabitaciones (){
+    try {
+    const response = await httpGet("habitaciones", false )
+    console.log(response)
+    return response
+   } catch (error) {
+    console.log(error)
+   }
+}
+
 
 
 

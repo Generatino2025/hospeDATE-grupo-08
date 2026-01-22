@@ -1,5 +1,5 @@
-import { obtenerHabitaciones } from './crearhabitacion.js'
-import { listarServicios, postPago, postReserva, putServiciosReservas } from './utils/HttpsParaReservas.js'
+
+import { listarServicios, obtenerHabitaciones, postPago, postReserva, putServiciosReservas } from './utils/HttpsParaReservas.js'
 import {
   limpiarError,
   limpiarTodosErrores,
