@@ -22,62 +22,113 @@
 
   <body class="layout-root">
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg custom-navbar">
-      <div class="container">
-        <a class="navbar-brand text-light fw-bold"
-          href="/pages/adminvisual.html">
-          <img
-            src="../assets/ImgsLogos/logoHospedate.png"
-            alt="Logo de Hospedate"
-            width="80" />
-        </a>
-        <span id="nombreUsuario" class="bienvenido"></span>
+   <nav class="navbar navbar-expand-lg custom-navbar">
+  <div class="container">
 
-        <button
-          class="navbar-toggler bg-light"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#menu"
-          aria-controls="menu"
-          aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <!-- LOGO -->
+    <a class="navbar-brand text-light fw-bold" href="./adminvisual.html">
+      <img
+        src="../assets/ImgsLogos/logoHospedate.png"
+        alt="Logo de Hospedate"
+        width="80"
+      />
+    </a>
 
-        <div class="collapse navbar-collapse" id="menu">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link custom-nav-link"
-                href="./adminvisual.html">Inicio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./crearhabitacion.html">
-                Crear Habitación</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link custom-nav-link" href="./rommsAdminAll.html">
-                Habitaciones
+    <!-- BIENVENIDA -->
+    <span class="bienvenido">Bienvenido,</span>
+    <span id="nombreUsuario" class="bienvenido"></span>
+
+    <!-- TOGGLER -->
+    <button
+      class="navbar-toggler bg-light"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#menu"
+      aria-controls="menu"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- MENU -->
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+        <!-- INICIO -->
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" href="./adminvisual.html">
+            Inicio
+          </a>
+        </li>
+
+        <!-- HABITACIONES -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle custom-nav-link"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Habitaciones
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="./crearhabitacion.html">
+                Crear Habitación
               </a>
             </li>
-            <li class="nav-item">
-              <a
-                class="nav-link custom-nav-link"
-                href="./reservaAdministrador.html">Reservas</a>
-            </li>
-
-            <!-- LOGIN / LOGOUT DINÁMICO -->
-            <li class="nav-item" id="navLogin">
-              <a class="nav-link custom-nav-link" href="./login.html">Iniciar Sesión</a>
-            </li>
-
-            <li class="nav-item" id="navLogout" style="display: none">
-              <a class="nav-link custom-nav-link" href="#"
-                id="btnLogout">Cerrar Sesión</a>
+            <li>
+              <a class="dropdown-item" href="./rommsAdminAll.html">
+                Ver Habitaciones
+              </a>
             </li>
           </ul>
-        </div>
-      </div>
-    </nav>
+        </li>
+
+        <!-- SERVICIOS -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle custom-nav-link"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Servicios
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="./crearservicios.html">
+                Crear Servicio
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- RESERVAS -->
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" href="./reservaAdministrador.html">
+            Reservas
+          </a>
+        </li>
+
+        <!-- LOGIN -->
+        <li class="nav-item" id="navLogin">
+          <a class="nav-link custom-nav-link" href="./login.html">
+            Iniciar Sesión
+          </a>
+        </li>
+
+        <!-- LOGOUT -->
+        <li class="nav-item" id="navLogout" style="display: none">
+          <a class="nav-link custom-nav-link" href="#" id="btnLogout">
+            Cerrar Sesión
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
 
     <div class="container py-5">
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -107,7 +158,6 @@
     <script type="module" src="../scripts/main.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="../scripts/authNavbar.js"></script>
     <script type="module" src="../scripts/authNavbar.js"></script>
     <!-- <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -142,6 +192,7 @@
       });
     </script> -->
     <script src="../scripts/session.js"></script>
+    
 
   </body>
 </html>
