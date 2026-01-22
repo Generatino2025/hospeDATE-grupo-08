@@ -87,7 +87,8 @@ export async function putPago(idPago, data) {
 }
 
 
-//habitaciones
+//habitaciones 
+//debemos actualizar los datos
 // GetAll habitaciones
 export async function  obtenerHabitaciones (){
     try {
