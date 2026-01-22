@@ -15,7 +15,6 @@ export async function httpDelete(endpoint, isPrivate ) {
     }
 
     //petición
-
     const response = await fetch(`${ENV.API_URL}${endpoint}`, {
         method: "DELETE",
         headers    
@@ -26,6 +25,6 @@ export async function httpDelete(endpoint, isPrivate ) {
         console.log(response)
     }
 
-    return (await response).json();
+    //return await response.json();
 
 }
