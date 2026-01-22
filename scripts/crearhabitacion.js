@@ -24,40 +24,78 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===============================
+  // FUNCIONES UX
+  // ===============================
+  function marcarInvalido(input) {
+    input.classList.add("is-invalid");
+  }
+
+  function limpiarErrores() {
+    document
+      .querySelectorAll(".is-invalid")
+      .forEach(el => el.classList.remove("is-invalid"));
+  }
+
+  // ===============================
   // SUBMIT
   // ===============================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const numero = document.getElementById("nombre").value.trim();
+    limpiarErrores();
+
+    const numero = document.getElementById("numero").value.trim();
     const tipo = document.getElementById("tipo").value;
     const descripcion = document.getElementById("descripcion").value.trim();
     const precioRaw = document.getElementById("precio").value.trim();
     const url_foto = inputImagen.value.trim();
 
-    // VALIDACIONES
-    if (!numero || !tipo || !descripcion || !precioRaw || !url_foto) {
-      Swal.fire("Campos incompletos", "Completa todos los campos", "warning");
+    let hayErrores = false;
+
+    if (!numero) {
+      marcarInvalido(document.getElementById("numero"));
+      hayErrores = true;
+    }
+
+    if (!tipo) {
+      marcarInvalido(document.getElementById("tipo"));
+      hayErrores = true;
+    }
+
+    if (!descripcion) {
+      marcarInvalido(document.getElementById("descripcion"));
+      hayErrores = true;
+    }
+
+    if (!precioRaw || precioRaw <= 0) {
+      marcarInvalido(document.getElementById("precio"));
+      hayErrores = true;
+    }
+
+    if (!url_foto) {
+      marcarInvalido(document.getElementById("imagen"));
+      hayErrores = true;
+    }
+
+    if (hayErrores) {
+      Swal.fire(
+        "Formulario incompleto",
+        "Completa los campos marcados en rojo",
+        "warning"
+      );
+
+      document.querySelector(".is-invalid")?.focus();
       return;
     }
 
-    const precioPorNoche = Number(precioRaw);
-    if (!Number.isFinite(precioPorNoche) || precioPorNoche <= 0) {
-      Swal.fire("Precio inválido", "El precio debe ser mayor a 0", "warning");
-      return;
-    }
-
-    if (!/\.(jpg|jpeg|png)$/i.test(url_foto)) {
-      Swal.fire("Imagen inválida", "La URL debe terminar en .jpg o .png", "error");
-      return;
-    }
-
-    // OBJETO EXACTO PARA EL BACKEND
+    // ===============================
+    // OBJETO BACKEND
+    // ===============================
     const nuevaHabitacion = {
       numero,
       tipo,
-      capacidad: 2, // fijo por ahora
-      precioPorNoche,
+      capacidad: 2,
+      precioPorNoche: Number(precioRaw),
       url_foto
     };
 
@@ -83,4 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
 
