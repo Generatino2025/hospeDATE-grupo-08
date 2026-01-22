@@ -1,5 +1,5 @@
 import { obtenerHabitaciones } from './crearhabitacion.js'
-import { listarServicios } from './utils/HttpsParaReservas.js'
+import { listarServicios, postPago, postReserva, putServiciosReservas } from './utils/HttpsParaReservas.js'
 import {
   limpiarError,
   limpiarTodosErrores,
@@ -11,7 +11,7 @@ let servicios = []
 let modalReserva = null
 
 // Me traigo lo del local y session storage
-export const user = JSON.parse(sessionStorage.getItem('usuarioActual'))
+export const user = JSON.parse(localStorage.getItem('user'))
 export let reservas = JSON.parse(localStorage.getItem('reservas')) || []
 let habitacionesGuardadas = JSON.parse(localStorage.getItem('habitaciones'))
 
@@ -28,8 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     backdrop: 'static',
     keyboard: false
   })
-
-  console.log('Modal inicializado:', modalReserva)
 
   document.getElementById('checkIn').addEventListener('change', () => {
   const checkIn = document.getElementById('checkIn').value
@@ -77,8 +75,8 @@ export async function reservar (idHabitacion) {
   // Pintar usuario
   document.getElementById('userNombre').value = user.nombre
   document.getElementById('userApellido').value = user.apellido
-  document.getElementById('userTipoDoc').value = user.tipoDoc
-  document.getElementById('userNumDoc').value = user.numeroDoc
+  document.getElementById('userTipoDoc').value = user.tipo_doc
+  document.getElementById('userNumDoc').value = user.numero_doc
   document.getElementById('userTel').value = user.telefono
 
   // Eventos de recálculo
@@ -94,8 +92,6 @@ export async function reservar (idHabitacion) {
   return
 }
 
-modalReserva.show()
-
   // Mostrar modal
   modalReserva.show()
 
@@ -107,6 +103,11 @@ modalReserva.show()
 //-------------Funcion para  CREAR la reservar----------------------//
 async function crearReserva (habitacion) {
 
+  const serviciosSeleccionados = document.querySelectorAll('.serv-adicional:checked')
+
+  const idsServicios = [...serviciosSeleccionados].map(s =>
+    Number(s.dataset.id)
+  )
 
   const checkIn = document.getElementById('checkIn').value
   const checkOut = document.getElementById('checkOut').value
@@ -120,10 +121,6 @@ async function crearReserva (habitacion) {
   const fecha2 = new Date(checkOut)
   const noches = (fecha2 - fecha1) / 86400000
 
-  montoTotal =
-    noches * montoTotal + noches * servicios[0]?.precio + servicios[1]?.precio
-  const saldoPendiente = montoTotal - abono
-  console.log(montoTotal, saldoPendiente)
   if (noches <= 0) {
     Swal.fire(
       'Error',
@@ -143,62 +140,59 @@ async function crearReserva (habitacion) {
     }
   }
 
-  const nuevaReserva = {
-    idReserva: `R-${String(reservas.length + 1).padStart(4, '0')}`,
-    huesped: { ...user },
+ if (!validarFormularioReserva(habitacion)) return
 
-    habitacion: {
-      idHabitacion: habitacion.idHabitacion,
-      numero: habitacion.numero,
-      tipo: habitacion.tipo,
-      capacidad: habitacion.capacidad,
-      precioPorNoche: habitacion.precioPorNoche
-    },
+ const payloadReserva = {
+  idUsuario: user.idUsuario,
+  idHabitacion: habitacion.idHabitacion,
+  estado: 'ACTIVA',
+  notas: document.getElementById('notas').value || '',
+  checkIn: new Date(checkIn).toISOString(),
+  checkOut: new Date(checkOut).toISOString()
+}
 
-    fechas: {
-      checkIn,
-      checkOut,
-      noches
-    },
+const payloadServicios = {
+  idsServicios
+}
+const payloadPago = {
+  idReserva: null, // luego lo seteas
+  montoPagado: abono,
+  metodo: metodo.toUpperCase()
+}
 
-    pago: {
-      metodo,
-      montoTotal: montoTotal,
+  try {
+    //  Crear reserva
+    const reservaCreada = await postReserva(payloadReserva)
+    
+    const idReserva = reservaCreada.idReserva
+
+    // 2️⃣ Asociar servicios
+    if (idsServicios.length > 0) {
+      await putServiciosReservas(idReserva, {
+        idsServicios
+      })
+    }
+
+    await postPago({
+      idReserva,
       montoPagado: abono,
-      saldoPendiente,
-      moneda: 'USD'
-    },
-
-    serviciosAdicionales: [...servicios],
-    estado: 'ACTIVA', // ACTIVA | FINALIZADA | CANCELADA
-    notas: '',
-    creadaEn: new Date().toISOString()
-  }
-
-  reservas.push(nuevaReserva)
-
-  // Guardar en localStorage
-  localStorage.setItem('reservas', JSON.stringify(reservas))
-
-  Swal.fire({
-    title: 'Reserva Confirmada',
-    text: `La reserva ${nuevaReserva.idReserva} fue creada con éxito.`,
-    icon: 'success',
-    confirmButtonText: 'Aceptar'
-  }).then(() => {
-    // Actualizar la disponibilidad a false
-    habitacionesGuardadas = habitacionesGuardadas.map(h => {
-      if (h.id === habitacion.id) {
-        return { ...h, disponible: false }
-      }
-      return h
+      metodo: metodo.toUpperCase()
+    }, idReserva)
+  
+    
+    Swal.fire({
+      title: 'Reserva Confirmada',
+      icon: 'success',
+      text: `Reserva #${idReserva} fue creada con éxito.`,
+      timer: 2000
     })
 
-    localStorage.setItem('habitaciones', JSON.stringify(habitacionesGuardadas))
-
-    modalReserva.hide()
-    window.location.reload()
-  })
+   } catch (err) {
+    console.error(err)
+    Swal.fire('Error', 'No se pudo crear la reserva', 'error')
+  }
+   modalReserva.hide()
+ 
 }
 
 //-------------Funcion para Actualizar los MOntos a PAGAR---------------------//

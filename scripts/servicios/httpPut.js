@@ -15,7 +15,6 @@ export async function httpPut(endpoint, data, isPrivate ) {
     }
 
     //petición
-
     const response = await fetch(`${ENV.API_URL}${endpoint}`, {
         method: "PUT",
         headers,
@@ -27,6 +26,6 @@ export async function httpPut(endpoint, data, isPrivate ) {
         console.log(response)
     }
 
-    return response.json();
+    return await response.json();
 
 }
