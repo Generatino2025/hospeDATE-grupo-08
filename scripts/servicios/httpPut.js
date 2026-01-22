@@ -1,7 +1,6 @@
 import { ENV } from "../../env.js"
 import { getToken } from "./tokenServicio.js"
 
-
 export async function httpPut(endpoint, data, isPrivate ) {
     const headers ={
         "Content-Type": "application/json"

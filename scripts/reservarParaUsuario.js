@@ -12,8 +12,6 @@ let modalReserva = null
 
 // Me traigo lo del local y session storage
 export const user = JSON.parse(localStorage.getItem('user'))
-export let reservas = JSON.parse(localStorage.getItem('reservas')) || []
-let habitacionesGuardadas = JSON.parse(localStorage.getItem('habitaciones'))
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -208,7 +206,10 @@ export function actualizarCalculos (habitacion) {
 
   if (!checkIn || !checkOut) return
 
-  const noches = (new Date(checkOut) - new Date(checkIn)) / 86400000
+  const noches = Math.ceil(
+  (new Date(checkOut) - new Date(checkIn)) / 86400000
+);
+
   if (noches <= 0) return
 
   // Total base
@@ -303,7 +304,10 @@ export function validarFormularioReserva (habitacion) {
 
   if (!validarFechas(checkIn, checkOut)) return false
 
-  const noches = (new Date(checkOut) - new Date(checkIn)) / 86400000
+  const noches = Math.ceil(
+  (new Date(checkOut) - new Date(checkIn)) / 86400000
+);
+
 
   if (noches <= 0) return false
 
