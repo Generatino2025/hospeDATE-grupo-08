@@ -4,12 +4,13 @@ import {
   validarFormularioReserva,
 } from "./reservarParaUsuario.js";
 import { formatFechaUI } from "./utils/fechas.js";
-import { listarReservas, putReserva, putServiciosReservas } from "./utils/HttpsParaReservas.js";
+import { listarReservas, putPago, putReserva, putServiciosReservas } from "./utils/HttpsParaReservas.js";
 import { limpiarTodosErrores } from "./utils/validacionesErrores.js";
 
 let reservas = [];
 let respuesta = [];
 let reservaEnEdicion = null;
+const user= JSON.parse(localStorage.getItem("user"))
 
 document.addEventListener('DOMContentLoaded', function () {
   cargarReservas();
@@ -18,15 +19,19 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 async function cargarReservas() {
-  const user= JSON.parse(localStorage.getItem("user"))
   reservas = await listarReservas();
-  obtenerReservasUsuario(user.idUsuario)
+  if(user?.rol == "ADMIN"){
+    respuesta= reservas
+    renderReservas(reservas);
+  }else{
+   obtenerReservasUsuario(user.idUsuario)
+  } 
   
 }
 
-function obtenerReservasUsuario(id) {
+function obtenerReservasUsuario(id) { 
     respuesta = reservas?.filter((r) => r?.usuario?.idUsuario == id);
-   renderReservas(respuesta);
+    renderReservas(respuesta);
 }
 
 
@@ -41,8 +46,8 @@ export function renderReservas(reservasUsuario, estado = "TODAS") {
   listaReservas.innerHTML = "";
   sinReservas.classList.add("d-none");
 
-  const filtradas =
-    estado === "TODAS"
+  const filtradas =  
+    estado === "TODAS" 
       ? reservasUsuario
       : reservasUsuario.filter((r) => r?.estado === estado);
 
@@ -96,7 +101,7 @@ export function renderReservas(reservasUsuario, estado = "TODAS") {
               </p>
 
               <p class="mb-1">
-                Total: USD ${reserva.pago.montoTotal}
+                Total: USD ${reserva?.pago?.montoTotal}
               </p>
 
               <p class="mb-0">
@@ -245,7 +250,9 @@ function cargarReservaEnModal(reserva) {
     cb.checked = reserva.servicios.some(s => s.idServicio == cb.dataset.id);
   });
 
-  actualizarCalculos(reserva.habitacion);
+actualizarCalculos(reserva.habitacion);
+EventosCalculo(reserva.habitacion);
+
 
   btnConfirmarReserva.textContent = "Actualizar";
   btnConfirmarReserva.onclick = () =>
@@ -276,16 +283,26 @@ async function actualizarReservaBackend(reserva) {
   }
 
 
-  // if (reserva.pago) {
-  //   await putPago(reserva.pago.idPago, {
-  //     montoPagado: Number(abono.value),
-  //     metodo: metodoPago.value
-  //   });
-  // }
+  if (reserva.pago) {
+    await putPago(reserva.pago.idPago, {
+      montoPagado: Number(abono.value),
+      metodo: metodoPago.value
+    });
+  }
 
   Swal.fire("Actualizada", "Reserva modificada correctamente", "success");
 
   modalReserva.hide();
   await cargarReservas();
+}
+
+function EventosCalculo(habitacion) {
+  checkIn.onchange = () => actualizarCalculos(habitacion);
+  checkOut.onchange = () => actualizarCalculos(habitacion);
+  abono.oninput = () => actualizarCalculos(habitacion);
+
+  document.querySelectorAll('.serv-adicional').forEach(cb => {
+    cb.onchange = () => actualizarCalculos(habitacion);
+  });
 }
 

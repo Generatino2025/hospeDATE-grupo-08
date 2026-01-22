@@ -75,6 +75,18 @@ export async function postPago(data){
 }
 
 
+//Put/pago
+export async function putPago(idPago, data) {
+    try {
+    const response = await httpPut(`pagos/${idPago}`, data, true )
+    return response
+   } catch (error) {
+    console.log(error)
+   }
+  
+}
+
+
 
 
 

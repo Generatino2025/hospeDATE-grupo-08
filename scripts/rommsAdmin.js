@@ -21,7 +21,6 @@ function render (lista) {
     }</p>
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <span class="price-tag">$${h.precio}/noche</span>
-
                         
                     </div>
                 </div>
@@ -62,3 +61,6 @@ buscador.addEventListener('input', () => {
 
   render(filtradas)
 })
+
+
+

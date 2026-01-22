@@ -20,6 +20,7 @@
     <!-- Estilos -->
     <link rel="stylesheet" href="../styles/navFooter.css" />
     <link rel="stylesheet" href="../styles/HabitacionesAdmin.css" />
+    <link rel="stylesheet" href="../styles/historial.css" />
   </head>
 
   <body class="layout-root">
@@ -121,6 +122,209 @@
       </div>
     </div>
 
+<!-- Principal contenido de historial -->
+     <!-- TABS -->
+      <div class="tabs-container">
+        <div class="btn-group" id="filtrosEstado">
+          <button class="btn btn-primary active"
+            data-estado="TODAS">Todas</button>
+          <button class="btn btn-outline-primary"
+            data-estado="ACTIVA">Activas</button>
+          <button class="btn btn-outline-primary"
+            data-estado="FINALIZADA">Finalizadas</button>
+          <button class="btn btn-outline-primary"
+            data-estado="CANCELADA">Canceladas</button>
+        </div>
+      </div>
+
+      <!-- LISTADO -->
+      <section class="cards-container">
+        <div class="row g-4" id="listaReservas"></div>
+
+        <p id="sinReservas" class="text-muted text-center d-none mt-4">
+          No hay reservas para este filtro
+        </p>
+      </section>
+    </main>
+
+    <!-- MODAL RESERVA -->
+
+    <div
+      class="modal fade"
+      id="modalReserva"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">Registro de Reserva</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="formReserva">
+              <!-- HABITACIÓN -->
+              <h6 class="fw-bold">Habitación Seleccionada</h6>
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">Número</label>
+                  <input id="habNumero" class="form-control" disabled />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">Tipo</label>
+                  <input id="habTipo" class="form-control" disabled />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">Precio Noche</label>
+                  <input id="habPrecio" class="form-control" disabled />
+                </div>
+              </div>
+
+              <!-- HUÉSPED -->
+              <h6 class="fw-bold mt-4">Datos del Huésped</h6>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Nombre</label>
+                  <input id="userNombre" class="form-control" disabled />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Apellido</label>
+                  <input id="userApellido" class="form-control" disabled />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">Tipo Doc</label>
+                  <input id="userTipoDoc" class="form-control" disabled />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">Número Doc</label>
+                  <input id="userNumDoc" class="form-control" disabled />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">Teléfono</label>
+                  <input id="userTel" class="form-control" disabled />
+                </div>
+              </div>
+
+              <!-- FECHAS -->
+              <h6 class="fw-bold mt-4">Fechas de la Reserva</h6>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Ingreso</label>
+                  <input type="date" id="checkIn" class="form-control" />
+
+                  <small id="error-checkIn" class="text-danger"></small>
+
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Salida</label>
+                  <input type="date" id="checkOut" class="form-control" />
+                  <small id="error-checkOut" class="text-danger"></small>
+
+                </div>
+              </div>
+
+              <!-- SERVICIOS ADICIONALES -->
+              <h6 class="fw-bold mt-4">Servicios Adicionales</h6>
+              <div class="row mb-3 ps-2">
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input serv-adicional"
+                      type="checkbox"
+                      data-precio="20"
+                      data-id="D1"
+                      data-nombre="Desayuno buffet" />
+                    <label class="form-check-label">Desayuno buffet (USD
+                      20)</label>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input serv-adicional"
+                      type="checkbox"
+                      data-precio="35"
+                      data-id="T1"
+                      data-nombre="Transporte aeropuerto" />
+                    <label class="form-check-label">Transporte aeropuerto (USD
+                      35)</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RESUMEN DE COSTO -->
+              <h6 class="fw-bold mt-4">Resumen de costos</h6>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Precio por noche</label>
+                  <input id="precioPorNoche" class="form-control" readonly />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Noches</label>
+                  <input id="cantidadNoches" class="form-control" readonly />
+                </div>
+
+                <div class="col-md-6 mt-3">
+                  <label class="form-label fw-bold">Monto total</label>
+                  <input id="montoTotal" class="form-control" readonly />
+                </div>
+
+                <div class="col-md-6 mt-3">
+                  <label class="form-label fw-bold">Saldo pendiente</label>
+                  <input id="saldoPendiente" class="form-control" readonly />
+                </div>
+              </div>
+
+              <!-- PAGO -->
+              <h6 class="fw-bold mt-4">Pago</h6>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Método</label>
+                  <input id="metodoPago" class="form-control" readonly />
+                  <!-- <select id="metodoPago" class="form-control">
+                     
+                     <option value="tarjeta">Tarjeta</option>
+                    <option value="efectivo">Efectivo</option>
+                    <option value="transferencia">Transferencia</option>
+                  </select> -->
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Abono Inicial</label>
+                  <input
+                    type="number"
+                    id="abono"
+                    class="form-control"
+                    placeholder="0" />
+                  <small id="error-abono" class="text-danger"></small>
+
+                </div>
+              </div>
+
+              <!-- NOTAS -->
+              <h6 class="fw-bold mt-4">Notas</h6>
+              <textarea id="notas" class="form-control" rows="3"></textarea>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-primary fw-bold" id="btnConfirmarReserva">
+              Confirmar Reserva
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
     <!-- FOOTER -->
     <footer class="custom-footer mt-5">
       <p class="mb-1">© 2025 — HospeDate</p>
@@ -132,40 +336,9 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="../scripts/reservasAdministrador.js"></script>
+    <script type="module" src="../scripts/historialReservas.js"></script>
     <script type="module" src="../scripts/authNavbar.js"></script>
-    <!-- <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const usuarioActual = sessionStorage.getItem("usuarioActual");
-
-        const navLogin = document.getElementById("navLogin");
-        const navLogout = document.getElementById("navLogout");
-        const btnLogout = document.getElementById("btnLogout");
-
-        // Cambiar navbar dependiendo del login
-        if (usuarioActual) {
-          navLogin.style.display = "none";
-          navLogout.style.display = "block";
-        } else {
-          navLogin.style.display = "block";
-          navLogout.style.display = "none";
-        }
-
-        // Evento de logout
-        if (btnLogout) {
-          btnLogout.addEventListener("click", function () {
-            sessionStorage.removeItem("usuarioActual");
-
-            Swal.fire({
-              icon: "success",
-              title: "Sesión cerrada",
-            }).then(() => {
-              window.location.href = "./login.html";
-            });
-          });
-        }
-      });
-    </script> -->
+   
     <script src="../scripts/session.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

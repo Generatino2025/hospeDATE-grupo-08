@@ -206,7 +206,10 @@ export function actualizarCalculos (habitacion) {
 
   if (!checkIn || !checkOut) return
 
-  const noches = (new Date(checkOut) - new Date(checkIn)) / 86400000
+  const noches = Math.ceil(
+  (new Date(checkOut) - new Date(checkIn)) / 86400000
+);
+
   if (noches <= 0) return
 
   // Total base
@@ -301,7 +304,10 @@ export function validarFormularioReserva (habitacion) {
 
   if (!validarFechas(checkIn, checkOut)) return false
 
-  const noches = (new Date(checkOut) - new Date(checkIn)) / 86400000
+  const noches = Math.ceil(
+  (new Date(checkOut) - new Date(checkIn)) / 86400000
+);
+
 
   if (noches <= 0) return false
 
