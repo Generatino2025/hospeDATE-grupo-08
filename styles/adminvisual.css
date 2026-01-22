@@ -1,4 +1,6 @@
-/* --- COLORES PRINCIPALES --- */
+/* ===========================
+   COLORES PRINCIPALES
+=========================== */
 :root {
     --azul-oscuro: #03045E;
     --azul-medio: #0077B6;
@@ -9,7 +11,9 @@
     --rojo: #C62828;
 }
 
-/* ---- NAVBAR ---- */
+/* ===========================
+   NAVBAR
+=========================== */
 .admin-nav {
     background: var(--azul-oscuro);
     color: white;
@@ -34,7 +38,9 @@
     color: #ffdddd !important;
 }
 
-/* ---- HERO ---- */
+/* ===========================
+   HERO
+=========================== */
 .hero {
     background-image: url("../assets/ImgsBanner/bogotanight.jpg");
     background-position: center;
@@ -57,7 +63,9 @@
     color: white;
 }
 
-/* ---- STATS ---- */
+/* ===========================
+   STATS
+=========================== */
 .stats-container {
     margin: 40px auto;
     width: 90%;
@@ -84,7 +92,9 @@
     font-weight: bold;
 }
 
-/* ---- REPORTE ---- */
+/* ===========================
+   REPORTE
+=========================== */
 .reporte-container {
     width: 90%;
     margin: 40px auto;
@@ -99,7 +109,6 @@
 }
 
 .reporte-titulo {
-    text-align: center;
     color: var(--azul-oscuro);
     font-size: 2rem;
     font-weight: bold;
@@ -128,11 +137,24 @@
     font-size: 1.1rem;
 }
 
+/* ===========================
+   GRAFICO (CORREGIDO)
+=========================== */
 .grafico-contenedor {
-    width: 80%;
-    margin: 0 auto 30px auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 30px;
 }
 
+.grafico {
+    width: 320px;
+    height: 320px;
+}
+
+/* ===========================
+   BOTONES
+=========================== */
 .btn-descargar {
     padding: 10px 18px;
     border: none;
@@ -154,22 +176,14 @@
 .btn-descargar:hover {
     opacity: 0.8;
 }
-.grafico {
-    width: 50%;
-    max-width: 500px;
-    margin: 30px auto;
-    display: block;
-}
-
 
 /* ===========================
-   RESPONSIVE ADMIN DASHBOARD
+   RESPONSIVE
 =========================== */
 
-/* -------- TABLET (≤ 992px) -------- */
+/* -------- TABLET -------- */
 @media (max-width: 992px) {
 
-  /* NAVBAR */
   .admin-nav {
     padding: 16px 24px;
   }
@@ -179,12 +193,10 @@
     font-size: 0.95rem;
   }
 
-  /* HERO */
   .hero {
     padding: 90px 0;
   }
 
-  /* STATS */
   .stats-container {
     gap: 18px;
   }
@@ -193,7 +205,6 @@
     font-size: 2.1rem;
   }
 
-  /* REPORTE */
   .reporte-card {
     padding: 28px;
   }
@@ -207,15 +218,14 @@
   }
 
   .grafico {
-    width: 65%;
+    width: 280px;
+    height: 280px;
   }
 }
 
-
-/* -------- MOBILE (≤ 768px) -------- */
+/* -------- MOBILE -------- */
 @media (max-width: 768px) {
 
-  /* NAVBAR */
   .admin-nav {
     flex-direction: column;
     align-items: flex-start;
@@ -234,7 +244,6 @@
     font-size: 0.9rem;
   }
 
-  /* HERO */
   .hero {
     padding: 70px 0;
   }
@@ -243,7 +252,6 @@
     font-size: 1.8rem;
   }
 
-  /* STATS */
   .stats-container {
     flex-direction: column;
     gap: 15px;
@@ -257,7 +265,6 @@
     font-size: 1.9rem;
   }
 
-  /* REPORTE */
   .reporte-container {
     width: 95%;
   }
@@ -278,12 +285,9 @@
     font-size: 1rem;
   }
 
-  .grafico-contenedor {
-    width: 100%;
-  }
-
   .grafico {
-    width: 80%;
+    width: 240px;
+    height: 240px;
   }
 
   .btn-descargar {
@@ -292,11 +296,9 @@
   }
 }
 
-
-/* -------- SMALL MOBILE (≤ 480px) -------- */
+/* -------- SMALL MOBILE -------- */
 @media (max-width: 480px) {
 
-  /* NAVBAR */
   .admin-links {
     flex-direction: column;
     gap: 8px;
@@ -306,7 +308,6 @@
     font-size: 0.85rem;
   }
 
-  /* HERO */
   .hero {
     padding: 55px 0;
   }
@@ -315,12 +316,10 @@
     font-size: 1.5rem;
   }
 
-  /* STATS */
   .stat-card p {
     font-size: 1.6rem;
   }
 
-  /* REPORTE */
   .reporte-titulo {
     font-size: 1.4rem;
   }
@@ -330,6 +329,7 @@
   }
 
   .grafico {
-    width: 95%;
+    width: 200px;
+    height: 200px;
   }
 }
