@@ -1,51 +1,80 @@
-const usuario = JSON.parse(sessionStorage.getItem("usuarioActual"));
+import { httpPut } from "./servicios/httpPut.js";
+import { getToken } from "./servicios/tokenServicio.js";
 
-if (!usuario) {
-  Swal.fire("Error", "No hay usuario activo", "error");
-  window.location.href = "/pages/login.html";
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-// Cargar datos
-document.getElementById("nombre").value = usuario.nombre || "";
-document.getElementById("apellido").value = usuario.apellido || "";
-document.getElementById("tipoDoc").value = usuario.tipoDoc || "";
-document.getElementById("numeroDoc").value = usuario.numeroDoc || "";
-document.getElementById("correo").value = usuario.correo || "";
-document.getElementById("telefono").value = usuario.telefono || "";
+  const token = getToken();
+  const userJSON = localStorage.getItem("user");
+  const usuario = userJSON ? JSON.parse(userJSON) : null;
 
-// Foto
-const fotoPerfil = document.getElementById("fotoPerfil");
-if (usuario.foto) fotoPerfil.src = usuario.foto;
+  // 🔐 Validar sesion
+  if (!token || !usuario) {
+    Swal.fire("Error", "Debes iniciar sesión", "error").then(() => {
+      window.location.href = "./login.html";
+    });
+    return;
+  }
 
-// Subir nueva foto
-document.getElementById("inputFoto").addEventListener("change", e => {
-  const file = e.target.files[0];
-  if (!file) return;
+  // 🧪 DEBUG (puedes quitarlo luego)
+  console.log("USUARIO EN PERFIL:", usuario);
 
-  const reader = new FileReader();
-  reader.onload = () => {
-    fotoPerfil.src = reader.result;
-    usuario.foto = reader.result;
-  };
-  reader.readAsDataURL(file);
-});
+  // 📥 Cargar datos en el formulario
+  document.getElementById("nombre").value = usuario.nombre || "";
+  document.getElementById("apellido").value = usuario.apellido || "";
+  document.getElementById("tipoDoc").value = usuario.tipo_doc || "";
+  document.getElementById("numeroDoc").value = usuario.numero_doc || "";
+  document.getElementById("correo").value = usuario.correo || "";
+  document.getElementById("telefono").value = usuario.telefono || "";
 
-// Guardar cambios
-document.getElementById("formPerfil").addEventListener("submit", e => {
-  e.preventDefault();
+  // 🖼 Foto de perfil (si existe)
+  const fotoPerfil = document.getElementById("fotoPerfil");
+  if (usuario.foto) {
+    fotoPerfil.src = usuario.foto;
+  }
 
-  usuario.nombre = nombre.value;
-  usuario.apellido = apellido.value;
-  usuario.tipoDoc = tipoDoc.value;
-  usuario.numeroDoc = numeroDoc.value;
-  usuario.correo = correo.value;
-  usuario.telefono = telefono.value;
+  document.getElementById("inputFoto").addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  sessionStorage.setItem("usuarioActual", JSON.stringify(usuario));
-
-  Swal.fire({
-    icon: "success",
-    title: "Perfil actualizado",
-    text: "Tus datos se guardaron correctamente"
+    const reader = new FileReader();
+    reader.onload = () => {
+      fotoPerfil.src = reader.result;
+      usuario.foto = reader.result;
+    };
+    reader.readAsDataURL(file);
   });
+
+  // 💾 Guardar cambios
+  document.getElementById("formPerfil").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const datosActualizados = {
+      nombre: document.getElementById("nombre").value,
+      apellido: document.getElementById("apellido").value,
+      correo: document.getElementById("correo").value,
+      telefono: document.getElementById("telefono").value,
+      foto: usuario.foto
+    };
+
+    try {
+      const usuarioActualizado = await httpPut(
+        `auth/${usuario.idUsuario}`,
+        datosActualizados,
+        true
+      );
+
+      localStorage.setItem("user", JSON.stringify(usuarioActualizado));
+
+      Swal.fire({
+        icon: "success",
+        title: "Perfil actualizado",
+        text: "Tus datos se guardaron correctamente"
+      });
+
+    } catch (error) {
+      Swal.fire("Error", "No se pudo actualizar el perfil", "error");
+      console.error(error);
+    }
+  });
+
 });
