@@ -42,6 +42,8 @@ document.getElementById('checkOut').addEventListener('change', () => {
 
 //-------------Funcion para reservar----------------------//
 export async function reservar (idHabitacion) {
+  resetModalReserva();
+
   //-------------Lo cargo desde el backe----------//
   const habitaciones = await obtenerHabitaciones()
   const serviciosBackend = await listarServicios()
@@ -343,5 +345,27 @@ function pintarServicios(servicios) {
     `
     container.insertAdjacentHTML('beforeend', html)
   })
+}
+
+
+function resetModalReserva() {
+  limpiarTodosErrores();
+
+  document.getElementById('checkIn').value = '';
+  document.getElementById('checkOut').value = '';
+  document.getElementById('abono').value = '';
+  document.getElementById('metodoPago').value = '';
+  document.getElementById('notas').value = '';
+
+  document.getElementById('cantidadNoches').value = '';
+  document.getElementById('montoTotal').value = '';
+  document.getElementById('saldoPendiente').value = '';
+
+  servicios = [];
+  montoTotal = 0;
+
+  document.querySelectorAll('.serv-adicional').forEach(cb => {
+    cb.checked = false;
+  });
 }
 

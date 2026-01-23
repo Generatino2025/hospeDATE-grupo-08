@@ -11,6 +11,10 @@ html, body {
   margin: 0;
 }
 
+#listaReservas{
+  margin: 25px;
+}
+
 .historial-container {
   min-height: 100vh;
   padding: 2rem 3rem;
