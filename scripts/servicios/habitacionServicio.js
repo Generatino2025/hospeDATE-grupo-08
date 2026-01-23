@@ -1,13 +1,6 @@
-import { habitaciones as habitacionesBase } from "../assets/data/data.js";
 import { httpGet } from "./servicios/httpGet.js";
 
 const HAB_KEY = "habitaciones";
-
-export function inicializarLocalStorage() {
-  if (!localStorage.getItem(HAB_KEY)) {
-    localStorage.setItem(HAB_KEY, JSON.stringify(habitacionesBase));
-  }
-}
 
 export async function obtenerHabitaciones() {
   try {
