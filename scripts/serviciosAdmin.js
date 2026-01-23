@@ -1,8 +1,22 @@
+import {
+  obtenerServicios,
+  eliminarServicio
+} from "./services/serviciosService.js";
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const contenedor = document.getElementById("contenedorServicios");
   const buscador = document.getElementById("buscador");
 
-  let servicios = JSON.parse(localStorage.getItem("servicios")) || [];
+let servicios = [];
+
+async function cargarServicios() {
+  servicios = await obtenerServicios();
+  mostrarServicios(servicios);
+}
+
+cargarServicios();
+
 
   function mostrarServicios(lista) {
     contenedor.innerHTML = "";
@@ -50,27 +64,28 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  window.eliminarServicio = (index) => {
-    Swal.fire({
-      title: "¿Eliminar servicio?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar"
-    }).then(result => {
-      if (result.isConfirmed) {
-        servicios.splice(index, 1);
-        localStorage.setItem("servicios", JSON.stringify(servicios));
-        mostrarServicios(servicios);
-      }
-    });
-  };
+  window.borrarServicio = async (id) => {
+  const result = await Swal.fire({
+    title: "¿Eliminar servicio?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  });
+
+  if (result.isConfirmed) {
+    await eliminarServicio(id);
+    await cargarServicios();
+  }
+};
+
 
   
-  window.editarServicio = (index) => {
-    localStorage.setItem("servicioEditar", index);
-    window.location.href = "./crearservicios.html";
-  };
+  window.editarServicio = (id) => {
+  localStorage.setItem("servicioEditarId", id);
+  window.location.href = "./crearservicios.html";
+};
+
 
   mostrarServicios(servicios);
 });
