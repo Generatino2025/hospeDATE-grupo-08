@@ -1,7 +1,13 @@
-import { servicios } from "../../assets/data/data.js";
+import { servicios as serviciosBase } from "../../assets/data/data.js";
 import { httpGet } from "./httpGet";
 
 const SERV_KEY="servicios";
+
+export function inicializarLocalStorage() {
+  if (!localStorage.getItem(SERV_KEY)) {
+    localStorage.setItem(SERV_KEY, JSON.stringify(serviciosBase));
+  }
+}
 
 export async function obtenerServicios() {
     try {
