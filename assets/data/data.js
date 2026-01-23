@@ -317,3 +317,20 @@ export const reservas = [
     estado: 'pendiente'
   }
 ]
+
+export const servicios = [
+  {
+    id: "S1",
+    nombre: "Desayuno buffet",
+    descripcion: "Desayuno completo tipo buffet",
+    precio: 30000,
+    disponible: true
+  },
+  {
+    id: "S2",
+    nombre: "Transporte al hotel",
+    descripcion: "Traslado desde el aeropuerto",
+    precio: 50000,
+    disponible: true
+  }
+];
