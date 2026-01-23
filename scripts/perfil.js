@@ -1,4 +1,4 @@
-import { httpPut } from "./servicios/httpPut.js";
+import { httpPutFormData } from "./servicios/httpPut.js";
 import { getToken } from "./servicios/tokenServicio.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -15,9 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 🧪 DEBUG (puedes quitarlo luego)
-  console.log("USUARIO EN PERFIL:", usuario);
-
   // 📥 Cargar datos en el formulario
   document.getElementById("nombre").value = usuario.nombre || "";
   document.getElementById("apellido").value = usuario.apellido || "";
@@ -29,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🖼 Foto de perfil (si existe)
   const fotoPerfil = document.getElementById("fotoPerfil");
   if (usuario.foto) {
-    fotoPerfil.src = usuario.foto;
+  fotoPerfil.src = `data:image/jpeg;base64,${usuario.foto}`;
   }
 
   document.getElementById("inputFoto").addEventListener("change", e => {
@@ -48,18 +45,30 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("formPerfil").addEventListener("submit", async e => {
     e.preventDefault();
 
-    const datosActualizados = {
-      nombre: document.getElementById("nombre").value,
-      apellido: document.getElementById("apellido").value,
-      correo: document.getElementById("correo").value,
-      telefono: document.getElementById("telefono").value,
-      foto: usuario.foto
-    };
+    // const datosActualizados = {
+    //   nombre: document.getElementById("nombre").value,
+    //   apellido: document.getElementById("apellido").value,
+    //   correo: document.getElementById("correo").value,
+    //   telefono: document.getElementById("telefono").value,
+    //   foto: usuario.foto
+    // };
+
+    const formData = new FormData();
+
+      formData.append("nombre", document.getElementById("nombre").value);
+      formData.append("apellido", document.getElementById("apellido").value);
+      formData.append("correo", document.getElementById("correo").value);
+      formData.append("telefono", document.getElementById("telefono").value);
+
+      const fileInput = document.getElementById("inputFoto");
+      if (fileInput.files[0]) {
+        formData.append("foto", fileInput.files[0]);
+      }
 
     try {
-      const usuarioActualizado = await httpPut(
-        `auth/${usuario.idUsuario}`,
-        datosActualizados,
+      const usuarioActualizado = await httpPutFormData(
+        `auth/${usuario?.idUsuario}`,
+        formData,
         true
       );
 
