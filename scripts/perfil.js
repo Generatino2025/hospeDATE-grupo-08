@@ -1,3 +1,4 @@
+import { httpGet } from "./servicios/httpGet.js";
 import { httpPutFormData } from "./servicios/httpPut.js";
 import { getToken } from "./servicios/tokenServicio.js";
 
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     reader.readAsDataURL(file);
   });
 
-  // 💾 Guardar cambios
+  //  Guardar cambios
   document.getElementById("formPerfil").addEventListener("submit", async e => {
     e.preventDefault();
 
@@ -66,14 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
     try {
-      const usuarioActualizado = await httpPutFormData(
+      await httpPutFormData(
         `auth/${usuario?.idUsuario}`,
         formData,
         true
-      );
-
-      localStorage.setItem("user", JSON.stringify(usuarioActualizado));
-
+      ).then(async ()=>{
+         const u= await httpGet( `auth/${usuario?.idUsuario}`, true)
+         localStorage.setItem("user", JSON.stringify(u));
+      })
+     
       Swal.fire({
         icon: "success",
         title: "Perfil actualizado",

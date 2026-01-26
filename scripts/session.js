@@ -1,12 +1,12 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
 
 export function obtenerUsuarioActual() {
-  const usuario = sessionStorage.getItem("usuarioActual");
+  const usuario = localStorage.getItem("user");
   return usuario ? JSON.parse(usuario) : null;
 }
 
 export function usuarioEstaLogueado() {
-  return sessionStorage.getItem("usuarioActual") !== null;
+  return localStorage.getItem("user") !== null;
 }
 
 export function pedirLogin() {

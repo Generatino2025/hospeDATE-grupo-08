@@ -45,5 +45,19 @@ export async function httpPutFormData(endpoint, data, isPrivate = false) {
     headers,
     body: data
   });
+
+  // Detectar tipo de respuesta
+  const contentType = res.headers.get("content-type");
+
+  if (contentType && contentType.includes("application/json")) {
+    return await res.json();
+  }
+
+  if (res.status === 204) {
+    return null;
+  }
+
+  console.log(res.text())
+  return await res.text();
  
 }
