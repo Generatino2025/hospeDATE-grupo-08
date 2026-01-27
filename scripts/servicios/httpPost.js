@@ -3,7 +3,7 @@ import { getToken } from "./tokenServicio.js"
 
 
 export async function httpPost(endpoint, data, isPrivate ) {
-    console.log(endpoint, data, isPrivate, ENV,endpoint)
+
     const headers ={
         "Content-Type": "application/json"
     }

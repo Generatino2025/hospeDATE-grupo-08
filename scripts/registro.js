@@ -121,13 +121,7 @@ document.getElementById("formRegistro").addEventListener("submit", function (e) 
 
  
     registroUser(usuario)
-    Swal.fire({
-        icon: "success",
-        title: "Registro exitoso",
-        text: "Tu cuenta ha sido creada.",
-    }).then(() => {
-        window.location.href = "/pages/login.html";
-    });
+   
 });
 
 // -------------------------------------------
@@ -164,9 +158,21 @@ async function registroUser(data) {
     //auth/register   - post
     try {
         const registro = await httpPost('auth/register', data, false )
-        console.log(registro)
+        Swal.fire({
+        icon: "success",
+        title: "Registro exitoso",
+        text: "Tu cuenta ha sido creada.",
+    }).then(() => {
+        window.location.href = "/pages/login.html";
+    });
     } catch (error) {
-            console.error(error)
+            Swal.fire({
+        icon: "error",
+        title: "Ocurrio un error",
+        text: "No se pudo registrar su ceunta",
+    }).then(() => {
+        window.location.href = "/pages/registro.html";
+    });
     }
 
     
