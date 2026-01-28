@@ -9,7 +9,7 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
-    <!-- Iconos Bootstrap -->
+    <!-- Íconos Bootstrap -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
@@ -18,12 +18,12 @@
     <link rel="stylesheet" href="../styles/navFooter.css">
 </head>
 
- <body class="layout-root">
+<body class="layout-root">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg custom-navbar">
         <div class="container">
             <a class="navbar-brand text-light fw-bold" href="../index.html">
-                <img src="../assets/ImgsLogos/logoHospedate.png" alt="Logo de Hospedate" width="80">
+                <img src="../assets/ImgsLogos/logoHospedate.png" alt="Logo de Hospédate" width="80">
             </a>
 
             <button class="navbar-toggler bg-light" type="button"
@@ -50,7 +50,7 @@
                         <a class="nav-link custom-nav-link" href="./contactanos.html">Contacto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link custom-nav-link" href="./login.html">Iniciar Sesión</a>
+                        <a class="nav-link custom-nav-link" href="./login.html">Iniciar sesión</a>
                     </li>
                 </ul>
             </div>
@@ -81,126 +81,124 @@
                 </div>
             </div>
 
-          
-           <!-- Columna derecha: Formulario -->
-<div class="col-md-5 d-flex justify-content-center bg-white pt-2 pb-4"
-     style="margin-top: -2px; max-height: calc(100vh - 80px); overflow-y: auto;">
+            <!-- Columna derecha: Formulario -->
+            <div class="col-md-5 d-flex justify-content-center bg-white pt-2 pb-4"
+                 style="margin-top: -2px; max-height: calc(100vh - 80px); overflow-y: auto;">
 
-    <form class="form-box" id="formRegistro" novalidate>
-        <h3 class="text-center mb-4 fw-bold">Registro de Usuario</h3>
+                <form class="form-box" id="formRegistro" novalidate>
+                    <h3 class="text-center mb-4 fw-bold">Registro de usuario</h3>
 
-        <!-- Nombre y Apellido -->
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Nombre *</label>
-                <input id="nombre" type="text" class="form-control" placeholder="Tu nombre">
+                    <!-- Nombre y Apellido -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nombre *</label>
+                            <input id="nombre" type="text" class="form-control" placeholder="Tu nombre">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Apellido *</label>
+                            <input id="apellido" type="text" class="form-control" placeholder="Tu apellido">
+                        </div>
+                    </div>
+
+                    <!-- Documento -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tipo de documento *</label>
+                            <select id="tipoDoc" class="form-select">
+                                <option selected disabled>Seleccione...</option>
+                                <option>Cédula de ciudadanía</option>
+                                <option>Tarjeta de identidad</option>
+                                <option>Pasaporte</option>
+                                <option>Cédula de extranjería</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Núm. de documento *</label>
+                            <input id="numeroDoc" type="text" class="form-control" placeholder="1234567890">
+                        </div>
+                    </div>
+
+                    <!-- Correo -->
+                    <div class="mb-3">
+                        <label class="form-label">Correo electrónico *</label>
+                        <input id="correo" type="email" class="form-control" placeholder="correo@ejemplo.com">
+                        <small id="errorCorreo" class="text-danger"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Confirmar correo *</label>
+                        <input id="correo2" type="email" class="form-control" placeholder="correo@ejemplo.com">
+                        <small id="errorCorreo2" class="text-danger"></small>
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="mb-3">
+                        <label class="form-label">Número de teléfono *</label>
+                        <input id="telefono" type="text" class="form-control" placeholder="+57 300 000 0000">
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="mb-3">
+                        <label class="form-label">Contraseña *</label>
+                        <div class="input-group">
+                            <input id="password" type="password" class="form-control" placeholder="••••••••">
+                            <span class="input-group-text" id="togglePass1" style="cursor: pointer;">
+                                <i class="bi bi-eye-slash"></i>
+                            </span>
+                        </div>
+                        <small id="errorPassword" class="text-danger d-block mt-1"></small>
+                    </div>
+
+                    <!-- Confirmar contraseña -->
+                    <div class="mb-3">
+                        <label class="form-label">Confirmar contraseña *</label>
+
+                        <div class="input-group">
+                            <input id="password2" type="password" class="form-control" placeholder="••••••••">
+                            <span class="input-group-text" id="togglePass2" style="cursor: pointer;">
+                                <i class="bi bi-eye-slash"></i>
+                            </span>
+                        </div>
+
+                        <small id="errorPassword2" class="text-danger d-block mt-1"></small>
+                    </div>
+
+                    <!-- Términos -->
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="terminos">
+                        <label class="form-check-label" for="terminos">
+                            Acepto los términos y condiciones
+                        </label>
+                    </div>
+
+                    <button id="btnRegistro" type="submit" class="btn btn-primary w-100">
+                        Registrarme
+                    </button>
+
+                    <div class="text-center mt-2">
+                        ¿Ya tienes cuenta?
+                        <a href="./login.html" class="fw-semibold">Inicia sesión</a>
+                    </div>
+                </form>
             </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Apellido *</label>
-                <input id="apellido" type="text" class="form-control" placeholder="Tu apellido">
-            </div>
         </div>
-
-        <!-- Documento -->
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Tipo de documento *</label>
-                <select id="tipoDoc" class="form-select">
-                    <option selected disabled>Seleccione...</option>
-                    <option>Cedula de ciudadania</option>
-                    <option>Tarjeta de identidad</option>
-                    <option>Pasaporte</option>
-                    <option>Cedula de extranjeria</option>
-                </select>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Num de documento *</label>
-                <input id="numeroDoc" type="text" class="form-control" placeholder="1234567890">
-            </div>
-        </div>
-
-        <!-- Correo -->
-        <div class="mb-3">
-            <label class="form-label">Correo electronico *</label>
-            <input id="correo" type="email" class="form-control" placeholder="correo@ejemplo.com">
-            <small id="errorCorreo" class="text-danger"></small>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Confirmar correo *</label>
-            <input id="correo2" type="email" class="form-control" placeholder="correo@ejemplo.com">
-            <small id="errorCorreo2" class="text-danger"></small>
-        </div>
-
-        <!-- Telefono -->
-        <div class="mb-3">
-            <label class="form-label">Numero de telefono *</label>
-            <input id="telefono" type="text" class="form-control" placeholder="+57 300 000 0000">
-        </div>
-
-        <!-- Contraseña -->
-        <div class="mb-3">
-    <label class="form-label">Contraseña *</label>
-    <div class="input-group">
-        <input id="password" type="password" class="form-control" placeholder="••••••••">
-        <span class="input-group-text" id="togglePass1" style="cursor: pointer;">
-            <i class="bi bi-eye-slash"></i>
-        </span>
     </div>
-    <small id="errorPassword" class="text-danger d-block mt-1"></small>
-    </div>
-
-        <!-- Confirmar contraseña -->
-         <div class="mb-3">
-    <label class="form-label">Confirmar contraseña *</label>
-
-    <div class="input-group">
-        <input id="password2" type="password" class="form-control" placeholder="••••••••">
-        <span class="input-group-text" id="togglePass2" style="cursor: pointer;">
-            <i class="bi bi-eye-slash"></i>
-        </span>
-    </div>
-
-    <small id="errorPassword2" class="text-danger d-block mt-1"></small>
-</div>
-
-        <!-- Terminos -->
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="terminos">
-            <label class="form-check-label" for="terminos">
-                Acepto los terminos y condiciones
-            </label>
-        </div>
-
-        <button id="btnRegistro" type="submit" class="btn btn-primary w-100">
-            Registrarme
-        </button>
-
-
-        <div class="text-center mt-2">
-            ¿Ya tienes cuenta?
-            <a href="./login.html" class="fw-semibold">Inicia sesion</a>
-        </div>
-</form>
-    </div>
-</div>
-
 
     <!-- FOOTER -->
     <footer class="custom-footer text-center text-light py-4">
         <div class="container">
-            <p class="mb-1">© 2025 —HospeDate</p>
+            <p class="mb-1">© 2025 — HospeDate</p>
             <h2 style="font-style: italic; font-size: 1.1rem;">
                 Transforma tu recepción, simplifica tu operación
             </h2>
             <small>Todos los derechos reservados</small>
         </div>
     </footer>
+
     <script type="module" src="../scripts/authNavbar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../scripts/registro.js" type="module"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"></script>
